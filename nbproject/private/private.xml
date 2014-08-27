@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/Applications/XAMPP/htdocs/IPRO_API/app/views/emails/basic.blade.php</file>
+            <file>file:/Applications/XAMPP/htdocs/IPRO_API/app/controllers/AuthController.php</file>
+            <file>file:/Applications/XAMPP/htdocs/IPRO_API/app/controllers/HomeController.php</file>
+            <file>file:/Applications/XAMPP/htdocs/IPRO_API/app/config/mail.php</file>
+            <file>file:/Applications/XAMPP/htdocs/IPRO_API/app/routes.php</file>
+        </group>
+    </open-files>
+</project-private>
