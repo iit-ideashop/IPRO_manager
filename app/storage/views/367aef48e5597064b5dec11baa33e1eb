@@ -1,0 +1,50 @@
+<?php $__env->startSection('content'); ?>
+            <h1 class="page-header"><?php echo $class->UID; ?><div class="pull-right">Account: $<?php echo number_format($account->Balance,2); ?> </div></h1>
+
+          <?php echo $__env->make('model_tables.orders', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+          
+                    <h2 class="sub-header">Budgets</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Terms</th>
+                  <th>Amount</th>
+                  
+                  </tr>
+              </thead>
+              <tbody>
+                  <?php foreach($budgets as $budget): ?>
+                <tr>
+                  <td><?php echo $budget->Terms; ?></td>
+                  <td><?php echo $budget->Amount; ?></td>
+                  </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+          </div>
+
+                    <h2 class="sub-header">Budget Requests</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Request</th>
+                  <th>Requestor</th>
+                  <th>Amount</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <?php foreach($budgetRequests as $budgetRequest): ?>
+                <tr>
+                  <td><?php echo $budgetRequest->Request; ?></td>
+                  <td><?php echo User::find($budgetRequest->Requester)->FirstName; ?> <?php echo User::find($budgetRequest->Requester)->LastName; ?></td>
+                  <td><?php echo $budgetRequest->Amount; ?></td>
+                  </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+          </div>
+          </div>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

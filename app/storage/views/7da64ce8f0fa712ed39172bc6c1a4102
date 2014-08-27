@@ -1,0 +1,580 @@
+<?php echo $__env->make('layouts.dataTables', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php $__env->startSection('content'); ?>
+
+<h1 class="page-header">Order Overview - <?php echo $order->Description; ?> 
+
+<div class="btn-group">
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    Actions <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu">
+    <li><a href="#">Add Approved Pickups</a></li>
+    <li><a href="#">Add shipping costs</a></li>
+    <li><a href="#">Create Pickup</a></li>
+  </ul>
+</div>
+
+
+
+</h1>
+<div class="panel panel-default">
+    <div class="panel-heading">Order Information</div>
+  <div class="panel-body">
+      <div class="row">
+          <div class="col-sm-6">User: <?php echo $order_user->FirstName; ?> <?php echo $order_user->LastName; ?></div>
+          <div class="col-sm-6">Total: $<?php echo number_format($order->OrderTotal,2); ?></div>
+      </div>
+      <div class="row">
+          <div class="col-sm-6">Email: <?php echo $order_user->Email; ?></div>
+          <div class="col-sm-6">Status: <?php echo $order->getStatus(); ?></div>
+      </div>
+    <div class="row">
+          <div class="col-sm-6">Project: <?php echo $project->UID; ?></div>
+          <div class="col-sm-6">Created: <?php echo date('D F jS Y, g:i a',strtotime($order->created_at)); ?></div>
+      </div>
+      
+      <div class="row">
+          <div class="col-sm-6">Project Name: <?php echo $project->Name; ?></div>
+          <div class="col-sm-6">Last Modified: <?php echo date('D F jS Y, g:i a',strtotime($order->updated_at)); ?></div>
+      </div>
+      <?php if($order->Phone != ''): ?>
+      <div class="row">
+          <div class="col-sm-6">Contact: <?php echo $order->Phone; ?></div>
+          <div class="col-sm-6"></div>
+      </div>
+      <?php endif; ?>
+      
+  </div>
+</div>
+
+<div class="panel-group" id="Project">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#Project" href="#ProjectCollapse">
+          Project Overview - <?php echo $project->UID; ?>
+
+        </a>
+      </h4>
+    </div>
+    <div id="ProjectCollapse" class="panel-collapse collapse">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-6">Name: <?php echo $project->Name; ?></div>
+                <div class="col-sm-6">Remaining Balance: $<?php echo number_format($account->Balance,2); ?></div>
+            </div>
+            <br>
+            <h3 class="page-header">Budget Information</h3>
+            <div class="table-responsive">
+    <table class="table table-striped" id="BudgetListing">
+        
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>Terms</th>
+            <th>Amount</th>
+        </tr>
+        </thead>
+        <tfoot>
+                    <tr>
+            <th>id</th>
+            <th>Terms</th>
+            <th>Amount</th>
+        </tr>
+        </tfoot>
+        <tbody>
+            <?php foreach($budgets as $budget): ?>
+            <tr>
+                <td><?php echo $budget->id; ?></td>
+                <td>
+                    <?php echo $budget->Terms; ?>
+
+                </td>
+                <td><?php echo $budget->Amount; ?></td>
+                
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="panel-group" id="orderNotes">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#orderNotes" href="#orderNotesCollapse">
+          Order Notes
+          
+          
+          
+        </a>
+      </h4>
+    </div>
+    <div id="orderNotesCollapse" class="panel-collapse collapse">
+        <div class="panel-body">
+                <button class="btn btn-default" data-toggle="modal" data-target="#newNoteModal">
+  New Note
+                </button></br></br>
+            <div class="table-responsive">
+    <table class="table table-striped" id="noteListing">
+        
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>Refers To</th>
+            <th>Note</th>
+            <th>Entered by</th>
+            <th>Date</th>
+        </tr>
+        </thead>
+        <tfoot>
+                    <tr>
+            <th>id</th>
+            <th>Refers To</th>
+            <th>Note</th>
+            <th>Entered by</th>
+            <th>Date</th>
+        </tr>
+        </tfoot>
+        <tbody>
+            <?php foreach($notes as $note): ?>
+            <tr>
+                <td><?php echo $note->id; ?></td>
+                <td>
+                    <?php if($note->ItemID != 0): ?>
+                        <?php echo $note->refersTo(); ?>
+
+                    <?php else: ?>
+                        -
+                    <?php endif; ?>
+                </td>
+                <td><?php echo $note->Notes; ?></td>
+                <td><?php echo User::getFullNameWithId($note->EnteredBy); ?></td>
+                <td><?php echo date('D F jS Y, g:i a',strtotime($note->created_at)); ?> </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">Order Items</div>
+ <div class="panel-body">
+ <div class="table-responsive">
+    <table class="table table-striped" id="itemListing">
+        <thead>
+            <tr>
+                
+                <th>id</th>
+                <th></th>
+                <th>Name</th>
+                <th>Link</th>
+                <th>Part Number</th>
+                <th>Justification</th>
+                <th>Cost</th>
+                <th>Quantity</th>
+                <th>Total Cost</th>
+                <th>Returning</th>
+                <th>Status</th>
+                <th>Updated</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>id</th>
+                <th></th>
+                <th>Name</th>
+                <th>Link</th>
+                <th>Part Number</th>
+                <th>Justification</th>
+                <th>Cost</th>
+                <th>Quantity</th>
+                <th>Total Cost</th>
+                <th>Returning</th>
+                <th>Status</th>
+                <th>Updated</th>
+                <th>With Selected:  
+                
+                <div class="btn-group">
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    Actions <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu">
+    <li><a href="#" id="massChangeStatus">Change Order Status</a></li>
+    <li><a href="#" id="massReturning">Mark Returning</a></li>    
+  </ul>
+</div>
+                
+                
+                
+                </th>
+            </tr>
+        </tfoot>
+        <tbody>
+            <?php foreach($items as $item): ?>
+            <tr>
+                <td><?php echo $item->id; ?></td>
+                <td><input type="checkbox" name="<?php echo $item->Name; ?>" value="<?php echo $item->id; ?>"></th>
+                <td><a href="<?php echo $item->Link; ?>"><?php echo $item->Name; ?></a></td>
+                <td><?php echo $item->Link; ?></td>
+                <td><?php echo $item->PartNumber; ?></td>
+                <td><?php echo $item->Justification; ?></td>
+                <td>$<?php echo number_format($item->Cost,2); ?></td>
+                <td><?php echo $item->Quantity; ?></td>
+                <td>$<?php echo number_format($item->TotalCost,2); ?></td>
+                <?php if($item->Returning): ?>
+                <td>Yes</td>
+                <?php else: ?>
+                <td>No</td>
+                <?php endif; ?>
+                <td><?php echo $item->getStatus(); ?></td>
+                <td><?php echo date('D F jS Y, g:i a',strtotime($item->updated_at)); ?></td>
+                <td>
+                                    <div class="btn-group">
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    Actions <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu">
+    <li><a href="#edit<?php echo $item->id; ?>Modal" data-toggle="modal">Edit</a></li>
+    <li><a href="#<?php echo $item->id; ?>ChangeStatusModal" data-toggle="modal">Change Order Status</a></li>
+    <?php if($item->Returning): ?>
+     <li><a href="/admin/items/<?php echo $item->id; ?>/markNotReturning">Mark Not Returning</a></li>
+    <?php else: ?>
+    <li><a href="/admin/items/<?php echo $item->id; ?>/markReturning">Mark Returning</a></li>
+    <?php endif; ?>
+  </ul>
+</div>
+                    
+                    </th>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+ </div>
+ </div>
+</div>
+<!-- MODALS!!! -->
+<?php foreach($items as $item): ?>
+<div class="modal fade" id="edit<?php echo $item->id; ?>Modal" tabindex="-1" role="dialog" aria-labelledby="<?php echo $item->id; ?>EditModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="<?php echo $item->id; ?>EditModalLabel">Edit</h4>
+      </div>
+      <div class="modal-body">
+        
+          <?php echo Form::model($item,array('route'=> array('admin.item.edit',$item->id),'class'=>'form-horizontal')); ?>
+
+  <div class="form-group">
+      <?php echo Form::label('Name','Item Name', array('class'=>'col-sm-2 control-label')); ?> 
+    <div class="col-sm-10">
+      <?php echo Form::text('Name',null,array('class'=>'form-control')); ?>
+
+    </div>
+  </div>
+  <div class="form-group">
+      <?php echo Form::label('Link','Link', array('class'=>'col-sm-2 control-label')); ?> 
+    <div class="col-sm-10">
+      <?php echo Form::text('Link',null,array('class'=>'form-control')); ?>
+
+    </div>
+  </div>
+          <div class="form-group">
+      <?php echo Form::label('PartNumber','Part Number', array('class'=>'col-sm-2 control-label')); ?> 
+    <div class="col-sm-10">
+      <?php echo Form::text('PartNumber',null,array('class'=>'form-control')); ?>
+
+    </div>
+  </div>
+          <div class="form-group">
+      <?php echo Form::label('Cost','Cost', array('class'=>'col-sm-2 control-label')); ?> 
+    <div class="col-sm-10">
+      <?php echo Form::text('Cost',null,array('class'=>'form-control')); ?>
+
+    </div>
+  </div>
+          <div class="form-group">
+      <?php echo Form::label('Quantity','Quantity', array('class'=>'col-sm-2 control-label')); ?> 
+    <div class="col-sm-10">
+      <?php echo Form::text('Quantity',null,array('class'=>'form-control')); ?>
+
+    </div>
+  </div>
+          <div class="form-group">
+      <?php echo Form::label('TotalCost','Total Cost', array('class'=>'col-sm-2 control-label')); ?> 
+    <div class="col-sm-10">
+      <?php echo Form::text('TotalCost',null,array('class'=>'form-control')); ?>
+
+    </div>
+  </div>
+          <div class="form-group">
+      <?php echo Form::label('Justification','Justification', array('class'=>'col-sm-2 control-label')); ?> 
+    <div class="col-sm-10">
+      <?php echo Form::textarea('Justification',null,array('class'=>'form-control')); ?>
+
+    </div>
+  </div>
+  
+          
+          
+          
+          
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <?php echo Form::submit('Update',array('class'=>'btn btn-default')); ?><?php echo Form::close(); ?>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="<?php echo $item->id; ?>ChangeStatusModal" tabindex="-1" role="dialog" aria-labelledby="<?php echo $item->id; ?>ChangeStatusModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="<?php echo $item->id; ?>ChangeStatusModalLabel">Change Order Status</h4>
+      </div>
+      <div class="modal-body">
+        <?php echo Form::model($item,array('route'=> array('admin.item.statusChange',$item->id),'class'=>'form-horizontal')); ?>
+
+          <div class="form-group">
+      <?php echo Form::label('Status','Status', array('class'=>'col-sm-2 control-label')); ?> 
+    <div class="col-sm-10">
+        
+        <select name="Status" class="form-control">
+            <?php foreach($itemStatuses as $itemStatus): ?>
+            <option value="<?php echo $itemStatus->id; ?>"
+                    <?php if($item->Status == $itemStatus->id): ?>
+                    selected="selected"
+                    <?php endif; ?>
+                    ><?php echo $itemStatus->status; ?></option>
+            <?php endforeach; ?>
+        </select>
+      
+    </div>
+  </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <?php echo Form::submit('Change Status',array('class'=>'btn btn-default')); ?><?php echo Form::close(); ?>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Order note modal-->
+<div class="modal fade" id="newNoteModal" tabindex="-1" role="dialog" aria-labelledby="newNoteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="newNoteModalLabel">New Order Note</h4>
+      </div>
+      <div class="modal-body">
+        <?php echo Form::open(array('route'=>array('admin.order.createNote',$order->id),'class'=>'form-horizontal')); ?> 
+        <div class="form-group">
+    <?php echo Form::label('Note','Note', array('class'=>'col-sm-2 control-label')); ?> 
+    <div class="col-sm-8">
+        <?php echo Form::textarea('Note','',array('class'=>'form-control')); ?>
+
+    </div>
+</div>
+        
+        <div class="form-group">
+    <?php echo Form::label('ItemID','Refers to:', array('class'=>'col-sm-2 control-label')); ?> 
+    <div class="col-sm-8">
+        <select name="ItemID" class="form-control">
+            <option value="0">None</option>
+            <?php foreach($items as $item): ?>
+            <option value="<?php echo $item->id; ?>"><?php echo $item->Name; ?></option>
+            <?php endforeach; ?>
+        </select>
+         </div>
+</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <?php echo Form::submit('Create Note',array('class'=>'btn btn-default')); ?>
+
+        <?php echo Form::close(); ?>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="massStatusModal" tabindex="-1" role="dialog" aria-labelledby="massStatusModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="massStatusModalLabel">Update Status</h4>
+      </div>
+      <div class="modal-body">
+          You will be updating the following items:
+          <ul id="massStatusUpdateUL">
+          </ul>
+          <?php echo Form::open(array('route'=> 'admin.items.statusChange','class'=>'form-horizontal')); ?>
+
+          <div class="form-group">
+      <?php echo Form::label('Status','Status', array('class'=>'col-sm-2 control-label')); ?> 
+    <div class="col-sm-10">
+          <select name="Status" class="form-control">
+              <?php foreach($itemStatuses as $itemStatus): ?>
+              <option value="<?php echo $itemStatus->id; ?>"><?php echo $itemStatus->status; ?></option>
+              <?php endforeach; ?>
+          </select>
+          <input name="massItemID" id="massItemID" type="hidden" value="">
+    </div>
+  </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <?php echo Form::submit('Change Status',array('class'=>'btn btn-default')); ?><?php echo Form::close(); ?>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="massReturnModal" tabindex="-1" role="dialog" aria-labelledby="massReturnModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="massReturnModalLabel">Mark Returning</h4>
+      </div>
+      <div class="modal-body">
+          You will be marking the following items as returning:
+          <ul id="massReturnUL">
+          </ul>
+          <?php echo Form::open(array('route'=> 'admin.items.markReturning')); ?>
+
+          <input name="massItemID" id="massItemIDReturn" type="hidden" value="">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <?php echo Form::submit('Change Status',array('class'=>'btn btn-default')); ?><?php echo Form::close(); ?>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<?php endforeach; ?>
+
+<?php $__env->stopSection(); ?>
+                                            
+<?php $__env->startSection('javascript_bottom'); ?>
+<script>
+$(document).ready( function () {
+    $('#itemListing').DataTable({
+         "order": [[ 0, "asc" ]],
+         "columnDefs": [
+            {
+                "targets": [ 0 ],
+                "visible": false,
+            },
+            {
+                "targets": [ 3 ],
+                "visible": false,
+            }
+            
+        ]
+    } );
+    $('#noteListing').DataTable({
+         "order": [[ 0, "desc" ]],
+         "columnDefs": [
+            {
+                "targets": [ 0 ],
+                "visible": false,
+            }
+        ]
+    } );
+    $('#BudgetListing').DataTable({
+         "order": [[ 0, "desc" ]],
+         "columnDefs": [
+            {
+                "targets": [ 0 ],
+                "visible": false,
+            }
+        ]
+    } );
+    $('#massChangeStatus').click(function(){
+        showMassStatusModal();
+    });
+    $('#massReturning').click(function(){
+        showMassReturnModal();
+    });
+} );
+
+function showMassStatusModal(){
+    //Let's read all of the checked boxes
+    var itemNames = [];
+    var itemIDs = [];
+    $('#itemListing input:checked').each(function() {
+        itemNames.push($(this).attr('name'));
+        itemIDs.push($(this).attr('value'));
+    });
+    //Show the modal
+    if(itemIDs.length == 0){
+        alert('Select atleast 1 Item');
+        return false;
+    }
+    $('#massStatusUpdateUL').html(' ');
+    for(var i=0; i<itemNames.length;i++){
+        $('#massStatusUpdateUL').append($('<li>'+ itemNames[i]+'</li>'));
+    }
+    $('#massItemID').attr('value',JSON.stringify(itemIDs));
+    $('#massStatusModal').modal('show');
+}
+
+function showMassReturnModal(){
+    //Let's read all of the checked boxes
+    var itemNames = [];
+    var itemIDs = [];
+    $('#itemListing input:checked').each(function() {
+        itemNames.push($(this).attr('name'));
+        itemIDs.push($(this).attr('value'));
+    });
+    //Show the modal
+    if(itemIDs.length == 0){
+        alert('Select atleast 1 Item');
+        return false;
+    }
+    $('#massReturnUL').html(' ');
+    for(var i=0; i<itemNames.length;i++){
+        $('#massReturnUL').append($('<li>'+ itemNames[i]+'</li>'));
+    }
+    $('#massItemIDReturn').attr('value',JSON.stringify(itemIDs));
+    $('#massReturnModal').modal('show');
+    
+}
+</script>
+<?php $__env->stopSection(); ?>
+
+
+<?php echo $__env->make('layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

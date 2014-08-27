@@ -1,0 +1,99 @@
+<?php echo $__env->make('layouts.dataTables', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php $__env->startSection('content'); ?>
+
+<h1 class="page-header">Semesters  <a class="btn btn-default" href="<?php echo URL::to('/admin/semesters/new');; ?>">New</a></h1>
+<div class="table-responsive">
+    <table class="table table-striped" id="semesterListing">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>Name</th>
+                <th>Semester Start</th>
+                <th>Semester End</th>
+                <th>Created By</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>id</th>
+                <th>Name</th>
+                <th>Semester Start</th>
+                <th>Semester End</th>
+                <th>Created By</th>
+                <th></th>
+            </tr>
+        </tfoot>
+        <tbody>
+            <?php foreach($semesters as $semester): ?>
+            <tr>
+                <td><?php echo $semester->id; ?></th>
+                <td><?php echo $semester->Name; ?>
+
+                    <?php if($semester->Active): ?>
+                    [Active]
+                    <?php endif; ?>
+
+                </td>
+                <td><?php echo date('D F jS, Y',strtotime($semester->ActiveStart)); ?></td>
+                <td><?php echo date('D F jS, Y',strtotime($semester->ActiveEnd)); ?></td>
+                <td><?php echo User::getFullNameWithId($semester->modifiedBy); ?></td>
+                <td><a class="btn btn-default" href="<?php echo URL::to('/admin/semesters/edit/'.$semester->id); ?>">Edit<a> 
+                    
+                    
+                    <?php if(!$semester->Active): ?>
+                    <a class="btn btn-default" data-toggle="modal" data-target="#Delete<?php echo $semester->id; ?>Modal">Delete<a> 
+                        <a class="btn btn-default" href="<?php echo URL::to('/admin/semesters/makeActive/'.$semester->id); ?>">Make Active<a>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+</tbody>
+</table>
+</div>
+<?php /* MODAL DATA */ ?>
+<?php foreach($semesters as $semester): ?>
+<?php if(!$semester->Active): ?>
+<div class="modal fade" id="Delete<?php echo $semester->id; ?>Modal" tabindex="-1" role="dialog" aria-labelledby="Delete<?php echo $semester->id; ?>ModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Delete "<?php echo $semester->Name; ?>" Semester</h4>
+      </div>
+      <div class="modal-body">
+          <h1>YOU ARE ABOUT TO DELETE</h1>
+          <h1>"<?php echo $semester->Name; ?>" Semester</h1>
+          <a class="btn btn-danger" href="<?php echo URL::to('/admin/semesters/delete/'.$semester->id); ?>">CLICK HERE TO DELETE</a>
+          <p>If this semester has any data associated with it such as projects, accounts, budgets, etc. the delete will fail and you will need to delete the associated data before deleting the semester</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel Semester Deletion</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<?php endif; ?>
+<?php endforeach; ?>
+
+<?php $__env->stopSection(); ?>
+                                            
+<?php $__env->startSection('javascript_bottom'); ?>
+<script>
+$(document).ready( function () {
+    $('#semesterListing').DataTable({
+         "order": [[ 0, "desc" ]],
+         "columnDefs": [
+            {
+                "targets": [ 0 ],
+                "visible": false,
+            }
+        ]
+    } );
+} );
+</script>
+<?php $__env->stopSection(); ?>
+
+
+<?php echo $__env->make('layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

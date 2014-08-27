@@ -1,0 +1,8 @@
+<?php $__env->startSection('javascript'); ?>
+<script src="<?php echo URL::asset('packages/bootstrap/js/jquery.dataTables.min.js'); ?>"></script>
+<script src="<?php echo URL::asset('packages/bootstrap/js/dataTables.bootstrap.js'); ?>"></script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('stylesheets'); ?>
+<link rel="stylesheet" href="<?php echo URL::asset('packages/bootstrap/css/jquery.dataTables.min.css'); ?>">
+<link rel="stylesheet" href="<?php echo URL::asset('packages/bootstrap/css/dataTables.bootstrap.css'); ?>">
+<?php $__env->stopSection(); ?>

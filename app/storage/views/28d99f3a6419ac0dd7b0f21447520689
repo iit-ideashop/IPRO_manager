@@ -1,0 +1,21 @@
+<h2 class="sub-header">Orders</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Order #</th>
+                  <th>Status</th>
+                  <th></th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <?php foreach($orders as $order): ?>
+                <tr>
+                  <td>Order: <?php echo $order->id; ?></td>
+                  <td>Status: <?php echo $order->Status; ?></td>
+                  <td><a href="">View</a></td>
+                  </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+          </div>

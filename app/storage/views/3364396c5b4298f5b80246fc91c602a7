@@ -1,0 +1,72 @@
+;
+<?php $__env->startSection('content'); ?>
+<p><a href="<?php echo URL::to('/admin/projects/'); ?>">&LT;--Back</a></p>
+<h1 class="page-header">New Project</h1>
+<ul>
+   <?php $__empty_1 = true; foreach($errors as $error): $__empty_1 = false; ?>
+   <li><?php echo $error; ?></li>
+   <?php endforeach; if ($__empty_1): ?>
+   
+   <?php endif; ?>
+</ul>
+
+<?php echo Form::open(array('class'=>'form-horizontal')); ?> 
+<div class="form-group">
+    <?php echo Form::label('UID','Unique Name', array('class'=>'col-sm-2 control-label')); ?> 
+    <div class="col-sm-8">
+        <?php echo Form::text('UID','',array('class'=>'form-control','placeholder'=>'IPRO 303')); ?>
+
+    </div>
+</div>
+
+<div class="form-group">
+    <?php echo Form::label('Name','Name', array('class'=>'col-sm-2 control-label')); ?> 
+    <div class="col-sm-8">
+        <?php echo Form::text('Name','',array('class'=>'form-control')); ?>
+
+    </div>
+</div>
+
+
+<div class="form-group">
+    <?php echo Form::label('Description','Description', array('class'=>'col-sm-2 control-label')); ?> 
+    <div class="col-sm-8">
+        <?php echo Form::textarea('Description','',array('class'=>'form-control')); ?>
+
+    </div>
+</div>
+
+<div class="form-group">
+    <?php echo Form::label('Semester','Semester', array('class'=>'col-sm-2 control-label')); ?> 
+    <div class="col-sm-8">
+        <select name="Semester" class="form-control">
+            <?php foreach($semesters as $semester): ?>
+            <option value="<?php echo $semester->id; ?>"><?php echo $semester->Name; ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <?php echo Form::label('Project','Parent Project', array('class'=>'col-sm-2 control-label')); ?> 
+    <div class="col-sm-8">
+        <select name="ParentClass" class="form-control">
+            <?php foreach($projects as $project): ?>
+            <option value="<?php echo $project['id']; ?>"><?php echo $project['UID']; ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+        <?php echo Form::submit('Submit',array('class'=>'btn btn-default')); ?>
+
+    </div>
+</div>
+
+
+<?php echo Form::close(); ?>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
