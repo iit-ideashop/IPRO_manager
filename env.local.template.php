@@ -5,6 +5,7 @@ return array(
     'DATABASE_HOST' => '',
     'DATABASE_USER' => '',
     'DATABASE_PASSWORD' => '',
+    'DATABASE_DB' => '',
     'DEBUG' => 'FALSE',
     ## Default App URL is http://localhost for dev
     'APP_URL' => 'http://localhost',
