@@ -15,6 +15,9 @@ return array(
     'MAIL_FROM' => array('address' => 'ipro@iit.edu', 'name' => 'IPRO Manager'),
     'MAIL_SMTP_USER' => 'ipro@iit.edu',
     'MAIL_SMTP_PASS' => '',
-    'MAIL_MANDRILL_APIKEY' => ''
+    'MAIL_MANDRILL_APIKEY' => '',
+    ## oauth config
+    'GOOGLE_CLIENT_ID' => '',
+    'GOOGLE_CLIENT_SECRET' => ''
 );
 
