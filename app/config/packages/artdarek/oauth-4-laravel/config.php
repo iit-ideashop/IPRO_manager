@@ -19,8 +19,8 @@ return array(
 	'consumers' => array(
 
 		'Google' => array(
-    'client_id'     => '1090699868025.apps.googleusercontent.com',
-    'client_secret' => 'KqzESuf6jeNQAab8ndKPQFxC',
+    'client_id'     => $_ENV['GOOGLE_CLIENT_ID'],
+    'client_secret' => $_ENV['GOOGLE_CLIENT_SECRET'],
     'scope'         => array('userinfo_email', 'userinfo_profile'),
     'prompt'        => 'select_account'
 ),  

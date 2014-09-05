@@ -8,8 +8,12 @@ class AdminProjectController extends BaseController{
         $selectedSemester = null;
         if($id == null){
             $selectedSemester = Semester::where('active','=',1)->get();
-            $selectedSemester = $selectedSemester[0];
-        }else{
+            if($selectedSemester->isEmpty()){
+                $selectedSemester = new Semester();
+            }else{
+                $selectedSemester = $selectedSemester[0];
+            }
+            }else{
             //We are loading certain projects
             $selectedSemester = Semester::find($id);
         }
@@ -50,6 +54,7 @@ class AdminProjectController extends BaseController{
         $project->Description = Input::get('Description');
         $project->TimeSlots = 'null';
         $project->Semester = Input::get('Semester');
+        
         if(Input::get('ParentClass') == 'null'){
             $project->ParentClass = null;
         }else{
@@ -58,6 +63,11 @@ class AdminProjectController extends BaseController{
         $project->modifiedBy = Auth::id();
         if($project->save()){
             //Save success!
+            //Create account
+            $account = new Account;
+            $account->ClassID = $project->id;
+            $account->save();
+            $account->Deposit('BUDGET',floatval(str_replace('$','',Input::get('Budget'))));
             return Redirect::to('/admin/projects')->with('message','Project Added Successfully');
         }else{
             //We got errors

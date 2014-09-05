@@ -9,9 +9,14 @@ class AdminOrderController extends Controller {
         
         //Get the projects in the semester
         $projects = Project::where('Semester','=',$activeSemester[0])->lists('id');
-        //We need to get the orders from this semester which are active or on status 1
-        $orders = Order::whereIn('ClassID',$projects)->where('status','=',1)->get();
-        View::share('orders',$orders);
+        if(empty($projects)){
+            $orders = array();
+            View::share('orders',$orders);
+        }else{
+            //We need to get the orders from this semester which are active or on status 1
+            $orders = Order::whereIn('ClassID',$projects)->where('status','=',1)->get();
+            View::share('orders',$orders);
+        }
         return View::make('admin.orders.index');
     }
     

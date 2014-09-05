@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'Account' => $baseDir . '/app/models/Account.php',
     'AccountTableSeeder' => $baseDir . '/app/database/seeds/DatabaseSeeder.php',
+    'AddDefaultZeroBudgetToAccoutns' => $baseDir . '/app/database/migrations/2014_09_04_205642_addDefaultZeroBudgetToAccoutns.php',
     'AddPartNumberNullable' => $baseDir . '/app/database/migrations/2014_08_16_135125_add_PartNumber_nullable.php',
     'AddUserRememberToken' => $baseDir . '/app/database/migrations/2014_08_16_051629_add_user_RememberToken.php',
     'AdminController' => $baseDir . '/app/controllers/AdminController.php',
@@ -15,6 +16,7 @@ return array(
     'AdminOrderController' => $baseDir . '/app/controllers/AdminOrderController.php',
     'AdminProjectController' => $baseDir . '/app/controllers/AdminProjectController.php',
     'AdminSemesterController' => $baseDir . '/app/controllers/AdminSemesterController.php',
+    'ApprovedPickup' => $baseDir . '/app/models/ApprovedPickup.php',
     'Artdarek\\OAuth\\Facade\\OAuth' => $vendorDir . '/artdarek/oauth-4-laravel/src/Artdarek/OAuth/Facade/OAuth.php',
     'Artdarek\\OAuth\\OAuth' => $vendorDir . '/artdarek/oauth-4-laravel/src/Artdarek/OAuth/OAuth.php',
     'Artdarek\\OAuth\\OAuthServiceProvider' => $vendorDir . '/artdarek/oauth-4-laravel/src/Artdarek/OAuth/OAuthServiceProvider.php',

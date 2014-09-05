@@ -1,6 +1,10 @@
 <?php
-
-class Account extends Eloquent {
+use LaravelBook\Ardent\Ardent;
+class Account extends Ardent {
+    public static $rules = array(
+        'ClassID' => 'required'
+    );
+    
     public function Project(){
         return $this->belongsTo('Project','SpendingAccount');
     }

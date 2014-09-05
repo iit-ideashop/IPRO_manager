@@ -1,4 +1,8 @@
 @extends('layouts.master');
+@section('javascript')
+        <script src="{{ URL::asset('packages/bootstrap/js/jquery.maskMoney.min.js') }}"></script>
+        <script src="{{ URL::asset('packages/bootstrap/js/jquery.numeric.js') }}"></script>
+@stop
 @section('content')
 <p><a href="{{ URL::to('/admin/projects/') }}">&LT;--Back</a></p>
 <h1 class="page-header">New Project</h1>
@@ -56,6 +60,13 @@
 </div>
 
 <div class="form-group">
+    {{ Form::label('Budget','Initial Budget', array('class'=>'col-sm-2 control-label')) }} 
+    <div class="col-sm-2">
+        {{ Form::text('Budget','',array('class'=>'form-control')) }}
+    </div>
+</div>
+
+<div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
         {{ Form::submit('Submit',array('class'=>'btn btn-default'))}}
     </div>
@@ -63,4 +74,11 @@
 
 
 {{ Form::close() }}
+@stop
+
+@section('javascript_bottom')
+<script>
+$('#Budget').maskMoney({thousands:',', decimal:'.', allowZero:true, prefix: '$ '});
+$('#Budget').maskMoney('mask',0.00);
+</script>
 @stop

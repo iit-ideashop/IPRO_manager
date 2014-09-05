@@ -54,10 +54,10 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => '127.0.0.1',
-			'database'  => 'IPRO_API',
-			'username'  => 'root',
-			'password'  => '123456',
+			'host'      => $_ENV['DATABASE_HOST'],
+			'database'  => $_ENV['DATABASE_DB'],
+			'username'  => $_ENV['DATABASE_USER'],
+			'password'  => $_ENV['DATABASE_PASSWORD'],
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
