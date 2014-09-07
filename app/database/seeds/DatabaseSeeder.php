@@ -29,21 +29,21 @@ class BudgetStatusTableSeeder extends Seeder {
     public function run()
     {
         DB::table('budgetStatus')->delete();
-        DB::table('budgetStatus')->insert(array(array('Status'=>'Requested'),array('Status'=>'Approved'),array('Status'=>'Rejected')));
+        DB::table('budgetStatus')->insert(array(array('id'=>1,'Status'=>'Requested'),array('id'=>2,'Status'=>'Approved'),array('id'=>3,'Status'=>'Rejected')));
     }
 }
 class OrderStatusTableSeeder extends Seeder {
     public function run()
     {
         DB::table('orderStatus')->delete();
-        DB::table('orderStatus')->insert(array(array('Status'=>'Requested'),array('Status'=>'Ordered'),array('Status'=>'On Hold'),array('Status'=>'Delivered'),array('Status'=>'Completed')));
+        DB::table('orderStatus')->insert(array(array('id'=>1,'Status'=>'Requested'),array('id'=>2,'Status'=>'Ordered'),array('id'=>3,'Status'=>'Ready for Pickup'),array('id'=>4,'Status'=>'Completed'),array('id'=>5,'Status'=>'On-Hold')));
     }
 }
 class ItemStatusTableSeeder extends Seeder {
     public function run()
     {
         DB::table('itemStatus')->delete();
-        DB::table('itemStatus')->insert(array(array('Status'=>'Requested'),array('Status'=>'Ordered'),array('Status'=>'Delivered'),array('Status'=>'Picked-Up')));
+        DB::table('itemStatus')->insert(array(array('id'=>1,'Status'=>'Requested'),array('id'=>2,'Status'=>'Approved for Purchase'),array('id'=>3,'Status'=>'Ordered'),array('id'=>4,'Status'=>'Received'),array('id'=>5,'Status'=>'Picked Up'),array('id'=>6,'Status'=>'Cancelled'),array('id'=>7,'Status'=>'Checking IdeaShop Stock'),array('id'=>8,'Status'=>'On-Hold')));
     }
 }
 class classAccessTypesTableSeeder extends Seeder {
