@@ -12,7 +12,7 @@ class AddDefaultZeroBudgetToAccoutns extends Migration {
 	 */
 	public function up()
 	{
-                DB::unprepared("ALTER TABLE `".$_ENV['database_db']."`.`accounts` CHANGE COLUMN `Balance` `Balance` DOUBLE(9,2) NOT NULL DEFAULT 0;");
+                DB::unprepared("ALTER TABLE `".$_ENV['DATABASE_DB']."`.`accounts` CHANGE COLUMN `Balance` `Balance` DOUBLE(9,2) NOT NULL DEFAULT 0;");
 	}
 
 	/**
