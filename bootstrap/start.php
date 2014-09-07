@@ -25,9 +25,11 @@ $app = new Illuminate\Foundation\Application;
 */
 
 $env = $app->detectEnvironment(array(
-
+        //Need to return local for all environments
 	'local' => array('Ideashop-Admin'),
 
+    
+    
 ));
 
 /*

@@ -1,7 +1,6 @@
 <?php
 ##rename this file to .env.local.php 
 return array(
-
     'DATABASE_HOST' => '',
     'DATABASE_USER' => '',
     'DATABASE_PASSWORD' => '',
