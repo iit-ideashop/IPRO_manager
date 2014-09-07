@@ -26,6 +26,7 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(function()
 {
+    //Detemins running enviroment
     return 'local';
 });
 
