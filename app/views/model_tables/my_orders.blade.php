@@ -1,3 +1,4 @@
+@if(!$orders->isEmpty())
 <h2 class="sub-header">My Orders</h2>
           <div class="table-responsive">
             <table class="table table-striped">
@@ -19,3 +20,4 @@
                 </tbody>
             </table>
           </div>
+@endif

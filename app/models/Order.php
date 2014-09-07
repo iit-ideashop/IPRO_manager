@@ -36,6 +36,11 @@ class Order extends Ardent {
         return true;
     }
     
+    public static function updateStatus(){
+        //This function will be used to advance the status of the order automatically
+        
+    }
+    
     public function beforeSave(){
      //Before we save we have to make sure the modified by is updated
         $this->ModifiedBy = Auth::id();

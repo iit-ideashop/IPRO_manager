@@ -1,6 +1,7 @@
 <?php $__env->startSection('content'); ?>
         
           <h1 class="page-header">Dashboard</h1>
+          <p>Welcome to the IPRO Manager dashboard. This application allows you to manage your IPRO budget, make purchases and track your spending account. You can view enrolled IPROs in the sidebar to the left. If you have any questions or are having issues accessing certain parts of your IPRO please email us at <a href="mailto:ipro@iit.edu">ipro@iit.edu</a></p>
           <?php echo $__env->make('model_tables.my_orders', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
         
 <?php $__env->stopSection(); ?>

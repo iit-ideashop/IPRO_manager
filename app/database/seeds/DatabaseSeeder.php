@@ -9,6 +9,7 @@ class DatabaseSeeder extends Seeder {
         $this->call('OrderStatusTableSeeder');
         $this->call('ItemStatusTableSeeder');
         $this->call('classAccessTypesTableSeeder');
+        /*
         $this->call('UserTableSeeder');
         $this->call('SemesterTableSeeder');
         $this->call('ProjectTableSeeder');
@@ -21,6 +22,7 @@ class DatabaseSeeder extends Seeder {
         $this->call('BudgetTableSeeder');
         $this->call('ledgerTableSeeder');
         $this->command->info('Database Seeded Successfully');
+         */
     }
 }
 class BudgetStatusTableSeeder extends Seeder {
