@@ -177,7 +177,7 @@
 
     <target name="storage-permissions.unix" depends="storage.unix.check" if="storage.unix.exist" description="Setting storage permissions on unix">
         <echo>Setting app/storage to 777</echo>
-        <chmod file="${basedir}/app/storage/**" perm="777" type="dir" failonerror="false" />
+        <chmod file="${basedir}/app/storage/**" perm="777" type="dir" failonerror="true" />
     </target>
 
     <target name="storage-permissions.windows" depends="storage.windows.check" if="storage.windows.exist" description="Setting storage permissions on windows">
