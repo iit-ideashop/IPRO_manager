@@ -794,7 +794,7 @@ body.outlook p {
                         <table class="twelve columns">
                           <tr>
                             <td class="six sub-columns">
-                              <img src="http://placehold.it/200x50">
+                               
                             </td>
                             <td class="six sub-columns last" style="text-align:right; vertical-align:middle;">
                               <span class="template-label">IPRO MANAGER</span>
@@ -816,105 +816,53 @@ body.outlook p {
             <tr>
               <td>
 
-                <table class="row">
-                  <tr>
-                    <td class="wrapper last">
+                    @section('content')
+                    @show
 
-                      <table class="twelve columns">
-                        <tr>
-                          <td>
-                            <h1>Hi, </h1>
-                						<p class="lead">Phasellus dictum sapien a neque luctus cursus. Pellentesque sem dolor, fringilla et pharetra vitae.</p>
-                						<p>Phasellus dictum sapien a neque luctus cursus. Pellentesque sem dolor, fringilla et pharetra vitae. consequat vel lacus. Sed iaculis pulvinar ligula, ornare fringilla ante viverra et. In hac habitasse platea dictumst. Donec vel orci mi, eu congue justo. Integer eget odio est, eget malesuada lorem. Aenean sed tellus dui, vitae viverra risus. Nullam massa sapien, pulvinar eleifend fringilla id, convallis eget nisi. Mauris a sagittis dui. Pellentesque non lacinia mi. Fusce sit amet libero sit amet erat venenatis sollicitudin vitae vel eros. Cras nunc sapien, interdum sit amet porttitor ut, congue quis urna.</p>
-                          </td>
-                          <td class="expander"></td>
-                        </tr>
-                      </table>
-
-                    </td>
-                  </tr>
-                </table>
-
-                <table class="row callout">
-                  <tr>
-                    <td class="wrapper last">
-
-                      <table class="twelve columns">
-                        <tr>
-                          <td class="panel">
-                            <p>Phasellus dictum sapien a neque luctus cursus. Pellentesque sem dolor, fringilla et pharetra vitae. <a href="#">Click it! »</a></p>
-                          </td>
-                          <td class="expander"></td>
-                        </tr>
-                      </table>
-
-                    </td>
-                  </tr>
-                </table>
-
+                  <br>
                 <table class="row footer">
                   <tr>
-                    <td class="wrapper">
+                    <td class="wrapper last">
 
-                      <table class="six columns">
+                      <table class="twelve columns">
                         <tr>
                           <td class="left-text-pad">
 
-                            <h5>Connect With Us:</h5>
-
-                            <table class="tiny-button facebook">
-                              <tr>
-                                <td>
-                                  <a href="#">Facebook</a>
-                                </td>
-                              </tr>
-                            </table>
-
-                            <br>
-
-                            <table class="tiny-button twitter">
-                              <tr>
-                                <td>
-                                  <a href="#">Twitter</a>
-                                </td>
-                              </tr>
-                            </table>
-
-                            <br>
+                            <h5>Questions?</h5>
 
                             <table class="tiny-button google-plus">
                               <tr>
                                 <td>
-                                  <a href="#">Google +</a>
+                                  <a href="mailto:ipro@iit.edu">Email</a>
                                 </td>
                               </tr>
                             </table>
 
+                            <br>
+
+                            <table class="tiny-button facebook">
+                              <tr>
+                                <td>
+                                  <a href="tel:3125673162">Call us! (312) 567-3162</a>
+                                </td>
+                              </tr>
+                            </table>
                           </td>
                           <td class="expander"></td>
                         </tr>
                       </table>
 
                     </td>
-                    <td class="wrapper last">
 
-                      <table class="six columns">
-                        <tr>
-                          <td class="last right-text-pad">
-                            <h5>Contact Info:</h5>
-                            <p>Phone: 408.341.0600</p>
-                            <p>Email: <a href="mailto:hseldon@trantor.com">hseldon@trantor.com</a></p>
-                          </td>
-                          <td class="expander"></td>
-                        </tr>
-                      </table>
-
-                    </td>
                   </tr>
                 </table>
 
 
                 <table class="row">
+                  <tr>
+                    <td class="wrapper last">
+
+                      <table class="row">
                   <tr>
                     <td class="wrapper last">
 
@@ -922,7 +870,7 @@ body.outlook p {
                         <tr>
                           <td align="center">
                             <center>
-                              <p style="text-align:center;"><a href="#">Terms</a> | <a href="#">Privacy</a> | <a href="#">Unsubscribe</a></p>
+                              <p style="text-align:center;">This is an automated email sent by IPRO Manager</p>
                             </center>
                           </td>
                           <td class="expander"></td>

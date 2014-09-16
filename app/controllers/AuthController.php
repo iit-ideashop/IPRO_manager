@@ -57,4 +57,8 @@ class AuthController extends BaseController {
             return Redirect::to((string) $url);
         }
     }
+    
+    public function notAuthorized(){
+        return View::make('notAuthorized');
+    }
 }

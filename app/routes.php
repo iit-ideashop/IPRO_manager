@@ -14,9 +14,7 @@
 Route::group(array(),function(){
     Route::get('/', 'HomeController@showHome');
     Route::get('/authenticate', 'AuthController@authenticate');
-    Route::get('/notAuthorized', function(){
-        return View::make('notAuthorized');
-    });
+    Route::get('/notAuthorized','AuthController@notAuthorized');
 });
 
 //***** Authorized User Routes ******//
@@ -32,6 +30,16 @@ Route::group(array('before'=>'iit_user'),function(){
     
     Route::group(array('prefix'=>'api'), function(){
         Route::get('/userByCwid/{projectid}/{cwid}','AjaxApiController@userByCwid')->where(array('projectid' => '[0-9]+'));
+        
+    });
+    Route::group(array('prefix'=>'email_test'), function(){
+        Route::get('order','EmailTestController@orderCreate');
+        Route::get('pickup','EmailTestController@orderPickup');
+        Route::get('ordered','EmailTestController@orderOrder');
+        Route::get('complete','EmailTestController@orderComplete');
+        Route::get('cancel','EmailTestController@orderCancel');
+        
+        
         
     });
     

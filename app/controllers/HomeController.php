@@ -15,12 +15,13 @@ class HomeController extends BaseController {
 	|
 	*/
 
-	public function showWelcome()
-	{
-		return View::make('hello');
-	}
+	
         
         public function showHome(){
+            if(Auth::check()){
+                //Redirect to the dashboard, not the home page. 
+                return Redirect::to('/dashboard');
+            }
             return View::make('index');
         }
         
