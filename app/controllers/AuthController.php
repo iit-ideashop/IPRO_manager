@@ -21,16 +21,12 @@ class AuthController extends BaseController {
             // Send a request with it
             $result = json_decode($googleService->request('https://www.googleapis.com/oauth2/v1/userinfo'), true);
 
-            $message = 'Your unique Google user id is: ' . $result['id'] . ' and your name is ' . $result['name'];
-            echo $message . "<br/>";
-
+            
             if(in_array(@$result['hd'],Config::get('app.ApprovedHDs'))){
                 //Email is part of the iit network
-                echo 'Welcome to the iit network';
+
                 $user_count = User::where('Email','=',$result['email'])->count();
                 if($user_count >= 1){
-                    echo 'You already exist in the DB';
-                    
                 }else{
                     echo 'Creating new user';
                     $user = new User;
@@ -42,7 +38,7 @@ class AuthController extends BaseController {
                 }
                 $loggedUser = User::where('Email','=',$result['email'])->lists('id');
                 Auth::loginUsingId($loggedUser[0]);
-                return Redirect::to('dashboard');
+                return Redirect::intended('dashboard');
             }else{
                 echo 'Not authorized';
                 return Redirect::to("notAuthorized");

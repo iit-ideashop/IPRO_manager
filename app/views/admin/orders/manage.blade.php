@@ -226,7 +226,7 @@
             <tr>
                 <td>{{ $item->id }}</td>
                 <td><input type="checkbox" name="{{ $item->Name}}" value="{{ $item->id}}"></th>
-                <td><a href="{{$item->Link}}">{{ $item->Name}}</a></td>
+                <td><a href="{{$item->Link}}" target="_blank">{{ $item->Name}}</a></td>
                 <td>{{ $item->Link }}</td>
                 <td>{{ $item->PartNumber }}</td>
                 <td>{{ $item->Justification }}</td>

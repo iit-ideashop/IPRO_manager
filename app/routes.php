@@ -38,9 +38,6 @@ Route::group(array('before'=>'iit_user'),function(){
         Route::get('ordered','EmailTestController@orderOrder');
         Route::get('complete','EmailTestController@orderComplete');
         Route::get('cancel','EmailTestController@orderCancel');
-        
-        
-        
     });
     
 });

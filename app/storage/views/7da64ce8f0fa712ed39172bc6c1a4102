@@ -228,7 +228,7 @@
             <tr>
                 <td><?php echo $item->id; ?></td>
                 <td><input type="checkbox" name="<?php echo $item->Name; ?>" value="<?php echo $item->id; ?>"></th>
-                <td><a href="<?php echo $item->Link; ?>"><?php echo $item->Name; ?></a></td>
+                <td><a href="<?php echo $item->Link; ?>" target="_blank"><?php echo $item->Name; ?></a></td>
                 <td><?php echo $item->Link; ?></td>
                 <td><?php echo $item->PartNumber; ?></td>
                 <td><?php echo $item->Justification; ?></td>

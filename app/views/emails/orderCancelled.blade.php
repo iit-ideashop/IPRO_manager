@@ -11,9 +11,9 @@
             <table class="twelve columns">
               <tr>
                 <td>
-                  <h1>Hi {{ $person->FirstName }} {{ $person->LastName}}!</h1>
-                                                      <p class="lead">Your order has been received and will be processed by our staff within the next 24 hours.</p>
-                                                      <p>Here are the details of your order.</p>                         </td>
+                  <p class="lead RobotText">I cannot do that {{ $person->FirstName }}.</p>
+                   <p>It seems that certain items from your order have been canceled. These items are listed below.</p>
+                 </td>
                 <td class="expander"></td>
               </tr>
             </table>

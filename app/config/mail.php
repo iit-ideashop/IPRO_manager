@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'from' => $_ENV['MAIL_FROM'],
+	'from' => array('address' =>$_ENV['MAIL_FROM.address'], 'name'=> $_ENV['MAIL_FROM.name']),
 
 	/*
 	|--------------------------------------------------------------------------

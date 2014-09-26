@@ -120,7 +120,7 @@
         $('#itemGroup').append('<li class="list-group-item item" id="item'+ ItemID+'">' + 
               '<div class="row">' +
                   '<div class="col-sm-8">' +
-                    '{{ Form::label('Names','Item Name', array('class'=>'col-sm-2 control-label')) }}' + 
+                    '{{ Form::label('Names','Item Name', array('class'=>'col-sm-4 control-label')) }}' + 
                     '<input type="text" name="Names[]" class="form-control" value="'+itemName+'" required tabindex="'+startTabIndex+'">' +
           '</div>' +
           '<div class="col-sm-4">'+
@@ -139,7 +139,7 @@
               '</div>' +
           '<div class="row">' +
               '<div class="col-sm-8">' +
-                    '{{ Form::label('PartNumbers','Part Number', array('class'=>'col-sm-2 control-label')) }}' + 
+                    '{{ Form::label('PartNumbers','Part Number', array('class'=>'col-sm-4 control-label')) }}' + 
                     '<input type="text" name="PartNumbers[]" class="form-control" value="'+itemPN+'" tabindex="'+(startTabIndex + 2)+'" >' +
           '</div>' +
               '<div class="col-sm-4">'+
