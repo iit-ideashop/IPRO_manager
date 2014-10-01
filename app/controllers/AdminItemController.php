@@ -44,19 +44,6 @@ class AdminItemController extends BaseController{
             return Redirect::to('/admin/orders/'.$item->OrderID)->with('errors',array('Could not edit item'));
         }
     }
-    
-    public function statusChangeProcess($id){
-        $item = Item::find($id);
-        $item->changeStatus(Input::get('Status'));
-        if($item->save()){
-            //Save successful
-            Order::recalculate($item->OrderID);
-            return Redirect::to('/admin/orders/'.$item->OrderID)->with('success',array('Successfully edited order item'));
-        }else{
-            //Save errors, redirect to the order page or a special item edit page
-            return Redirect::to('/admin/orders/'.$item->OrderID)->with('errors',array('Could not edit item'));
-        }
-    }
 
     public function markItemReturning($id){
         $item = Item::find($id);
@@ -69,6 +56,7 @@ class AdminItemController extends BaseController{
             return Redirect::to('/admin/orders/'.$item->OrderID)->with('errors',array('Could not edit item'));
         }
     }
+   
     
     public function markItemNotReturning($id){
         $item = Item::find($id);
@@ -150,6 +138,19 @@ class AdminItemController extends BaseController{
             $item->save();
         }
         return Redirect::to('/admin/orders/'.$orderID)->with('success',array('Successfully changed item statuses'));
+    }
+    
+    //Delete item code
+    public function deleteItem($id){
+        //Find the item, delete all notes relating to item
+        $item = Item::find($id);
+        
+        $orderID = $item->OrderID;
+        if($item->delete()){
+            return Redirect::to('/admin/orders/'.$orderID)->with('success',array('Successfully deleted item'));
+        }else{
+            return Redirect::to('/admin/orders/'.$orderID)->with('error',array('Unable to delete item'));
+        }
     }
 }
 

@@ -72,5 +72,11 @@ class Item extends Ardent {
         $this->ModifiedBy = Auth::id();
     }
     
-    
+    public function deleteItem(){
+        $itemNotes = OrderNote::where('ItemID','=',$item->id)->get();
+        foreach($itemNotes as $itemNote){
+            $itemNote->delete();
+        }
+        $this->delete();
+    }
 }

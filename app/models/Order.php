@@ -38,6 +38,11 @@ class Order extends Ardent {
     
     public static function updateStatus(){
         //This function will be used to advance the status of the order automatically
+        //We essentially need to go out to the database, find all items in the order and look at the item status
+        //If all items have been ordered  change the order status to ordered
+        //If all items have been delivered, change to Ready for pickup
+        //If all items have been picked up change to completed
+        
         
     }
     
