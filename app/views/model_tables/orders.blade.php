@@ -1,8 +1,9 @@
 <h2 class="sub-header">Orders  <a href="{{ URL::to('project/'.$selected_class.'/orders/new')}}" class="btn btn-default">New</a></h2>
           <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped" id="Orders">
               <thead>
                 <tr>
+                  <th>ID</th>
                   <th>Order #</th>
                   <th>Order Name</th>
                   <th>Status</th>
@@ -12,6 +13,7 @@
               <tbody>
                   @foreach($orders as $order)
                 <tr>
+                  <td>{{ $order->id }}</td>
                   <td>Order: {{ $order->id }}</td>
                   <td>{{ $order->Description }}</td>
                   <td>Status: {{ $order->getStatus() }}</td>

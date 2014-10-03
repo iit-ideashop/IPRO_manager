@@ -31,7 +31,7 @@ App::before(function($request)
             if(Auth::user()->isAdmin){
                 $returnArray['admin'] = array(
                     array('link'=>'/admin/dashboard','text'=>'Admin Dashboard'),
-                    array('link'=>'/admin/budgets','text'=>'Budgets'),
+                    array('link'=>'/admin/budgets','text'=>'Budget Requests'),
                     array('link'=>'/admin/orders','text'=>'Orders'),
                     array('link'=>'/admin/accounts','text'=>'Accounts'),
                     array('link'=>'/admin/user','text'=>'User Management'),

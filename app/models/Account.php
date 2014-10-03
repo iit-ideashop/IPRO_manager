@@ -5,9 +5,7 @@ class Account extends Ardent {
         'ClassID' => 'required'
     );
     
-    public function Project(){
-        return $this->belongsTo('Project','SpendingAccount');
-    }
+    
     public function Budgets(){
         return $this->hasMany('Budget','AccountID');
     }
@@ -57,6 +55,12 @@ class Account extends Ardent {
     public function Recalculate(){
         //Recalculate this account's balance
         
+    }
+    
+    public static function lookupProjectID($accountID){
+        $account = Account::find(intval($accountID));
+        $project = Project::find($account->ClassID);
+        return $project->id;
     }
     
 }

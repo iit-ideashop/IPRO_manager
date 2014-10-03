@@ -1,10 +1,12 @@
 @if(!$orders->isEmpty())
 <h2 class="sub-header">My Orders</h2>
           <div class="table-responsive">
-            <table class="table table-striped">
+            <table width="100%" class="table table-striped" id="myOrders">
               <thead>
                 <tr>
+                    <th>ID</th>
                   <th>Order #</th>
+                  <th>Description</th>
                   <th>Status</th>
                   <th></th>
                   </tr>
@@ -12,6 +14,8 @@
               <tbody>
                   @foreach($orders as $order)
                 <tr>
+                  <td>{{ $order->id }}</td>
+                  <td>Order: {{ $order->id }}</td>
                   <td>{{ $order->Description }}</td>
                   <td>Status: {{ $order->getStatus() }}</td>
                   <td><a href="">View</a></td>
@@ -21,3 +25,5 @@
             </table>
           </div>
 @endif
+
+

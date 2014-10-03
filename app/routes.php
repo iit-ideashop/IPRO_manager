@@ -82,4 +82,9 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
         Route::get('/delete/{id}','AdminSemesterController@delete');
         Route::get('makeActive/{id}', 'AdminSemesterController@makeActive');
     });
+    
+
+        Route::group(array('prefix'=>'budgets'), function(){
+            Route::get('/','AdminBudgetController@index');
+        });
 });

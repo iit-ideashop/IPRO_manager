@@ -1,4 +1,5 @@
 @extends('layouts.master')
+@include('layouts.dataTables')
 
 @section('content')
             <h1 class="page-header">{{ $class->UID }}<div class="pull-right">Account: ${{ number_format($account->Balance,2) }} </div></h1>
@@ -48,4 +49,20 @@
             </table>
           </div>
           </div>
+@stop
+
+@section('javascript_bottom')
+<script>
+    $('#Orders').DataTable({
+        "order": [[ 0, "desc" ]],
+         "lengthMenu": [ 5, 10, 15, 25, 50 ],
+         "columnDefs": [
+            {
+                "targets": [ 0 ],
+                "visible": false,
+            },
+
+        ]
+    } );
+</script>
 @stop

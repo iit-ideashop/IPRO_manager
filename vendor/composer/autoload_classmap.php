@@ -8,6 +8,8 @@ $baseDir = dirname($vendorDir);
 return array(
     'Account' => $baseDir . '/app/models/Account.php',
     'AccountTableSeeder' => $baseDir . '/app/database/seeds/DatabaseSeeder.php',
+    'AddCommentsBdgt' => $baseDir . '/app/database/migrations/2014_10_02_115255_add_comments_bdgt.php',
+    'AddCommentsBdgtRew' => $baseDir . '/app/database/migrations/2014_10_02_115340_add_comments_bdgt_rew.php',
     'AddDefaultZeroBudgetToAccoutns' => $baseDir . '/app/database/migrations/2014_09_04_205642_addDefaultZeroBudgetToAccoutns.php',
     'AddPartNumberNullable' => $baseDir . '/app/database/migrations/2014_08_16_135125_add_PartNumber_nullable.php',
     'AddUserRememberToken' => $baseDir . '/app/database/migrations/2014_08_16_051629_add_user_RememberToken.php',
@@ -89,6 +91,7 @@ return array(
     'Crypt_TripleDES' => $vendorDir . '/phpseclib/phpseclib/phpseclib/Crypt/TripleDES.php',
     'Crypt_Twofish' => $vendorDir . '/phpseclib/phpseclib/phpseclib/Crypt/Twofish.php',
     'DatabaseSeeder' => $baseDir . '/app/database/seeds/DatabaseSeeder.php',
+    'EmailTestController' => $baseDir . '/app/controllers/EmailTestController.php',
     'File_ANSI' => $vendorDir . '/phpseclib/phpseclib/phpseclib/File/ANSI.php',
     'File_ASN1' => $vendorDir . '/phpseclib/phpseclib/phpseclib/File/ASN1.php',
     'File_ASN1_Element' => $vendorDir . '/phpseclib/phpseclib/phpseclib/File/ASN1.php',
