@@ -225,8 +225,8 @@
             @foreach($items as $item)
             <tr>
                 <td>{{ $item->id }}</td>
-                <td><input type="checkbox" name="{{ $item->Name}}" value="{{ $item->id}}"></th>
-                <td><a href="{{$item->Link}}">{{ $item->Name}}</a></td>
+                <td><input type="checkbox" name="{{ $item->Name}}" id="item-{{ $item->id }}" value="{{ $item->id}}"></th>
+                <td><a href="{{$item->Link}}" target="_blank">{{ $item->Name}}</a></td>
                 <td>{{ $item->Link }}</td>
                 <td>{{ $item->PartNumber }}</td>
                 <td>{{ $item->Justification }}</td>
@@ -247,12 +247,16 @@
   </button>
   <ul class="dropdown-menu" role="menu">
     <li><a href="#edit{{$item->id}}Modal" data-toggle="modal">Edit</a></li>
-    <li><a href="#{{$item->id}}ChangeStatusModal" data-toggle="modal">Change Order Status</a></li>
+    <li>
+        <a onclick="changeStatus({{$item->id}})">
+        Change Order Status</a></li>
     @if($item->Returning)
      <li><a href="/admin/items/{{$item->id}}/markNotReturning">Mark Not Returning</a></li>
     @else
     <li><a href="/admin/items/{{$item->id}}/markReturning">Mark Returning</a></li>
     @endif
+    <li><a href="#{{$item->id}}DeleteModal" data-toggle="modal">Delete item</a></li>
+
   </ul>
 </div>
                     
@@ -317,12 +321,7 @@
     <div class="col-sm-10">
       {{ Form::textarea('Justification',null,array('class'=>'form-control')) }}
     </div>
-  </div>
-  
-          
-          
-          
-          
+  </div>          
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -367,6 +366,30 @@
   </div>
 </div>
 
+
+<div class="modal fade" id="{{$item->id}}DeleteModal" tabindex="-1" role="dialog" aria-labelledby="{{$item->id}}DeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="{{$item->id}}DeleteModalLabel">Delete</h4>
+      </div>
+      <div class="modal-body">
+        
+          {{ Form::model($item,array('route'=> array('admin.item.delete',$item->id),'class'=>'form-horizontal'))}}
+          Are you sure you want to delete  the item <b>{{ $item->Name}}</b>?<br>
+          <h6>Items should usually be marked as Cancelled and not deleted</h6>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        {{ Form::submit('Yes',array('class'=>'btn btn-danger'))}}{{ Form::close() }}
+      </div>
+    </div>
+  </div>
+</div>
+@endforeach
+
+
 <!-- Order note modal-->
 <div class="modal fade" id="newNoteModal" tabindex="-1" role="dialog" aria-labelledby="newNoteModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -404,6 +427,8 @@
     </div>
   </div>
 </div>
+
+
 
 <div class="modal fade" id="massStatusModal" tabindex="-1" role="dialog" aria-labelledby="massStatusModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -459,12 +484,6 @@
     </div>
   </div>
 </div>
-
-
-
-
-
-@endforeach
 
 @stop
                                             
@@ -530,6 +549,16 @@ function showMassStatusModal(){
     }
     $('#massItemID').attr('value',JSON.stringify(itemIDs));
     $('#massStatusModal').modal('show');
+}
+
+function changeStatus(id){
+    $("#item-"+id).attr('checked',true);
+    showMassStatusModal();
+}
+    
+function markReturning(id){
+    $("#item-"+id).attr('checked',true);
+    showMassReturnModal();
 }
 
 function showMassReturnModal(){

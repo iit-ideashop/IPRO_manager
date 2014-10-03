@@ -38,9 +38,6 @@ Route::group(array('before'=>'iit_user'),function(){
         Route::get('ordered','EmailTestController@orderOrder');
         Route::get('complete','EmailTestController@orderComplete');
         Route::get('cancel','EmailTestController@orderCancel');
-        
-        
-        
     });
     
 });
@@ -64,6 +61,7 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
         Route::get('{id}/markReturning', 'AdminItemController@markItemReturning');
         Route::get('{id}/markNotReturning', 'AdminItemController@markItemNotReturning');
         Route::post('/markReturning',array('before'=>'csrf','as'=>'admin.items.markReturning', 'uses'=>'AdminItemController@massMarkReturningProcess'));
+        Route::post('{id}/delete',array('before'=>'csrf','as'=>'admin.item.delete', 'uses'=>'AdminItemController@deleteItem'));
         
     });
     Route::group(array('prefix'=>'projects'),function(){

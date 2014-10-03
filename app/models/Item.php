@@ -34,8 +34,13 @@ class Item extends Ardent {
         
         switch(Input::get('Status')){
          case 3:
+             $orderNote->Notes = 'Item Purchased';
              break;
          case 4:
+             $orderNote->Notes = 'Item Received';
+             break;
+         case 5:
+             $orderNote->Notes = 'Item Picked up';
              break;
          case 6:
              $orderNote->Notes = 'Status Changed to '.$this->getStatus().'  Cost: $'.number_format($this->Cost,2);
@@ -67,5 +72,11 @@ class Item extends Ardent {
         $this->ModifiedBy = Auth::id();
     }
     
-    
+    public function deleteItem(){
+        $itemNotes = OrderNote::where('ItemID','=',$item->id)->get();
+        foreach($itemNotes as $itemNote){
+            $itemNote->delete();
+        }
+        $this->delete();
+    }
 }
