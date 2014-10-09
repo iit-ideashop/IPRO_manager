@@ -4,8 +4,6 @@ class Account extends Ardent {
     public static $rules = array(
         'ClassID' => 'required'
     );
-    
-    
     public function Budgets(){
         return $this->hasMany('Budget','AccountID');
     }

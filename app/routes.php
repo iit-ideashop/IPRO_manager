@@ -81,6 +81,20 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
         Route::get('makeActive/{id}', 'AdminSemesterController@makeActive');
     });
     
+    
+    
+    /*
+     * IPRO Day routes
+     */
+    Route::group(array('prefix'=> 'iproday'),function(){
+        /*
+        * IPRO Day registration
+        */
+        Route::group(array('prefix'=>'registration'),function(){
+           Route::get('{id}', ''); 
+        });
+    });
+    
 
         Route::group(array('prefix'=>'budgets'), function(){
             Route::get('/','AdminBudgetController@index');
