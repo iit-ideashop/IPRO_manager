@@ -3,12 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Applications/XAMPP/htdocs/IPRO_API/app/models/Item.php</file>
-            <file>file:/Applications/XAMPP/htdocs/IPRO_API/app/views/admin/orders/manage.blade.php</file>
-            <file>file:/Applications/XAMPP/htdocs/IPRO_API/app/models/OrderNote.php</file>
-            <file>file:/Applications/XAMPP/htdocs/IPRO_API/app/controllers/AdminItemController.php</file>
             <file>file:/Applications/XAMPP/htdocs/IPRO_API/app/routes.php</file>
-            <file>file:/Applications/XAMPP/htdocs/IPRO_API/app/models/Order.php</file>
         </group>
     </open-files>
 </project-private>

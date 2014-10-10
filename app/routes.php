@@ -42,6 +42,19 @@ Route::group(array('before'=>'iit_user'),function(){
     
 });
 
+/*
+     * IPRO Day routes
+     */
+    Route::group(array('prefix'=> 'iproday'),function(){
+        /*
+        * IPRO Day registration
+        */
+        Route::group(array('prefix'=>'registration'),function(){
+           Route::get('/{id}', 'IPRODayRegistrationController@showRegistration')->where(array('id' => '[0-9]+'));; 
+        });
+    });
+
+
 //**** Admin Routes *****//
 Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
     Route::get('dashboard','AdminController@dashboard');
@@ -83,17 +96,7 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
     
     
     
-    /*
-     * IPRO Day routes
-     */
-    Route::group(array('prefix'=> 'iproday'),function(){
-        /*
-        * IPRO Day registration
-        */
-        Route::group(array('prefix'=>'registration'),function(){
-           Route::get('{id}', ''); 
-        });
-    });
+    
     
 
         Route::group(array('prefix'=>'budgets'), function(){
