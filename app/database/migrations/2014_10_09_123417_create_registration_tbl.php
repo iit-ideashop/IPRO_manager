@@ -17,7 +17,7 @@ class CreateRegistrationTbl extends Migration {
 			$table->increments('id');
                         $table->integer('iproday')->unsigned();
                         $table->integer('registrant')->unsigned();
-                        $table->enum('tyoe',array('Judge','Guest'));
+                        $table->enum('type',array('Judge','Guest'));
                         $table->boolean('judgedBefore');
                         $table->text('trackPreferences');
                         $table->text('dietaryRestrictions');
