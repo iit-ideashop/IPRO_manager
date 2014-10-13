@@ -49,8 +49,19 @@ Route::group(array('before'=>'iit_user'),function(){
         /*
         * IPRO Day registration
         */
+        Route::get('thankyouemailtest',function(){
+            $iproday = IPRODay::find(1);
+            $registrant = Registrant::find(2);
+            $registration = Registration::find(2);
+            View::share('iproday',$iproday);
+            View::share('registration',$registration);
+            View::share('registrant',$registrant);
+            return View::make('emails.iproday.registration.thankyou');
+        });
         Route::group(array('prefix'=>'registration'),function(){
-           Route::get('/{id}', 'IPRODayRegistrationController@showRegistration')->where(array('id' => '[0-9]+'));; 
+           Route::get('/','IPRODayRegistrationController@index');
+           Route::get('/{id}', 'IPRODayRegistrationController@showRegistration')->where(array('id' => '[0-9]+'));
+           Route::post('/{id}', 'IPRODayRegistrationController@register')->where(array('id' => '[0-9]+'));
         });
     });
 

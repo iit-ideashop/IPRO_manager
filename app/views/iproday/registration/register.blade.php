@@ -18,7 +18,7 @@ Judge's Breakfast: {{ date('g:i a',strtotime($iproday->judgesStart)) }}<br>
 <div class="form-group">
     {{ Form::label('firstName','First Name',array('class'=>'col-xs-2 control-label'))}}
     <div class="col-xs-4">
-        {{ Form::text('firstName','',array('class'=>'form-control','placeholder'=>'Required')) }}
+        {{ Form::text('firstName','',array('class'=>'form-control','placeholder'=>'Required','required')) }}
     </div>
 </div>
 
@@ -27,7 +27,7 @@ Judge's Breakfast: {{ date('g:i a',strtotime($iproday->judgesStart)) }}<br>
 
     {{ Form::label('lastName','Last Name',array('class'=>'col-xs-2 control-label')) }}
     <div class="col-xs-4">
-        {{ Form::text('lastName','',array('class'=>'form-control','placeholder'=>'Required')) }}
+        {{ Form::text('lastName','',array('class'=>'form-control','placeholder'=>'Required','required')) }}
 
     </div>
 </div>
@@ -61,7 +61,7 @@ Judge's Breakfast: {{ date('g:i a',strtotime($iproday->judgesStart)) }}<br>
 <div class="form-group">
     {{ Form::label('email','Email',array('class'=>'col-xs-2 control-label')) }}
     <div class="col-xs-4">
-        {{ Form::text('email','',array('class'=>'form-control','placeholder'=>'Required')) }}
+        {{ Form::text('email','',array('class'=>'form-control','placeholder'=>'Required','required')) }}
     </div>
 </div>
 
@@ -79,8 +79,8 @@ Judge's Breakfast: {{ date('g:i a',strtotime($iproday->judgesStart)) }}<br>
     {{ Form::label('judgedBefore','FOR JUDGES: Have you judged IPRO before?',array('class'=>'col-xs-2 control-label')) }}
     <div class="col-xs-4">
 
-        {{ Form::radio('judgedBefore','Yes') }} Yes <br>
-        {{ Form::radio('judgedBefore','No') }} No
+        {{ Form::radio('judgedBefore','1') }} Yes <br>
+        {{ Form::radio('judgedBefore','0') }} No
         </div>
 </div>
 <div class="form-group">
@@ -91,11 +91,30 @@ Judge's Breakfast: {{ date('g:i a',strtotime($iproday->judgesStart)) }}<br>
 <div class="row">
     <div class="col-xs-offset-2 col-xs-10">
 <div class="panel-group" id="iproListing">
+   
+      <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+          {{ Form::checkbox('trackSelection[]',0) }}
+        <a data-toggle="collapse" data-parent="#iproListing" href="#listing-0">
+            No Preference
+        </a>
+      </h4>
+    </div>
+    <div id="listing-0" class="panel-collapse collapse">
+      <div class="panel-body">
+          <ul class="list-group">
+              No preference.
+        </ul>
+      </div>
+    </div>
+  </div>
+    
     @foreach($tracks as $track)
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
-          {{ Form::checkbox('trackSelection',$track->id) }}
+          {{ Form::checkbox('trackSelection[]',$track->id) }}
         <a data-toggle="collapse" data-parent="#iproListing" href="#listing-{{ $track->id}}">
             Track #{{ $track->number }}: {{ $track->name }}
         </a>
@@ -118,6 +137,22 @@ Judge's Breakfast: {{ date('g:i a',strtotime($iproday->judgesStart)) }}<br>
 </div>
     </div>
 </div>
+
+<div class="form-group">
+    {{ Form::label('dietaryRestrictions','Judges receive a complimentary breakfast and lunch. Do you have any dietary restrictions or require any special accommodations?',array('class'=>'col-xs-2 control-label')) }}
+    <div class="col-xs-6">
+        {{ Form::textarea('dieraryRestrictions','',array('class'=>'form-control','rows'=>'4')) }}
+        </div>
+</div>
+
+<div class="form-group">
+    <div class="col-xs-offset-2 col-xs-4">
+        {{ Form::submit('Register',array('class'=>'btn btn-default')) }}
+        </div>
+</div>
+
+
+
 {{ Form::close() }}
 
 @stop
