@@ -82,19 +82,22 @@ class IPRODayRegistrationController extends BaseController {
             $registration->iproday = $iproday->id;
             $registration->registrant = $registrant->id;
             $registration->type = Input::get('attendeetype');
-            $registration->judgedBefore = Input::get('judgedBefore');
+            if(Input::get('judgedBefore') == NULL){
+                $registration->judgedBefore = false;
+            }else{
+                $registration->judgedBefore = Input::get('judgedBefore');
+            }
             $registration->noPreferenceTrack = False;
             //Next we have to process the track preferences, processing just to be safe it is an array.
             $reg_trackarray = array();
-            var_dump(Input::get('trackSelection'));
-            exit;
+            if(Input::get('trackSelection') == NULL){
             foreach(Input::get('trackSelection') as $trackSelection){
                 if($trackSelection == 0){
                     $registration->noPreferenceTrack = True;
                 }
                 array_push($reg_trackarray, $trackSelection);
             }
-            
+            }
             $registration->trackPreferences = serialize($reg_trackarray);
             $registration->dietaryRestrictions = Input::get('dieraryRestrictions');
             if(!$registration->save()){
