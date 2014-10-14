@@ -176,6 +176,11 @@
     <target name="storage-permissions" depends="storage-permissions.unix,storage-permissions.windows" description="Setting storage permissions" />
 
     <target name="storage-permissions.unix" depends="storage.unix.check" if="storage.unix.exist" description="Setting storage permissions on unix">
+        <echo>Setting all files to 775</echo>
+        <chmod  perm="775" verbose="true">
+            <fileset dir="${basedir}"></fileset>
+            <dirset dir="${basedir}"></dirset>
+        </chmod>
         <echo>Setting app/storage to 777</echo>
         <chmod  perm="777" verbose="true">
             <fileset dir="${basedir}/app/storage"></fileset>
