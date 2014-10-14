@@ -86,11 +86,13 @@ class IPRODayRegistrationController extends BaseController {
             $registration->noPreferenceTrack = False;
             //Next we have to process the track preferences, processing just to be safe it is an array.
             $reg_trackarray = array();
+            if(isset(Input::get('trackSelection'))){
             foreach(Input::get('trackSelection') as $trackSelection){
                 if($trackSelection == 0){
                     $registration->noPreferenceTrack = True;
                 }
                 array_push($reg_trackarray, $trackSelection);
+            }
             }
             $registration->trackPreferences = serialize($reg_trackarray);
             $registration->dietaryRestrictions = Input::get('dieraryRestrictions');
