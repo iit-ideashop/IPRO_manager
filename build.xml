@@ -180,6 +180,9 @@
         <chmod  perm="777" verbose="true">
             <fileset dir="${basedir}/app/storage"></fileset>
         </chmod>
+        <chmod  perm="775" verbose="true">
+            <fileset dir="${basedir}"></fileset>
+        </chmod>
     </target>
 
     <target name="storage-permissions.windows" depends="storage.windows.check" if="storage.windows.exist" description="Setting storage permissions on windows">
