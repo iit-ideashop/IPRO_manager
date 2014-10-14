@@ -179,6 +179,7 @@
         <echo>Setting app/storage to 777</echo>
         <chmod  perm="777" verbose="true">
             <fileset dir="${basedir}/app/storage"></fileset>
+            <dirset dir="${basedir}/app/storage"></dirset>
         </chmod>
     </target>
 
