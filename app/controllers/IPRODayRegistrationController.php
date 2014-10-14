@@ -90,7 +90,7 @@ class IPRODayRegistrationController extends BaseController {
             $registration->noPreferenceTrack = False;
             //Next we have to process the track preferences, processing just to be safe it is an array.
             $reg_trackarray = array();
-            if(Input::get('trackSelection') == NULL){
+            if(Input::get('trackSelection') != NULL){
             foreach(Input::get('trackSelection') as $trackSelection){
                 if($trackSelection == 0){
                     $registration->noPreferenceTrack = True;
