@@ -106,7 +106,9 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
     });
     
     
-    
+    Route::group(array('prefix'=>'iproday'), function(){
+        Route::get('/','AdminIPRODayController@index');
+    });
     
     
 
