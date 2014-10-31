@@ -141,7 +141,7 @@ output {
   &[disabled],
   &[readonly],
   fieldset[disabled] & {
-    cursor: not-allowed;
+    cursor: @cursor-disabled;
     background-color: @input-bg-disabled;
     opacity: 1; // iOS fix for unreadable disabled content
   }
@@ -275,7 +275,7 @@ input[type="checkbox"] {
   &[disabled],
   &.disabled,
   fieldset[disabled] & {
-    cursor: not-allowed;
+    cursor: @cursor-disabled;
   }
 }
 // These classes are used directly on <label>s
@@ -283,7 +283,7 @@ input[type="checkbox"] {
 .checkbox-inline {
   &.disabled,
   fieldset[disabled] & {
-    cursor: not-allowed;
+    cursor: @cursor-disabled;
   }
 }
 // These classes are used on elements with <label> descendants
@@ -292,7 +292,7 @@ input[type="checkbox"] {
   &.disabled,
   fieldset[disabled] & {
     label {
-      cursor: not-allowed;
+      cursor: @cursor-disabled;
     }
   }
 }
@@ -325,12 +325,12 @@ input[type="checkbox"] {
 
 .input-sm,
 .form-group-sm .form-control {
-  .input-size(@input-height-small; @padding-small-vertical; @padding-small-horizontal; @font-size-small; @line-height-small; @border-radius-small);
+  .input-size(@input-height-small; @padding-small-vertical; @padding-small-horizontal; @font-size-small; @line-height-small; @input-border-radius-small);
 }
 
 .input-lg,
 .form-group-lg .form-control {
-  .input-size(@input-height-large; @padding-large-vertical; @padding-large-horizontal; @font-size-large; @line-height-large; @border-radius-large);
+  .input-size(@input-height-large; @padding-large-vertical; @padding-large-horizontal; @font-size-large; @line-height-large; @input-border-radius-large);
 }
 
 

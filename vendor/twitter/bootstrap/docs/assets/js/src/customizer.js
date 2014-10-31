@@ -11,7 +11,7 @@
 window.onload = function () { // wait for load in a dumb way because B-0
   'use strict';
   var cw = '/*!\n' +
-           ' * Bootstrap v3.2.0 (http://getbootstrap.com)\n' +
+           ' * Bootstrap v3.3.0 (http://getbootstrap.com)\n' +
            ' * Copyright 2011-2014 Twitter, Inc.\n' +
            ' * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)\n' +
            ' */\n\n'
@@ -73,6 +73,7 @@ window.onload = function () { // wait for load in a dumb way because B-0
     $.ajax({
       url: 'https://api.github.com/gists',
       type: 'POST',
+      contentType: 'application/json; charset=UTF-8',
       dataType: 'json',
       data: JSON.stringify(data)
     })
@@ -318,7 +319,19 @@ window.onload = function () { // wait for load in a dumb way because B-0
 
   function generateJS(preamble) {
     var $checked = $('#plugin-section input:checked')
-    var jqueryCheck = 'if (typeof jQuery === "undefined") { throw new Error("Bootstrap\'s JavaScript requires jQuery") }\n\n'
+    var jqueryCheck = [
+      'if (typeof jQuery === \'undefined\') {',
+      '  throw new Error(\'Bootstrap\\\'s JavaScript requires jQuery\')',
+      '}\n'
+    ].join('\n')
+    var jqueryVersionCheck = [
+      '+function ($) {',
+      '  var version = $.fn.jquery.split(\' \')[0].split(\'.\')',
+      '  if ((version[0] < 2 && version[1] < 9) || (version[0] == 1 && version[1] == 9 && version[2] < 1)) {',
+      '    throw new Error(\'Bootstrap\\\'s JavaScript requires jQuery version 1.9.1 or higher\')',
+      '  }',
+      '}(jQuery);\n\n'
+    ].join('\n')
 
     if (!$checked.length) return false
 
@@ -328,7 +341,7 @@ window.onload = function () { // wait for load in a dumb way because B-0
       .join('\n')
 
     preamble = cw + preamble
-    js = jqueryCheck + js
+    js = jqueryCheck + jqueryVersionCheck + js
 
     return {
       'bootstrap.js': preamble + js,
@@ -453,7 +466,7 @@ window.onload = function () { // wait for load in a dumb way because B-0
 
       generateZip(generateCSS(preamble), generateJS(preamble), generateFonts(), configJson, function (blob) {
         $compileBtn.removeAttr('disabled')
-        saveAs(blob, 'bootstrap.zip')
+        setTimeout(function () { saveAs(blob, 'bootstrap.zip') }, 0)
       })
     })
   });

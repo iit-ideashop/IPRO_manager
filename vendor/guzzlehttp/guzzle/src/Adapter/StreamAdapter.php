@@ -5,11 +5,12 @@ namespace GuzzleHttp\Adapter;
 use GuzzleHttp\Event\RequestEvents;
 use GuzzleHttp\Exception\AdapterException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Message\AbstractMessage;
 use GuzzleHttp\Message\MessageFactoryInterface;
 use GuzzleHttp\Message\RequestInterface;
 use GuzzleHttp\Stream\InflateStream;
-use GuzzleHttp\Stream\Stream;
 use GuzzleHttp\Stream\LazyOpenStream;
+use GuzzleHttp\Stream\Stream;
 use GuzzleHttp\Stream\StreamInterface;
 use GuzzleHttp\Stream\Utils;
 
@@ -219,33 +220,37 @@ class StreamAdapter implements AdapterInterface
 
     private function getDefaultOptions(RequestInterface $request)
     {
-        $headers = '';
-        foreach ($request->getHeaders() as $name => $values) {
-            $headers .= $name . ': ' . implode(', ', $values) . "\r\n";
-        }
+        $headers = AbstractMessage::getHeadersAsString($request);
 
-        return [
+        $context = [
             'http' => [
                 'method'           => $request->getMethod(),
                 'header'           => trim($headers),
                 'protocol_version' => $request->getProtocolVersion(),
                 'ignore_errors'    => true,
-                'follow_location'  => 0,
-                'content'          => (string) $request->getBody()
+                'follow_location'  => 0
             ]
         ];
+
+        if ($body = $request->getBody()) {
+            $context['http']['content'] = (string) $body;
+            // Prevent the HTTP adapter from adding a Content-Type header.
+            if (!$request->hasHeader('Content-Type')) {
+                $context['http']['header'] .= "\r\nContent-Type:";
+            }
+        }
+
+        return $context;
     }
 
     private function add_proxy(RequestInterface $request, &$options, $value, &$params)
     {
         if (!is_array($value)) {
             $options['http']['proxy'] = $value;
-            $options['http']['request_fulluri'] = true;
         } else {
             $scheme = $request->getScheme();
             if (isset($value[$scheme])) {
                 $options['http']['proxy'] = $value[$scheme];
-                $options['http']['request_fulluri'] = true;
             }
         }
     }
@@ -304,7 +309,7 @@ class StreamAdapter implements AdapterInterface
             'bytes_transferred', 'bytes_max'];
 
         if (!is_resource($value)) {
-            $value = fopen('php://output', 'w');
+            $value = defined('STDOUT') ? STDOUT : fopen('php://output', 'w');
         }
 
         $params['notification'] = function () use ($request, $value, $map, $args) {

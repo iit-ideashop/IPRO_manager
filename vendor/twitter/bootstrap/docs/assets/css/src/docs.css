@@ -880,7 +880,8 @@ h1[id] {
 }
 
 /* Tweak display of the code snippets when following an example */
-.bs-example + .highlight {
+.bs-example + .highlight,
+.bs-example + .zero-clipboard + .highlight {
   margin: -15px -15px 15px;
   border-width: 0 0 1px;
   border-radius: 0;
@@ -898,7 +899,8 @@ h1[id] {
     -webkit-box-shadow: none;
             box-shadow: none;
   }
-  .bs-example + .highlight {
+  .bs-example + .highlight,
+  .bs-example + .zero-clipboard + .highlight {
     margin-top: -16px;
     margin-right: 0;
     margin-left: 0;
@@ -1102,6 +1104,12 @@ h1[id] {
   margin-top: 5px;
   margin-bottom: 5px;
 }
+.bs-example-tooltip .tooltip {
+  position: relative;
+  display: inline-block;
+  margin: 10px 20px;
+  opacity: 1;
+}
 
 /* Popovers */
 .bs-example-popover {
@@ -1143,7 +1151,6 @@ h1[id] {
   margin-top: 0;
   margin-bottom: 0;
   word-break: normal;
-  word-wrap: nowrap;
   white-space: nowrap;
   background-color: transparent;
   border: 0;
@@ -1333,13 +1340,6 @@ h1[id] {
   font-weight: normal;
 }
 
-.bs-customizer-input {
-  float: left;
-  width: 33.333333%;
-  padding-right: 15px;
-  padding-left: 15px;
-}
-
 /* Downloads */
 .bs-customize-download .btn-outline {
   padding: 20px;
@@ -1391,13 +1391,16 @@ h1[id] {
   margin-top: 0;
   margin-bottom: 5px;
 }
+.bs-dropzone hr {
+  width: 100px;
+}
 .bs-dropzone .lead {
   margin-bottom: 10px;
   font-weight: normal;
   color: #333;
 }
-.bs-dropzone hr {
-  width: 100px;
+/*.bs-dropzone*/ #import-manual-trigger {
+  cursor: pointer;
 }
 .bs-dropzone p:last-child {
   margin-bottom: 0;
@@ -1510,6 +1513,10 @@ h1[id] {
 @media (min-width: 768px) {
   .zero-clipboard {
     display: block;
+  }
+  .bs-example + .zero-clipboard .btn-clipboard {
+    top: -16px;
+    border-top-right-radius: 0;
   }
 }
 

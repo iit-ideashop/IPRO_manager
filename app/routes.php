@@ -107,7 +107,13 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
     
     
     Route::group(array('prefix'=>'iproday'), function(){
+        //Generic controller for showing a dashboard page
         Route::get('/','AdminIPRODayController@index');
+        Route::group(array('prefix'=>'{id}','where'=>array('id' => '[0-9]+')),function(){
+            //Reporting route
+            Route::get('/report/{report}','AdminIPRODayController@reporting');
+        });
+        
     });
     
     
