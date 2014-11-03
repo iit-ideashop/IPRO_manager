@@ -75,7 +75,7 @@
                 $judge_counter++;
             }
         }
-        $excel_filename = 'IPRODay Registration Report '.date('m-d-Y',time()).'.xlsx';
+        $excel_filename = 'IPRODay_Registration_Report_'.date('_m-d-Y',time()).'.xlsx';
         
 ?>
 @include('admin.reports.generator')
