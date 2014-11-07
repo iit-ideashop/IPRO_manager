@@ -2,20 +2,23 @@
     <head>
         <style>
             .label{
-                width: 2.3in;
-                height: 4in;
+                width: 4in;
+                height: 2.3in;
                 page-break-before: always;
                 text-align: center;
                 position: relative;
             }
             .label-first{
-                width: 2.3in;
-                height: 4in;
+                width: 4in;
+                height: 2.3in;
                 text-align: center;
                 position: relative;
             }
+            .nomarginheadings{
+                margin:0px;
+            }
             .barcode{
-                width: 2.3in;
+                width: 4in;
                 position: absolute; 
                 bottom: 20px;
                 
@@ -47,12 +50,12 @@
         @else
         <div class="label">
         @endif
-            <h1>IPRO</h1>
-            <h1>{{ $project->UID }}</h1>
-            <h3>{{ User::getFullNameWithId($order->PeopleID)}}<h3>
-            <h3>{{$item->Name}}</h3>
+        <br>
+            <h1 class="nomarginheadings">{{ $project->UID }}</h1>
+            <h3 class="nomarginheadings">{{ User::getFullNameWithId($order->PeopleID)}}</h3>
+            <h3 class="nomarginheadings">{{$item->Name}}</h3>
             <div class="barcode">
-                <img src="data:image/png;base64,{{DNS1D::getBarcodePNG($item->barcode,'I25') }}" alt="barcode"><br>
+                <img src="data:image/png;base64,{{DNS1D::getBarcodePNG($item->barcode,'C39') }}" alt="barcode"><br>
                 {{ $item->barcode }}
             </div> 
        </div>
