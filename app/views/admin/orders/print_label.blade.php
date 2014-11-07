@@ -52,7 +52,7 @@
             <h3>{{ User::getFullNameWithId($order->PeopleID)}}<h3>
             <h3>{{$item->Name}}</h3>
             <div class="barcode">
-                <img src="data:image/png;base64,{{DNS1D::getBarcodePNG($item->barcode,'C39') }}" alt="barcode"><br>
+                <img src="data:image/png;base64,{{DNS1D::getBarcodePNG($item->barcode,'I25') }}" alt="barcode"><br>
                 {{ $item->barcode }}
             </div> 
        </div>
