@@ -3,14 +3,14 @@
         <style>
             .label{
                 width: 4in;
-                height: 2.3in;
+                height: 2.1in;
                 page-break-before: always;
                 text-align: center;
                 position: relative;
             }
             .label-first{
                 width: 4in;
-                height: 2.3in;
+                height: 2.1in;
                 text-align: center;
                 position: relative;
             }
@@ -55,7 +55,7 @@
             <h3 class="nomarginheadings">{{ User::getFullNameWithId($order->PeopleID)}}</h3>
             <h3 class="nomarginheadings">{{$item->Name}}</h3>
             <div class="barcode">
-                <img src="data:image/png;base64,{{DNS1D::getBarcodePNG($item->barcode,'C39') }}" alt="barcode"><br>
+                <img src="data:image/png;base64,{{DNS1D::getBarcodePNG($item->barcode,'MSI') }}" alt="barcode"><br>
                 {{ $item->barcode }}
             </div> 
        </div>
