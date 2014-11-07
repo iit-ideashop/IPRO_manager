@@ -15,10 +15,16 @@
                 position: relative;
             }
             .barcode{
+                width: 2.3in;
                 position: absolute; 
                 bottom: 20px;
-                left: 12px;
+                
                 margin: auto;
+            }
+            .barcode img {
+                
+                margin-left: auto;
+                margin-right: auto;
             }
         </style>
         <script>
@@ -46,7 +52,7 @@
             <h3>{{ User::getFullNameWithId($order->PeopleID)}}<h3>
             <h3>{{$item->Name}}</h3>
             <div class="barcode">
-                <img src="data:image/png;base64,{{DNS1D::getBarcodePNG($item->barcode,'UPCA') }}" alt="barcode"><br>
+                <img src="data:image/png;base64,{{DNS1D::getBarcodePNG($item->barcode,'C39') }}" alt="barcode"><br>
                 {{ $item->barcode }}
             </div> 
        </div>
