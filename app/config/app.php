@@ -122,6 +122,7 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
                 'Artdarek\OAuth\OAuthServiceProvider',
+                'Dinesh\Barcode\BarcodeServiceProvider',
 
 	),
 
@@ -191,7 +192,8 @@ return array(
 		'Validator'         => 'Illuminate\Support\Facades\Validator',
 		'View'              => 'Illuminate\Support\Facades\View',
                 'OAuth' => 'Artdarek\OAuth\Facade\OAuth',
-
+                'DNS1D' => 'Dinesh\Barcode\Facades\DNS1DFacade',
+                'DNS2D' => 'Dinesh\Barcode\Facades\DNS2DFacade',
 	),
     
     /*

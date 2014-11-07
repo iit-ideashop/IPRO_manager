@@ -11,6 +11,5 @@
     //header('Content-Type: application/octet-stream');
     //header('Content-type: application/vnd.ms-excel');
     header('Content-Disposition: attachment; filename="'.$excel_filename.'"');
-    
     $objWriter->save("php://output");
 ?>

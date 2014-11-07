@@ -17,6 +17,8 @@ Route::group(array(),function(){
     Route::get('/notAuthorized','AuthController@notAuthorized');
 });
 
+
+
 //***** Authorized User Routes ******//
 Route::group(array('before'=>'iit_user'),function(){
     Route::get('/dashboard', 'HomeController@showDashboard');
@@ -86,7 +88,7 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
         Route::get('{id}/markNotReturning', 'AdminItemController@markItemNotReturning');
         Route::post('/markReturning',array('before'=>'csrf','as'=>'admin.items.markReturning', 'uses'=>'AdminItemController@massMarkReturningProcess'));
         Route::post('{id}/delete',array('before'=>'csrf','as'=>'admin.item.delete', 'uses'=>'AdminItemController@deleteItem'));
-        
+        Route::post('printLabel',array('before'=>'csrf','as'=>'admin.items.printLabels', 'uses'=>'AdminItemController@printLabels'));
     });
     Route::group(array('prefix'=>'projects'),function(){
         Route::get('/{id?}','AdminProjectController@index')->where(array('id' => '[0-9]+'));
