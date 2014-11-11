@@ -9,8 +9,7 @@
 		"twitter/bootstrap": "dev-master",
                 "laravelbook/ardent": "2.4.2",
                 "guzzlehttp/guzzle": "~4.0",
-                "phpoffice/phpexcel": "1.8.0",
-                "dinesh/barcode": "dev-master"
+                "phpoffice/phpexcel": "1.8.0"
 	},
 	"autoload": {
 		"classmap": [

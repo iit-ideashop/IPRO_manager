@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c69ff5d28e9b62fc24124d85984d0de8",
+    "hash": "4f0a5e068ad33c2085a174cd1c917848",
     "packages": [
         {
             "name": "artdarek/oauth-4-laravel",
@@ -362,6 +362,51 @@
                 "stream"
             ],
             "time": "2014-08-17 21:15:53"
+        },
+        {
+            "name": "hackzilla/barcode-bundle",
+            "version": "v1.4.0",
+            "target-dir": "Hackzilla/BarcodeBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hackzilla/BarcodeBundle.git",
+                "reference": "60576b8b9944f970460487771188711c1c3bdd1a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hackzilla/BarcodeBundle/zipball/60576b8b9944f970460487771188711c1c3bdd1a",
+                "reference": "60576b8b9944f970460487771188711c1c3bdd1a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "suggest": {
+                "twig/twig": "to use outputHtml"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Hackzilla\\BarcodeBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Folke Ashberg",
+                    "homepage": "http://www.ashberg.de/php-barcode/"
+                },
+                {
+                    "name": "Daniel Platt",
+                    "email": "github@ofdan.co.uk",
+                    "homepage": "http://www.hackzilla.org"
+                }
+            ],
+            "description": "Barcode Generator Bundle",
+            "time": "2014-10-07 21:22:03"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -851,16 +896,16 @@
         },
         {
             "name": "patchwork/utf8",
-            "version": "v1.1.25",
+            "version": "v1.1.26",
             "source": {
                 "type": "git",
-                "url": "https://github.com/nicolas-grekas/Patchwork-UTF8.git",
-                "reference": "2d43bd047b120279511d45e76e61c5a9812d9a83"
+                "url": "https://github.com/tchwork/utf8.git",
+                "reference": "6b8e46603b49ee87ad6bceb314da94cc04ffcdce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nicolas-grekas/Patchwork-UTF8/zipball/2d43bd047b120279511d45e76e61c5a9812d9a83",
-                "reference": "2d43bd047b120279511d45e76e61c5a9812d9a83",
+                "url": "https://api.github.com/repos/tchwork/utf8/zipball/6b8e46603b49ee87ad6bceb314da94cc04ffcdce",
+                "reference": "6b8e46603b49ee87ad6bceb314da94cc04ffcdce",
                 "shasum": ""
             },
             "require": {
@@ -891,19 +936,19 @@
             "authors": [
                 {
                     "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com",
-                    "role": "Developer"
+                    "email": "p@tchwork.com"
                 }
             ],
-            "description": "Extensive, portable and performant handling of UTF-8 and grapheme clusters for PHP",
-            "homepage": "https://github.com/nicolas-grekas/Patchwork-UTF8",
+            "description": "Portable and performant UTF-8, Unicode and Grapheme Clusters for PHP",
+            "homepage": "https://github.com/tchwork/utf8",
             "keywords": [
+                "grapheme",
                 "i18n",
                 "unicode",
                 "utf-8",
                 "utf8"
             ],
-            "time": "2014-08-05 08:00:32"
+            "time": "2014-11-08 10:13:25"
         },
         {
             "name": "phpoffice/phpexcel",
@@ -964,16 +1009,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "0.3.8",
+            "version": "0.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "5085202f1f37769aae59f9711c423f28159c9b29"
+                "reference": "c6e88ca6e81bc5a2d7161658e16a95b7ef8d6ad1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/5085202f1f37769aae59f9711c423f28159c9b29",
-                "reference": "5085202f1f37769aae59f9711c423f28159c9b29",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/c6e88ca6e81bc5a2d7161658e16a95b7ef8d6ad1",
+                "reference": "c6e88ca6e81bc5a2d7161658e16a95b7ef8d6ad1",
                 "shasum": ""
             },
             "require": {
@@ -1058,7 +1103,7 @@
                 "x.509",
                 "x509"
             ],
-            "time": "2014-09-13 02:42:45"
+            "time": "2014-11-10 03:08:59"
         },
         {
             "name": "predis/predis",
@@ -2033,12 +2078,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "d904429e05ce8ba68ebba673cab603a861792aba"
+                "reference": "99919c036496d72030a965953f0e2d2d760d638c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/d904429e05ce8ba68ebba673cab603a861792aba",
-                "reference": "d904429e05ce8ba68ebba673cab603a861792aba",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/99919c036496d72030a965953f0e2d2d760d638c",
+                "reference": "99919c036496d72030a965953f0e2d2d760d638c",
                 "shasum": ""
             },
             "replace": {
@@ -2076,7 +2121,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2014-11-05 22:59:24"
+            "time": "2014-11-10 21:40:29"
         }
     ],
     "packages-dev": [],

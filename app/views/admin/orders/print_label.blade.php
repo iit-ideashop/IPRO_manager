@@ -2,15 +2,15 @@
     <head>
         <style>
             .label{
-                width: 4in;
-                height: 2.1in;
+                width: 2.1in;
+                height: 4in;
                 page-break-before: always;
                 text-align: center;
                 position: relative;
             }
             .label-first{
-                width: 4in;
-                height: 2.1in;
+                width: 2.1in;
+                height: 4in;
                 text-align: center;
                 position: relative;
             }
@@ -18,24 +18,19 @@
                 margin:0px;
             }
             .barcode{
-                width: 4in;
+                width: 2.1in;
                 position: absolute; 
                 bottom: 20px;
                 
                 margin: auto;
             }
             .barcode img {
-                
                 margin-left: auto;
                 margin-right: auto;
             }
         </style>
-        <script>
-            $window.load(function(){
-                window.print();
-            });
-            
-        </script>
+        <script src="{{ URL::asset('packages/bootstrap/js/jquery-1.11.1.js')}}"></script>
+        <script src="{{ URL::asset('packages/bootstrap/js/jsBarcode.all.min.js')}}"></script>
     </head>
     <body onload="window.print()">
         <?php $first = true;?>
@@ -55,13 +50,17 @@
             <h3 class="nomarginheadings">{{ User::getFullNameWithId($order->PeopleID)}}</h3>
             <h3 class="nomarginheadings">{{$item->Name}}</h3>
             <div class="barcode">
-                <img src="data:image/png;base64,{{DNS1D::getBarcodePNG($item->barcode,'MSI') }}" alt="barcode"><br>
-                {{ $item->barcode }}
+                <img id="bc{{ $item->barcode }}"><br>
+                
             </div> 
        </div>
         @endforeach
     </body>
-    
+    <script>
+        @foreach($items as $item)
+        $("#bc{{ $item->barcode }}").JsBarcode("{{$item->barcode}}",{format:"CODE39",displayValue:true,fontSize:20,quite:5, width:1,height:35});
+        @endforeach
+    </script>
     
     
 </html>

@@ -36,6 +36,7 @@ return array(
     'LaravelBook\\Ardent' => array($vendorDir . '/laravelbook/ardent/src'),
     'Jeremeamia\\SuperClosure' => array($vendorDir . '/jeremeamia/SuperClosure/src'),
     'Illuminate' => array($vendorDir . '/laravel/framework/src'),
+    'Hackzilla\\BarcodeBundle' => array($vendorDir . '/hackzilla/barcode-bundle'),
     'File' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
     'Dinesh\\Barcode' => array($vendorDir . '/dinesh/barcode/src'),
     'Crypt' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
