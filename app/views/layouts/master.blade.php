@@ -4,7 +4,7 @@
         <title>@yield('title')</title>
         <link rel="stylesheet" href="{{ URL::asset('packages/bootstrap/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ URL::asset('packages/bootstrap/css/dashboard.css') }}">
-        @section('stylesheets')
+        @section('stylesheets') 
         @show
         <script src="{{ URL::asset('packages/bootstrap/js/jquery-1.11.1.js')}}"></script>
         <script src="{{ URL::asset('packages/bootstrap/js/bootstrap.min.js') }}"></script>

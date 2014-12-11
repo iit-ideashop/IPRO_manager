@@ -26,6 +26,14 @@ module.exports = function (grunt) {
     return { sections: parser.parseFile() };
   };
   var generateRawFiles = require('./grunt/bs-raw-files-generator.js');
+  var generateCommonJSModule = require('./grunt/bs-commonjs-generator.js');
+  var configBridge = grunt.file.readJSON('./grunt/configBridge.json', { encoding: 'utf8' });
+
+  Object.keys(configBridge.paths).forEach(function (key) {
+    configBridge.paths[key].forEach(function (val, i, arr) {
+      arr[i] = path.join('./docs/assets', val);
+    });
+  });
 
   // Project configuration.
   grunt.initConfig({
@@ -37,8 +45,8 @@ module.exports = function (grunt) {
             ' * Copyright 2011-<%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
             ' * Licensed under <%= pkg.license.type %> (<%= pkg.license.url %>)\n' +
             ' */\n',
-    // NOTE: This jqueryCheck code is duplicated in customizer.js; if making changes here, be sure to update the other copy too.
-    jqueryCheck: 'if (typeof jQuery === \'undefined\') { throw new Error(\'Bootstrap\\\'s JavaScript requires jQuery\') }\n\n',
+    jqueryCheck: configBridge.config.jqueryCheck.join('\n'),
+    jqueryVersionCheck: configBridge.config.jqueryVersionCheck.join('\n'),
 
     // Task configuration.
     clean: {
@@ -93,7 +101,7 @@ module.exports = function (grunt) {
 
     concat: {
       options: {
-        banner: '<%= banner %>\n<%= jqueryCheck %>',
+        banner: '<%= banner %>\n<%= jqueryCheck %>\n<%= jqueryVersionCheck %>',
         stripBanners: false
       },
       bootstrap: {
@@ -124,24 +132,11 @@ module.exports = function (grunt) {
         dest: 'dist/js/<%= pkg.name %>.min.js'
       },
       customize: {
-        src: [
-          'docs/assets/js/vendor/less.min.js',
-          'docs/assets/js/vendor/jszip.min.js',
-          'docs/assets/js/vendor/uglify.min.js',
-          'docs/assets/js/vendor/blob.js',
-          'docs/assets/js/vendor/filesaver.js',
-          'docs/assets/js/raw-files.min.js',
-          'docs/assets/js/src/customizer.js'
-        ],
+        src: configBridge.paths.customizerJs,
         dest: 'docs/assets/js/customize.min.js'
       },
       docsJs: {
-        // NOTE: This src list is duplicated in footer.html; if making changes here, be sure to update the other copy too.
-        src: [
-          'docs/assets/js/vendor/holder.js',
-          'docs/assets/js/vendor/ZeroClipboard.min.js',
-          'docs/assets/js/src/application.js'
-        ],
+        src: configBridge.paths.docsJs,
         dest: 'docs/assets/js/docs.min.js'
       }
     },
@@ -180,16 +175,7 @@ module.exports = function (grunt) {
 
     autoprefixer: {
       options: {
-        browsers: [
-          'Android 2.3',
-          'Android >= 4',
-          'Chrome >= 20',
-          'Firefox >= 24', // Firefox 24 is the latest ESR
-          'Explorer >= 8',
-          'iOS >= 6',
-          'Opera >= 12',
-          'Safari >= 6'
-        ]
+        browsers: configBridge.config.autoprefixerBrowsers
       },
       core: {
         options: {
@@ -291,19 +277,12 @@ module.exports = function (grunt) {
 
     copy: {
       fonts: {
-        expand: true,
         src: 'fonts/*',
         dest: 'dist/'
       },
       docs: {
-        expand: true,
-        cwd: './dist',
-        src: [
-          'css/*',
-          'js/*',
-          'fonts/*'
-        ],
-        dest: 'docs/dist'
+        src: 'dist/*/*',
+        dest: 'docs/'
       }
     },
 
@@ -342,7 +321,6 @@ module.exports = function (grunt) {
         failHard: true,
         reset: true,
         relaxerror: [
-          'Bad value X-UA-Compatible for attribute http-equiv on element meta.',
           'Element img is missing required attribute src.',
           'Attribute autocomplete not allowed on element input at this point.',
           'Attribute autocomplete not allowed on element button at this point.'
@@ -417,7 +395,7 @@ module.exports = function (grunt) {
   var testSubtasks = [];
   // Skip core tests if running a different subset of the test suite
   if (runSubset('core')) {
-    testSubtasks = testSubtasks.concat(['dist-css', 'dist-js', 'csslint:dist', 'jshint:core', 'jshint:test', 'jshint:grunt', 'jscs:core', 'jscs:test', 'jscs:grunt', 'qunit', 'docs']);
+    testSubtasks = testSubtasks.concat(['dist-css', 'dist-js', 'csslint:dist', 'test-js', 'docs']);
   }
   // Skip HTML validation if running a different subset of the test suite
   if (runSubset('validate-html') &&
@@ -435,9 +413,10 @@ module.exports = function (grunt) {
     testSubtasks.push('saucelabs-qunit');
   }
   grunt.registerTask('test', testSubtasks);
+  grunt.registerTask('test-js', ['jshint:core', 'jshint:test', 'jshint:grunt', 'jscs:core', 'jscs:test', 'jscs:grunt', 'qunit']);
 
   // JS distribution task.
-  grunt.registerTask('dist-js', ['concat', 'uglify:core']);
+  grunt.registerTask('dist-js', ['concat', 'uglify:core', 'commonjs']);
 
   // CSS distribution task.
   grunt.registerTask('less-compile', ['less:compileCore', 'less:compileTheme']);
@@ -460,6 +439,12 @@ module.exports = function (grunt) {
   grunt.registerTask('build-raw-files', 'Add scripts/less files to customizer.', function () {
     var banner = grunt.template.process('<%= banner %>');
     generateRawFiles(grunt, banner);
+  });
+
+  grunt.registerTask('commonjs', 'Generate CommonJS entrypoint module in dist dir.', function () {
+    var srcFiles = grunt.config.get('concat.bootstrap.src');
+    var destFilepath = 'dist/js/npm.js';
+    generateCommonJSModule(grunt, srcFiles, destFilepath);
   });
 
   // Docs task.

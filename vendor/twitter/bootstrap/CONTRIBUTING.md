@@ -36,6 +36,10 @@ Good bug reports are extremely helpful, so thanks!
 
 Guidelines for bug reports:
 
+0. **Validate and lint your code** &mdash; [validate your HTML](http://html5.validator.nu)
+   and [lint your HTML](https://github.com/twbs/bootlint) to ensure your
+   problem isn't caused by a simple error in your own code.
+
 1. **Use the GitHub issue search** &mdash; check if the issue has already been
    reported.
 
@@ -72,6 +76,22 @@ Example:
 > causing the bug, and potential solutions (and your opinions on their
 > merits).
 
+### Reporting upstream browser bugs
+
+Sometimes bugs reported to us are actually caused by bugs in the browser(s) themselves, not bugs in Bootstrap per se.
+When feasible, we aim to report such upstream bugs to the relevant browser vendor(s), and then list them on our [Wall of Browser Bugs](http://getbootstrap.com/browser-bugs/).
+
+| Vendor(s)     | Browser(s)                   | Rendering engine | Bug reporting website(s)                                                              | Notes                                                    |
+| ------------- | ---------------------------- | ---------------- | ------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| Mozilla       | Firefox                      | Gecko            | https://bugzilla.mozilla.org/enter_bug.cgi                                            | "Core" is normally the right product option to choose.   |
+| Apple         | Safari                       | WebKit           | https://bugs.webkit.org/enter_bug.cgi?product=WebKit <br> https://bugreport.apple.com | In Apple's bug reporter, choose "Safari" as the product. |
+| Google, Opera | Chrome, Chromium, Opera v15+ | Blink            | https://code.google.com/p/chromium/issues/list                                        | Click the "New issue" button.                            |
+| Microsoft     | Internet Explorer            | Trident          | https://connect.microsoft.com/IE/feedback/LoadSubmitFeedbackForm                      |                                                          |
+
+### Issues bots
+
+[@twbs-lmvtfy](https://github.com/twbs-lmvtfy) is a Bootstrap bot that hangs out in our GitHub issue tracker and automatically checks for HTML validation errors in live examples (e.g. jsFiddles, JS Bins, Bootplys, Plunks, CodePens, etc.) posted in issue comments. If it finds any errors, it will post a follow-up comment on the issue and point out the errors. If this happens with an example you've posted, please fix the errors and post an updated live example. If you opened a bug report, please check whether the bug still occurs with your revised, valid live example. If the bug no longer occurs, it was probably due to your invalid HTML rather than something in Bootstrap and we'd appreciate it if you could close out the GitHub issue.
+
 
 ## Feature requests
 
@@ -95,6 +115,17 @@ project's developers might not want to merge into the project.
 Please adhere to the [coding guidelines](#code-guidelines) used throughout the
 project (indentation, accurate comments, etc.) and any other requirements
 (such as test coverage).
+
+**Do not edit `bootstrap.css`, `bootstrap-theme.css`, or `bootstrap.js`
+directly!** Those files are automatically generated. You should edit the
+source files in [`/bootstrap/less/`](https://github.com/twbs/bootstrap/tree/master/less)
+and/or [`/bootstrap/js/`](https://github.com/twbs/bootstrap/tree/master/js) instead.
+
+Similarly, when contributing to Bootstrap's documentation, you should edit the
+documentation source files in
+[the `/bootstrap/docs/` directory of the `master` branch](https://github.com/twbs/bootstrap/tree/master/docs).
+**Do not edit the `gh-pages` branch.** That branch is generated from the
+documentation source files and is managed separately by the Bootstrap Core Team.
 
 Adhering to the following process is the best way to get your work
 included in the project:
@@ -149,6 +180,13 @@ included in the project:
 **IMPORTANT**: By submitting a patch, you agree to allow the project owners to
 license your work under the terms of the [MIT License](LICENSE.md).
 
+### Pull request checker bot: Rorschach
+
+[@twbs-rorschach](https://github.com/twbs-rorschach) is a Bootstrap bot that hangs out in our GitHub issue tracker and automatically checks all pull requests for a few simple common mistakes. It's possible that Rorschach might leave a comment on your pull request and then close it. If that happens, simply fix the problem(s) mentioned in the comment (there should be link(s) in the comment explaining the problem(s) in detail) and then either:
+
+* Push the revised version to your pull request's branch and post a comment on the pull request saying that you've fixed the problem(s). One of the Bootstrap Core Team members will then come along and reopen your pull request.
+* Or you can just open a new pull request for your revised version.
+
 
 ## Code guidelines
 
@@ -184,4 +222,3 @@ Run `grunt test` before committing to ensure your changes follow our coding stan
 By contributing your code, you agree to license your contribution under the [MIT license](https://github.com/twbs/bootstrap/blob/master/LICENSE).
 
 Prior to v3.1.0, Bootstrap was released under the Apache License v2.0.
-

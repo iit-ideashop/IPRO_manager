@@ -36,6 +36,7 @@ App::before(function($request)
                     array('link'=>'/admin/accounts','text'=>'Accounts'),
                     array('link'=>'/admin/user','text'=>'User Management'),
                     array('link'=>'/admin/projects','text'=>'Project Management'),
+                    array('link'=>'/admin/iproday', 'text'=>'IPRO Day Management'),
                 );
             }
             View::share('navigation',$returnArray);

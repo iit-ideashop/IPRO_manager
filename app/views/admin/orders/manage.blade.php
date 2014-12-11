@@ -212,7 +212,8 @@
   </button>
   <ul class="dropdown-menu" role="menu">
     <li><a href="#" id="massChangeStatus">Change Order Status</a></li>
-    <li><a href="#" id="massReturning">Mark Returning</a></li>    
+    <li><a href="#" id="massReturning">Mark Returning</a></li>  
+    <li><a href="#" id="massLabelPrint">Print Labels</a></li>
   </ul>
 </div>
                 
@@ -248,7 +249,7 @@
   <ul class="dropdown-menu" role="menu">
     <li><a href="#edit{{$item->id}}Modal" data-toggle="modal">Edit</a></li>
     <li>
-        <a onclick="changeStatus({{$item->id}})">
+        <a onclick="changeStatus({{ $item->id }})">
         Change Order Status</a></li>
     @if($item->Returning)
      <li><a href="/admin/items/{{$item->id}}/markNotReturning">Mark Not Returning</a></li>
@@ -256,7 +257,7 @@
     <li><a href="/admin/items/{{$item->id}}/markReturning">Mark Returning</a></li>
     @endif
     <li><a href="#{{$item->id}}DeleteModal" data-toggle="modal">Delete item</a></li>
-
+    <li><a href="" onClick="printLabel({{$item->id}})">Print Labels</a></li>
   </ul>
 </div>
                     
@@ -485,6 +486,27 @@
   </div>
 </div>
 
+<div class="modal fade" id="PrintLabelModal" tabindex="-1" role="dialog" aria-labelledby="PrintLabelModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="PrintLabelModalLabel">Print Labels</h4>
+      </div>
+      <div class="modal-body">
+          You will be printing the following labels:
+          <ul id="PrintLabelUL">
+          </ul>
+          {{ Form::open(array('route'=> 'admin.items.printLabels','target'=>'_blank','id'=>'labelPrint'))}}
+          <input name="items" id="massLabelID" type="hidden" value="">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        {{ Form::submit('Print Labels',array('class'=>'btn btn-default'))}}{{ Form::close() }}
+      </div>
+    </div>
+  </div>
+</div>
 @stop
                                             
 @section('javascript_bottom')
@@ -522,11 +544,15 @@ $(document).ready( function () {
             }
         ]
     } );
+    
     $('#massChangeStatus').click(function(){
         showMassStatusModal();
     });
     $('#massReturning').click(function(){
         showMassReturnModal();
+    });
+    $("#massLabelPrint").click(function(){
+       massPrintLabels(); 
     });
 } );
 
@@ -560,6 +586,10 @@ function markReturning(id){
     $("#item-"+id).attr('checked',true);
     showMassReturnModal();
 }
+function printLabel(id){
+    $("#item-"+id).attr('checked',true);
+    massPrintLabels();
+}
 
 function showMassReturnModal(){
     //Let's read all of the checked boxes
@@ -581,6 +611,20 @@ function showMassReturnModal(){
     $('#massItemIDReturn').attr('value',JSON.stringify(itemIDs));
     $('#massReturnModal').modal('show');
     
+}
+
+function massPrintLabels(){
+    //Grab the labels we want to print
+    //Let's read all of the checked boxes
+    var itemNames = [];
+    var itemIDs = [];
+    $('#itemListing input:checked').each(function() {
+        itemNames.push($(this).attr('name'));
+        itemIDs.push($(this).attr('value'));
+    });
+    //Update the modal form, we are not actually going to show the modal :/
+    $('#massLabelID').attr('value',JSON.stringify(itemIDs));
+    $('#labelPrint').submit();
 }
 </script>
 @stop

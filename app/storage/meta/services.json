@@ -26,7 +26,8 @@
         "Illuminate\\Validation\\ValidationServiceProvider",
         "Illuminate\\View\\ViewServiceProvider",
         "Illuminate\\Workbench\\WorkbenchServiceProvider",
-        "Artdarek\\OAuth\\OAuthServiceProvider"
+        "Artdarek\\OAuth\\OAuthServiceProvider",
+        "Dinesh\\Barcode\\BarcodeServiceProvider"
     ],
     "eager": [
         "Illuminate\\Cookie\\CookieServiceProvider",
@@ -36,7 +37,8 @@
         "Illuminate\\Session\\SessionServiceProvider",
         "Illuminate\\View\\ViewServiceProvider",
         "Illuminate\\Workbench\\WorkbenchServiceProvider",
-        "Artdarek\\OAuth\\OAuthServiceProvider"
+        "Artdarek\\OAuth\\OAuthServiceProvider",
+        "Dinesh\\Barcode\\BarcodeServiceProvider"
     ],
     "deferred": {
         "artisan": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",
@@ -47,6 +49,7 @@
         "cache.store": "Illuminate\\Cache\\CacheServiceProvider",
         "memcached.connector": "Illuminate\\Cache\\CacheServiceProvider",
         "command.cache.clear": "Illuminate\\Cache\\CacheServiceProvider",
+        "command.cache.table": "Illuminate\\Cache\\CacheServiceProvider",
         "command.session.database": "Illuminate\\Session\\CommandsServiceProvider",
         "command.command.make": "Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider",
         "composer": "Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider",

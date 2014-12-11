@@ -152,5 +152,36 @@ class AdminItemController extends BaseController{
             return Redirect::to('/admin/orders/'.$orderID)->with('error',array('Unable to delete item'));
         }
     }
+    
+    public function printLabels(){
+        //Someone has initalized a print labels 
+        //The process for printint labels is to first get the items we are printing labels for,
+        //Take those items and check for barcodes, if no barcode exists we generate one and then
+        //save the barcode with the item
+        //Next we pass the items over to the print label script and generate the actual labels.
+        //Format for input should be passed as a post named items and in array form containing the itemIDs;
+        $items = json_decode(Input::get('items'));
+        //Loop through the items and print labels
+        if(count($items) == 0){
+            exit;
+        }
+        //Grab the item listing from the array
+        $itemsCollection = Item::whereIn('id',$items)->get();
+        //Loop through the item collection and generate barcodes for items that need them
+        foreach($itemsCollection as $item){
+            //Check that the item has a barcode
+            if($item->barcode == NULL){
+                //Make le barcode
+                $barcode = new Barcode;
+                $barcode->type = "ITEM";
+                $barcode->reference = $item->id;
+                $barcode->save();
+                $item->barcode = $barcode->id;
+                $item->save();
+            }
+        }
+        View::share('items',$itemsCollection);
+        return View::make('admin.orders.print_label');
+    }
 }
 

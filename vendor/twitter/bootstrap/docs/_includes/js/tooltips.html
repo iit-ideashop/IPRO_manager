@@ -10,6 +10,35 @@
     </p>
   </div><!-- /example -->
 
+  <h3>Static tooltip</h3>
+  <p>Four options are available: top, right, bottom, and left aligned.</p>
+  <div class="bs-example bs-example-tooltip">
+    <div class="tooltip left" role="tooltip">
+      <div class="tooltip-arrow"></div>
+      <div class="tooltip-inner">
+        Tooltip on the left
+      </div>
+    </div>
+    <div class="tooltip top" role="tooltip">
+      <div class="tooltip-arrow"></div>
+      <div class="tooltip-inner">
+        Tooltip on the top
+      </div>
+    </div>
+    <div class="tooltip bottom" role="tooltip">
+      <div class="tooltip-arrow"></div>
+      <div class="tooltip-inner">
+        Tooltip on the bottom
+      </div>
+    </div>
+    <div class="tooltip right" role="tooltip">
+      <div class="tooltip-arrow"></div>
+      <div class="tooltip-inner">
+        Tooltip on the right
+      </div>
+    </div>
+  </div>
+
   <h3>Four directions</h3>
   <div class="bs-example tooltip-demo">
     <div class="bs-example-tooltips">
@@ -32,6 +61,13 @@
   <div class="bs-callout bs-callout-danger">
     <h4>Opt-in functionality</h4>
     <p>For performance reasons, the Tooltip and Popover data-apis are opt-in, meaning <strong>you must initialize them yourself</strong>.</p>
+    <p>One way to initialize all tooltips on a page would be to select them by their <code>data-toggle</code> attribute:</p>
+{% highlight js %}
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+{% endhighlight %}
+
   </div>
   <div class="bs-callout bs-callout-warning">
     <h4>Tooltips in button groups and input groups require special setting</h4>
@@ -178,7 +214,7 @@ $('#example').tooltip(options)
   <p>Attaches a tooltip handler to an element collection.</p>
 
   <h4>.tooltip('show')</h4>
-  <p>Reveals an element's tooltip.</p>
+  <p>Reveals an element's tooltip. Tooltips with zero-length titles are never displayed.</p>
   {% highlight js %}$('#element').tooltip('show'){% endhighlight %}
 
   <h4>.tooltip('hide')</h4>
