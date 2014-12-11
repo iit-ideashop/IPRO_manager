@@ -105,12 +105,11 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
         Route::get('makeActive/{id}', 'AdminSemesterController@makeActive');
     });
     
-    
-    
-    
-    
-
         Route::group(array('prefix'=>'budgets'), function(){
-            Route::get('/','AdminBudgetController@index');
+            Route::get('/',array('as' => 'admin_budgets','uses' => 'AdminBudgetController@index'));
+            //Inside of budgets we have two different "Routes", Requests and actual approved budgets
+            Route::group(array('prefix'=>'requests'), function(){
+                Route::get('{id}','AdminBudgetController@viewRequest')->where(array('id' => '[0-9]+'));
+            });
         });
 });

@@ -15,7 +15,7 @@
         <td>${{ number_format($budgetRequest->Amount, 2) }}</td>
         <td>
             
-            <a href="" class="btn btn-default">View</a>
+            <a href="{{}}" class="btn btn-default">View</a>
             <div class="btn-group">
                 <button type="button" class="btn btn-success" data-toggle="dropdown">Approve</button>
                 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">

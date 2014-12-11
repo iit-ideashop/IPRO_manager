@@ -12,6 +12,17 @@ class AdminBudgetController extends BaseController{
         return View::make('admin.budgets.index');
     }
     
+    public function viewRequest($id){
+        //Passsed id is the request id we are trying to view
+        //If the request exists we show the request, if not we have to redirect with errors
+        $budgetRequest = BudgetRequest::find($id);
+        if($budgetRequest == null){
+            return Redirect::route('admin_budgets')->with('error',array(''));
+        }else{
+            
+        }
+
+    }
     
 }
 

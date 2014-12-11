@@ -1,3 +1,5 @@
+<?php echo $__env->make('layouts.dataTables', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
 <?php $__env->startSection('content'); ?>
             <h1 class="page-header"><?php echo $class->UID; ?><div class="pull-right">Account: $<?php echo number_format($account->Balance,2); ?> </div></h1>
 
@@ -47,4 +49,21 @@
           </div>
           </div>
 <?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('javascript_bottom'); ?>
+<script>
+    $('#Orders').DataTable({
+        "order": [[ 0, "desc" ]],
+         "lengthMenu": [ 5, 10, 15, 25, 50 ],
+         "columnDefs": [
+            {
+                "targets": [ 0 ],
+                "visible": false,
+            },
+
+        ]
+    } );
+</script>
+<?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
