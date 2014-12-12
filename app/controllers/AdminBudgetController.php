@@ -24,5 +24,13 @@ class AdminBudgetController extends BaseController{
 
     }
     
+    public function denyBudget(){
+        
+    }
+    
+    public function approveBudget(){
+        //Add an element that checks for how many $$$ have been approved
+        
+    }
 }
 

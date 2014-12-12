@@ -11,7 +11,7 @@
 window.onload = function () { // wait for load in a dumb way because B-0
   'use strict';
   var cw = '/*!\n' +
-           ' * Bootstrap v3.3.0 (http://getbootstrap.com)\n' +
+           ' * Bootstrap v3.3.1 (http://getbootstrap.com)\n' +
            ' * Copyright 2011-' + new Date().getFullYear() + ' Twitter, Inc.\n' +
            ' * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)\n' +
            ' */\n\n'
@@ -22,9 +22,10 @@ window.onload = function () { // wait for load in a dumb way because B-0
   function showError(msg, err) {
     $('<div id="bsCustomizerAlert" class="bs-customizer-alert">' +
         '<div class="container">' +
-          '<a href="#bsCustomizerAlert" data-dismiss="alert" class="close pull-right">&times;</a>' +
-          '<p class="bs-customizer-alert-text"><span class="glyphicon glyphicon-warning-sign"></span>' + msg + '</p>' +
-          (err.extract ? '<pre class="bs-customizer-alert-extract">' + err.extract.join('\n') + '</pre>' : '') +
+          '<a href="#bsCustomizerAlert" data-dismiss="alert" class="close pull-right" aria-label="Close" role="button"><span aria-hidden="true">&times;</span></a>' +
+          '<p class="bs-customizer-alert-text"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span><span class="sr-only">Warning:</span>' + msg + '</p>' +
+          (err.message ? $('<p></p>').text('Error: ' + err.message)[0].outerHTML : '') +
+          (err.extract ? $('<pre class="bs-customizer-alert-extract"></pre>').text(err.extract.join('\n'))[0].outerHTML : '') +
         '</div>' +
       '</div>').appendTo('body').alert()
     throw err
@@ -32,13 +33,13 @@ window.onload = function () { // wait for load in a dumb way because B-0
 
   function showSuccess(msg) {
     $('<div class="bs-callout bs-callout-info">' +
-      '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + msg +
+      '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + msg +
     '</div>').insertAfter('.bs-customize-download')
   }
 
   function showCallout(msg, showUpTop) {
     var callout = $('<div class="bs-callout bs-callout-danger">' +
-       '<h4>Attention!</h4>' +
+      '<h4>Attention!</h4>' +
       '<p>' + msg + '</p>' +
     '</div>')
 
@@ -50,7 +51,7 @@ window.onload = function () { // wait for load in a dumb way because B-0
   }
 
   function showAlert(type, msg, insertAfter) {
-    $('<div class="alert alert-' + type + '">' + msg + '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button></div>')
+    $('<div class="alert alert-' + type + '">' + msg + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>')
       .insertAfter(insertAfter)
   }
 
@@ -258,12 +259,17 @@ window.onload = function () { // wait for load in a dumb way because B-0
       filename: baseFilename + '.css'
     })
 
-    parser.parse(lessSource, function (err, tree) {
-      if (err) {
-        return promise.reject(err)
+    parser.parse(lessSource, function (parseErr, tree) {
+      if (parseErr) {
+        return promise.reject(parseErr)
       }
-      intoResult[baseFilename + '.css']     = cw + tree.toCSS()
-      intoResult[baseFilename + '.min.css'] = cw + tree.toCSS({ compress: true })
+      try {
+        intoResult[baseFilename + '.css']     = cw + tree.toCSS()
+        intoResult[baseFilename + '.min.css'] = cw + tree.toCSS({ compress: true })
+      }
+      catch (compileErr) {
+        return promise.reject(compileErr)
+      }
       promise.resolve()
     })
 
@@ -306,7 +312,7 @@ window.onload = function () { // wait for load in a dumb way because B-0
       }
       promise.resolve(result)
     }).fail(function (err) {
-      showError('<strong>Ruh roh!</strong> Could not parse less files.', err)
+      showError('<strong>Ruh roh!</strong> Problem parsing or compiling Less files.', err)
       promise.reject()
     })
 

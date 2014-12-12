@@ -26,8 +26,7 @@
         "Illuminate\\Validation\\ValidationServiceProvider",
         "Illuminate\\View\\ViewServiceProvider",
         "Illuminate\\Workbench\\WorkbenchServiceProvider",
-        "Artdarek\\OAuth\\OAuthServiceProvider",
-        "Dinesh\\Barcode\\BarcodeServiceProvider"
+        "Artdarek\\OAuth\\OAuthServiceProvider"
     ],
     "eager": [
         "Illuminate\\Cookie\\CookieServiceProvider",
@@ -37,8 +36,7 @@
         "Illuminate\\Session\\SessionServiceProvider",
         "Illuminate\\View\\ViewServiceProvider",
         "Illuminate\\Workbench\\WorkbenchServiceProvider",
-        "Artdarek\\OAuth\\OAuthServiceProvider",
-        "Dinesh\\Barcode\\BarcodeServiceProvider"
+        "Artdarek\\OAuth\\OAuthServiceProvider"
     ],
     "deferred": {
         "artisan": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",
@@ -80,6 +78,7 @@
         "html": "Illuminate\\Html\\HtmlServiceProvider",
         "form": "Illuminate\\Html\\HtmlServiceProvider",
         "log": "Illuminate\\Log\\LogServiceProvider",
+        "Psr\\Log\\LoggerInterface": "Illuminate\\Log\\LogServiceProvider",
         "mailer": "Illuminate\\Mail\\MailServiceProvider",
         "swift.mailer": "Illuminate\\Mail\\MailServiceProvider",
         "swift.transport": "Illuminate\\Mail\\MailServiceProvider",
