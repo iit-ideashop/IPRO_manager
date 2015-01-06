@@ -1,7 +1,8 @@
 <?php
 use LaravelBook\Ardent\Ardent;
 class ApprovedPickup extends Ardent {
-    
+    protected $table = 'approvedPickups';
+
     public function Order(){
         return $this->belongsTo('Order','OrderID');
     }

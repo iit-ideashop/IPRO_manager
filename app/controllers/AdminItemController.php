@@ -171,12 +171,13 @@ class AdminItemController extends BaseController{
         foreach($itemsCollection as $item){
             //Check that the item has a barcode
             if($item->barcode == NULL){
-                //Make le barcode
+                //Make le barcode, and if we make le barcode we should also change the item status to
                 $barcode = new Barcode;
                 $barcode->type = "ITEM";
                 $barcode->reference = $item->id;
                 $barcode->save();
                 $item->barcode = $barcode->id;
+                $item->Status = 4;
                 $item->save();
             }
         }

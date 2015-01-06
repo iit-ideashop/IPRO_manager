@@ -3,7 +3,7 @@
 class Budget extends Eloquent {
     
     public function Account(){
-        return $this->belongsTo('Account','id','AccountID');
+        return $this->belongsTo('Account','AccountID','id');
     }
     
 }

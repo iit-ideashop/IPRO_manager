@@ -1,7 +1,11 @@
 <?php echo $__env->make('layouts.dataTables', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 <?php $__env->startSection('content'); ?>
 
-<h1 class="page-header">Orders</h1>
+<h1 class="page-header">Orders
+<a href="<?php echo URL::route('admin.order.pickup'); ?>" class="btn btn-default">Pickup</a>
+
+
+</h1>
 <div class="panel-group" id="filter">
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -59,7 +63,6 @@
                 <td><?php echo $order->Description; ?></td>
                 <td><?php echo $order->getStatus(); ?></td>
                 <td><a class="btn btn-default" href="<?php echo URL::to('/admin/orders/'.$order->id); ?>">Manage</a>
-                    <a class="btn btn-default" href="">Pickup COMING SOON</a>
                     </td>
             </tr>
         <?php endforeach; ?>

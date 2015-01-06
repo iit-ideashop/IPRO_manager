@@ -259,7 +259,7 @@
     <li><a href="/admin/items/<?php echo $item->id; ?>/markReturning">Mark Returning</a></li>
     <?php endif; ?>
     <li><a href="#<?php echo $item->id; ?>DeleteModal" data-toggle="modal">Delete item</a></li>
-    <li><a href="" onClick="printLabel(<?php echo $item->id; ?>)">Print Labels</a></li>
+    <li><a href="#" onClick="printLabel(<?php echo $item->id; ?>)">Print Labels</a></li>
   </ul>
 </div>
                     

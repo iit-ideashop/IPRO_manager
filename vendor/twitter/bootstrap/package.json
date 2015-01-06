@@ -54,11 +54,11 @@
     "grunt-html-validation": "~0.1.18",
     "grunt-jekyll": "~0.4.2",
     "grunt-jscs": "~1.0.0",
-    "grunt-saucelabs": "~8.3.3",
+    "grunt-saucelabs": "~8.4.0",
     "grunt-sed": "~0.1.1",
     "load-grunt-tasks": "~1.0.0",
-    "npm-shrinkwrap": "5.0.0",
-    "remarkable": "~1.4.2",
+    "npm-shrinkwrap": "^200.0.0",
+    "remarkable": "~1.5.0",
     "time-grunt": "~1.0.0"
   },
   "engines": {

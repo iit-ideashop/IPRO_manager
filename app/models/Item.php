@@ -71,6 +71,10 @@ class Item extends Ardent {
      //Before we save we have to make sure the modified by is updated
         $this->ModifiedBy = Auth::id();
     }
+
+    public function afterSave(){
+        Order::updateStatus($this->OrderID);
+    }
     
     public function deleteItem(){
         $itemNotes = OrderNote::where('ItemID','=',$item->id)->get();

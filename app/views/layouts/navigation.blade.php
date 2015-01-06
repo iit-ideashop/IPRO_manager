@@ -15,10 +15,9 @@
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
               <li><a>Welcome {{ $user->FirstName }}</a></li>
-            <li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Help</a></li>
-            <li><a href="/logout">Logout</a></li>
+            <li><a href="{{ URL::route('dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ URL::route('help') }}">Help</a></li>
+            <li><a href="{{ URL::route('logout') }}">Logout</a></li>
           </ul>
         </div>
                 @else

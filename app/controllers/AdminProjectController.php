@@ -94,6 +94,26 @@ class AdminProjectController extends BaseController{
     }
     
     
+    public function overview($iproid){
+        //Pull the project from the DB
+        $project = Project::find($iproid);
+        View::share('project',$project);
+        //From the project we need to pull some data.
+        //Budgets
+        $budgets = $project->Budgets()->get();
+        View::share('budgets',$budgets);
+        //Budget requests
+        $budgetReq = $project->BudgetRequests()->get();
+        View::share('budgetRequests',$budgetReq);
+        //Account
+        $acct = $project->Account()->get();
+        View::share('account',$acct);
+        //Students 
+        $students = $project->Users()->get();
+        View::share('students',$students);
+        return View::make('admin.projects.overview');
+    }
+    
     
 }
 

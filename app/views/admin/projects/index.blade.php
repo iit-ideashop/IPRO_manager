@@ -44,12 +44,12 @@ $(document).ready( function () {
         <tbody>
             @foreach($projects as $project)
             <tr>
-                <td>{{ $project->UID }}</td>
+                <td><a href="{{ URL::to('/admin/projects/overview/'.$project->id) }}">{{ $project->UID }}</a></td>
                 <td>{{ $project->Name }}</td>
                 <td>
                     <a class="btn btn-default" href="{{ URL::to('/admin/projects/edit/'.$project->id) }}">Edit</a>
                     <a class="btn btn-default" href="{{ URL::to('/admin/projects/delete/'.$project->id) }}">Delete</a>
-                    <a class="btn btn-default" href="{{ URL::to('/admin/projects/enroll_users/'.$project->id) }}">Enroll user</a>
+                    <a class="btn btn-default" href="{{ URL::to('/admin/projects/enroll_users/'.$project->id) }}">Enroll Users</a>
                     <a class="btn btn-default" href="{{ URL::to('/admin/projects/overview/'.$project->id) }}">Overview</a>
                 </td>
             </tr>

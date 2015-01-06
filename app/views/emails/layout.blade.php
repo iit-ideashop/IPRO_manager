@@ -591,8 +591,9 @@
                     <tbody><tr>
                         
                         <td valign="top" class="mcnTextContent" style="padding-top:9px; padding-left:18px; padding-bottom:9px; padding-right:0;">
-                        
+                            @section('TopSentence')
                             Update to your IPRO order
+                            @show
                         </td>
                     </tr>
                 </tbody></table>

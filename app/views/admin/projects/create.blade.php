@@ -4,7 +4,7 @@
         <script src="{{ URL::asset('packages/bootstrap/js/jquery.numeric.js') }}"></script>
 @stop
 @section('content')
-<p><a href="{{ URL::to('/admin/projects/') }}">&LT;--Back</a></p>
+<p><a href="{{ URL::to('/admin/projects/') }}"><span class="glyphicon glyphicon-arrow-left"></span> Back</a></p>
 <h1 class="page-header">New Project</h1>
 <ul>
    @forelse($errors as $error)

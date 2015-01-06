@@ -15,14 +15,15 @@ Route::group(array(),function(){
     Route::get('/', 'HomeController@showHome');
     Route::get('/authenticate', 'AuthController@authenticate');
     Route::get('/notAuthorized','AuthController@notAuthorized');
+    Route::get('/kiosk', array('as'=> 'kiosk.showKiosk', 'uses'=>'KioskController@showKiosk'));
+    Route::post('/kiosk',array('as'=>'kiosk.pickupPackage', 'before'=>'csrf','uses'=>'KioskController@showPackagePickup'));
 });
-
-
 
 //***** Authorized User Routes ******//
 Route::group(array('before'=>'iit_user'),function(){
-    Route::get('/dashboard', 'HomeController@showDashboard');
-    Route::get('/logout','HomeController@logout');
+    Route::get('/dashboard', array('as' => 'dashboard', 'uses' =>'HomeController@showDashboard'));
+    Route::get('/logout',array('as' => 'logout', 'uses' =>'HomeController@logout'));
+    Route::get('/help',array('as' => 'help', 'uses' =>'HomeController@showHelp'));
     //Project Route group
     Route::group(array('prefix' => 'project'), function(){
         Route::get('{id}', 'ProjectController@Index');
@@ -32,14 +33,6 @@ Route::group(array('before'=>'iit_user'),function(){
     
     Route::group(array('prefix'=>'api'), function(){
         Route::get('/userByCwid/{projectid}/{cwid}','AjaxApiController@userByCwid')->where(array('projectid' => '[0-9]+'));
-        
-    });
-    Route::group(array('prefix'=>'email_test'), function(){
-        Route::get('order','EmailTestController@orderCreate');
-        Route::get('pickup','EmailTestController@orderPickup');
-        Route::get('ordered','EmailTestController@orderOrder');
-        Route::get('complete','EmailTestController@orderComplete');
-        Route::get('cancel','EmailTestController@orderCancel');
     });
     
 });
@@ -51,15 +44,6 @@ Route::group(array('before'=>'iit_user'),function(){
         /*
         * IPRO Day registration
         */
-        Route::get('thankyouemailtest',function(){
-            $iproday = IPRODay::find(1);
-            $registrant = Registrant::find(2);
-            $registration = Registration::find(2);
-            View::share('iproday',$iproday);
-            View::share('registration',$registration);
-            View::share('registrant',$registrant);
-            return View::make('emails.iproday.registration.thankyou');
-        });
         Route::group(array('prefix'=>'registration'),function(){
            Route::get('/','IPRODayRegistrationController@index');
            Route::get('/{id}', 'IPRODayRegistrationController@showRegistration')->where(array('id' => '[0-9]+'));
@@ -70,12 +54,18 @@ Route::group(array('before'=>'iit_user'),function(){
 
 //**** Admin Routes *****//
 Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
-    Route::get('dashboard','AdminController@dashboard');
+    
     Route::group(array('prefix'=>'orders'), function(){
         //admin/orders group
         Route::get('/', 'AdminOrderController@index');
-        Route::get('/{id}','AdminOrderController@manage');
+        Route::get('/{id}','AdminOrderController@manage')->where(array('id' => '[0-9]+'));
         Route::post('/{id}/CreateNote',array('before'=>'csrf','as'=>'admin.order.createNote','uses'=>'AdminOrderController@createNote'));
+        Route::group(array('prefix'=>'pickup'), function(){
+            //admin/orders/pickup route group
+            Route::get('/', array('as'=>'admin.order.pickup','uses'=>'AdminPickupController@index'));
+            Route::post('/search', array('as'=>'admin.order.pickup.search', 'uses'=>'AdminPickupController@search'));
+            Route::get('/viewItems',array('as'=>'admin.order.pickup.viewItems', 'uses'=>'AdminPickupController@viewItems'));
+        });
     });
     
     Route::group(array('prefix'=>'items'),function(){
@@ -96,15 +86,17 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
         Route::post('/new','AdminProjectController@createProcess');
         Route::get('/edit/{id}','AdminProjectController@edit');
         Route::post('/edit/{id}',array('before'=>'csrf','uses'=>'AdminProjectController@editProcess'));
+        Route::get('/overview/{id}','AdminProjectController@overview');
+        
     });
     Route::group(array('prefix'=>'semesters'), function(){
         Route::get('/','AdminSemesterController@index');
-        Route::get('new','AdminSemesterController@create');
-        Route::post('new', array('before'=>'csrf','uses'=>'AdminSemesterController@createProcess'));
+        Route::get('/new','AdminSemesterController@create');
+        Route::post('/new', array('before'=>'csrf','uses'=>'AdminSemesterController@createProcess'));
         Route::get('/edit/{id}',array('as'=>'admin.semesters.edit','uses'=>'AdminSemesterController@edit'));
         Route::post('/edit/{id}',array('as'=>'admin.semesters.edit','before'=>'csrf','uses'=>'AdminSemesterController@editProcess'));
         Route::get('/delete/{id}','AdminSemesterController@delete');
-        Route::get('makeActive/{id}', 'AdminSemesterController@makeActive');
+        Route::get('/makeActive/{id}', 'AdminSemesterController@makeActive');
     });
         
     Route::group(array('prefix'=>'iproday'), function(){
@@ -119,9 +111,17 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
 
         Route::group(array('prefix'=>'budgets'), function(){
             Route::get('/',array('as' => 'admin_budgets','uses' => 'AdminBudgetController@index'));
+            Route::get('{id}/view','AdminBudgetController@viewBudget')->where(array('id' => '[0-9]+'));
             //Inside of budgets we have two different "Routes", Requests and actual approved budgets
             Route::group(array('prefix'=>'requests'), function(){
-                Route::get('{id}','AdminBudgetController@viewRequest')->where(array('id' => '[0-9]+'));
+                Route::get('{id}/view',array('as'=>'admin.budget.viewRequest','uses'=>'AdminBudgetController@viewRequest'))->where(array('id' => '[0-9]+'));
+                Route::post('approve',array('as'=>'admin.budget.approve','before'=>'csrf','uses'=>'AdminBudgetController@approve'));
+                Route::post('deny',array('as'=>'admin.budget.deny','before'=>'csrf','uses'=>'AdminBudgetController@deny'));
             });
+        });
+        
+        Route::group(array('prefix'=>'accounts'), function(){
+            Route::get('/editor/{id}','AdminAccountController@showGLEditor')->where(array('id'=> '[0-9]+'));
+            Route::post('/editor/{id}','AdminAccountController@newGLEntry')->where(array('id'=>'[0-9]+'));
         });
 });

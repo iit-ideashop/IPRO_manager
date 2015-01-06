@@ -257,7 +257,7 @@
     <li><a href="/admin/items/{{$item->id}}/markReturning">Mark Returning</a></li>
     @endif
     <li><a href="#{{$item->id}}DeleteModal" data-toggle="modal">Delete item</a></li>
-    <li><a href="" onClick="printLabel({{$item->id}})">Print Labels</a></li>
+    <li><a href="#" onClick="printLabel({{$item->id}})">Print Labels</a></li>
   </ul>
 </div>
                     

@@ -1,6 +1,6 @@
 <?php
-
-class BudgetRequest extends Eloquent {
+use LaravelBook\Ardent\Ardent;
+class BudgetRequest extends Ardent {
     protected $table = "budgetRequests";
     
     public function Account(){
@@ -18,5 +18,11 @@ class BudgetRequest extends Eloquent {
     public function scopeDenied($query){
         return $query->where('status','=',3);        
     }
-    
+    public function Requester(){
+        return $this->belongsTo('User','Requester','id');
+    }
+    public function beforeSave(){
+     //Before we save we have to make sure the modified by is updated
+        $this->ModifiedBy = Auth::id();
+    }
 }

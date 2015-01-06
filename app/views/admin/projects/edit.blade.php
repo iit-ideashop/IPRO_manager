@@ -1,6 +1,6 @@
 @extends('layouts.master');
 @section('content')
-<p><a href="{{ URL::to('/admin/projects/') }}">&LT;--Back</a></p>
+<p><a href="{{ URL::to('/admin/projects/') }}"><span class="glyphicon glyphicon-arrow-left"></span> Back</a></p>
 <h1 class="page-header">Edit Project</h1>
 
 {{ Form::model($editProject,array('class'=>'form-horizontal')) }} 

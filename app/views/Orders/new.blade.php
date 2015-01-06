@@ -173,7 +173,7 @@
        $('#totalCost'+itemid).attr('disabled',true);
        recalculateAllTC();
     }
-    var totalBalance = {{ number_format($account->Balance,2) }};
+    var totalBalance = {{ $account->Balance }};
     function recalculateAllTC(){
         var grandtotal = 0;
        $(".cost").each(function(){

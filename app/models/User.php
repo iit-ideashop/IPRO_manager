@@ -31,8 +31,13 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         public function getFullName(){
             return $this->FirstName.' '.$this->LastName;
         }
+        public function BudgetRequests(){
+            return $this->hasMany('BudgetRequest','Requester');
+            
+        }
         static public function getFullNameWithId($id){
-            $user = User::find($id)->get();
+            $user = User::where('id','=',$id)->get();
             return $user[0]->FirstName.' '.$user[0]->LastName;
+            
         }
 }

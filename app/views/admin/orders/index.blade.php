@@ -2,7 +2,11 @@
 @include('layouts.dataTables')
 @section('content')
 
-<h1 class="page-header">Orders</h1>
+<h1 class="page-header">Orders
+<a href="{{ URL::route('admin.order.pickup') }}" class="btn btn-default">Pickup</a>
+
+
+</h1>
 <div class="panel-group" id="filter">
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -60,7 +64,6 @@
                 <td>{{ $order->Description }}</td>
                 <td>{{ $order->getStatus() }}</td>
                 <td><a class="btn btn-default" href="{{ URL::to('/admin/orders/'.$order->id)}}">Manage</a>
-                    <a class="btn btn-default" href="">Pickup COMING SOON</a>
                     </td>
             </tr>
         @endforeach

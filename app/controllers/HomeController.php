@@ -35,5 +35,9 @@ class HomeController extends BaseController {
             Auth::logout();
             return Redirect::to('/')->with('success',array('Successfully logged out'));
         }
-
+        
+        public function showHelp(){
+            
+            return View::make('help');
+        }
 }
