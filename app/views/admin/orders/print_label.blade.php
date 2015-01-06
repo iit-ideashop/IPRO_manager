@@ -30,7 +30,7 @@
             }
         </style>
         <script src="{{ URL::asset('packages/bootstrap/js/jquery-1.11.1.js')}}"></script>
-        <script src="{{ URL::asset('packages/bootstrap/js/jsBarcode.all.min.js')}}"></script>
+        <script src="{{ URL::asset('packages/bootstrap/js/JsBarcode.all.min.js')}}"></script>
     </head>
     <body onload="window.print()">
         <?php $first = true;?>
