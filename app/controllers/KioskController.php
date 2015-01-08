@@ -10,10 +10,27 @@ class KioskController extends BaseController{
     //This function will show the package pickup page. We will take the 4 digit code and lookup the pickup in the db
     //Next we will take the pickup and show the details of the pickup and ask for a signature from the user.
     function showPackagePickup(){
-        $pincode = Input::get("PINcode");
-        return Redirect::route('kiosk.showKiosk')->with('error',array('The specified pickup code does not exist'));
+        //Pincode should be a number between 1000-9999
+        $pincode = intval(Input::get("PINcode"));
 
+        //Use the pincode to find the appropriate pickup request
+        $pickup = Pickup::where("RetreiveCode","=",$pincode)->get();
+        $pickup = $pickup[0];
+        if($pickup == null) {
+            return Redirect::route('kiosk.showKiosk')->with('error', array('The specified pickup code does not exist'));
+        }
+        //Next we proceed to pull the items from the pickup
+        //Lets take the pickup and find the pickup's items.
+        $pickupItems = $pickup->PickupItems()->lists("ItemID");
+        //Grab the items for each pickupItem
+        $items = Item::WhereIn("id",$pickupItems)->get();
+        $student = User::find($pickup->PersonID);
+        View::share("pickup",$pickup);
+        View::share("items",$items);
+        View::share("student",$student);
+        $studentFullName = $student->FirstName." ".$student->LastName;
         $png = imagecreatetruecolor(550, 200);
+
         imagesavealpha($png, true);
 
         $trans_colour = imagecolorallocatealpha($png, 0, 0, 0, 127);
@@ -26,7 +43,7 @@ class KioskController extends BaseController{
         imageline($png, 545, 5, 545, 195, $black);
         imageline($png, 20, 175, 530, 175, $black);
         imagestring($png, 5, 20, 158, "x", $black);
-        imagestring($png, 5, 20, 177, "Bartlomiej Dworak", $black);
+        imagestring($png, 5, 20, 177, $studentFullName, $black);
 
         ob_start ();
 
@@ -40,6 +57,9 @@ class KioskController extends BaseController{
         return View::make('kiosk.pickupPackage');
     }
 
+    function completePackagePickup(){
+        //Take the data posted from the pickup page and update the database.
+    }
 
 }
 

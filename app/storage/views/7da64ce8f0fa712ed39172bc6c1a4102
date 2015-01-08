@@ -241,7 +241,11 @@
                 <?php else: ?>
                 <td>No</td>
                 <?php endif; ?>
-                <td><?php echo $item->getStatus(); ?></td>
+                <td><?php echo $item->getStatus(); ?>
+
+                <?php if($item->barcode != null): ?>
+                    <h6><span class="glyphicon glyphicon-barcode"></span>Barcode ok<h6>
+                <?php endif; ?></td>
                 <td><?php echo date('D F jS Y, g:i a',strtotime($item->updated_at)); ?></td>
                 <td>
                                     <div class="btn-group">

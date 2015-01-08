@@ -177,9 +177,9 @@ class AdminItemController extends BaseController{
                 $barcode->reference = $item->id;
                 $barcode->save();
                 $item->barcode = $barcode->id;
-                $item->Status = 4;
-                $item->save();
             }
+            $item->Status = 4;
+            $item->save();
         }
         View::share('items',$itemsCollection);
         return View::make('admin.orders.print_label');

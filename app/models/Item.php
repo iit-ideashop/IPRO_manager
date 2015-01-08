@@ -17,7 +17,11 @@ class Item extends Ardent {
     public function getStatus(){
      return DB::table('itemStatus')->where('id',$this->Status)->pluck('status');   
     }
-    
+
+    public function PickupItem(){
+        return $this->belongsTo("PickupItem","ItemID");
+    }
+
     public function changeStatus($newStatusID){
         $this->Status = $newStatusID;
         //Here we will add functionality to process status changes

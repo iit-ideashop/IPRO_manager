@@ -17,6 +17,7 @@ Route::group(array(),function(){
     Route::get('/notAuthorized','AuthController@notAuthorized');
     Route::get('/kiosk', array('as'=> 'kiosk.showKiosk', 'uses'=>'KioskController@showKiosk'));
     Route::post('/kiosk',array('as'=>'kiosk.pickupPackage', 'before'=>'csrf','uses'=>'KioskController@showPackagePickup'));
+    Route::post('/completePacakgePickup',array('as'=>'kiosk.completePackagePickup', 'before'=>'csrf','uses'=>'KioskController@completePackagePickup'));
 });
 
 //***** Authorized User Routes ******//
@@ -65,6 +66,8 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
             Route::get('/', array('as'=>'admin.order.pickup','uses'=>'AdminPickupController@index'));
             Route::post('/search', array('as'=>'admin.order.pickup.search', 'uses'=>'AdminPickupController@search'));
             Route::get('/viewItems',array('as'=>'admin.order.pickup.viewItems', 'uses'=>'AdminPickupController@viewItems'));
+            Route::post('/createPickup', array('as'=>'admin.order.pickup.createPickup','uses'=>'AdminPickupController@createPickup'));
+            Route::get('/show/{id}', array('as'=>'admin.order.pickup.showCode','uses'=>'AdminPickupController@viewPickup'))->where(array('id' => '[0-9]+'));
         });
     });
     

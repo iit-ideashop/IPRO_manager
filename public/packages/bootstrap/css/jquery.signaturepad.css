@@ -135,7 +135,8 @@
 
 .sigWrapper {
   clear: both;
-  height: 55px;
+  height: 200px;
+  width: 550px;
 
   /* border: 1px solid #ccc; */
 }

@@ -239,7 +239,10 @@
                 @else
                 <td>No</td>
                 @endif
-                <td>{{ $item->getStatus() }}</td>
+                <td>{{ $item->getStatus() }}
+                @if($item->barcode != null)
+                    <h6><span class="glyphicon glyphicon-barcode"></span>Barcode ok<h6>
+                @endif</td>
                 <td>{{ date('D F jS Y, g:i a',strtotime($item->updated_at))}}</td>
                 <td>
                                     <div class="btn-group">

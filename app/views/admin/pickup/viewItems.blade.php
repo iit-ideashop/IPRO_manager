@@ -16,18 +16,28 @@
     </div>
 </div>
 
-    <table class="table table-striped">
+    <table class="table table-striped"  id="itemListing">
         <tr>
             <th>Barcode</th>
             <th>Item Name</th>
         </tr>
         @foreach($items as $item)
         <tr>
-            <td><input type="checkbox" id="item-{{$item->barcode}}"> {{$item->barcode}}</td>
+            <td><input type="checkbox" value="{{$item->id}}" id="item-{{$item->barcode}}"> {{$item->barcode}}</td>
             <td>{{$item->Name}}</td>
         </tr>
         @endforeach
     </table>
+<div class="alert alert-info" role="alert"><b>Missing items?</b> Make sure all items have a valid barcode printed/generated.</div>
+    <div class="row">
+        <div class="col-xs-11">
+            <button class="btn btn-primary btn-lg pull-right" id="submitIDs">Proceed <span class="glyphicon glyphicon-arrow-right"></span></button>
+        </div>
+    </div>
+    <form action="{{ URL::route('admin.order.pickup.createPickup') }}" method="post" id="hiddenIDform">
+        <input type="hidden" name="pickupuserid" value="{{$student->id}}">
+        <input type="hidden" name="ItemIDs" id="HiddenIDs">
+    </form>
 @stop
 @section('javascript_bottom')
 <script>
@@ -38,6 +48,9 @@ $( document ).ready(function() {
     });
     $("#barcode").bind('keypress',function(e){
         checkBarcodeEnter(e);
+    });
+    $("#submitIDs").on('click',function(){
+        submitIDs();
     });
     $("#barcode").focus();
 });
@@ -60,5 +73,16 @@ $( document ).ready(function() {
         $("#barcode").val("");
         $("#barcode").focus();
     }
+
+    function submitIDs(){
+        //Read the barcodes
+        var itemIDs = [];
+        $('#itemListing input:checked').each(function() {
+            itemIDs.push($(this).attr('value'));
+        });
+        $('#HiddenIDs').attr('value',JSON.stringify(itemIDs));
+        $("#hiddenIDform").submit();
+    }
+
 </script>
 @stop
