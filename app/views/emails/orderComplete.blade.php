@@ -6,16 +6,7 @@
     <p>Thanks for picking up your items! </p>
     <p>Below are the items you picked up from us.</p>
 
-<table class="tableBlue" width="100%" cellpadding="3px" cellspacing="3px">
-<tr>
-<td>
-<p>Order Name: {{ $order->Description }}</p>
-<p>Order Total: ${{ number_format($order->OrderTotal,2)}}</p>
-<p>Order Placed: {{ date('D F jS Y, g:i a',strtotime($order->created_at)) }}</p>
-</td>
-</tr>
-</table>
-<br>
+
 <table class="tableGray" width="100%" cellpadding="3px" cellspacing="3px">
  <tr>
   <td><b>Item Name</b></td>

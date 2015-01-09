@@ -18,7 +18,7 @@
                   <td>Order: <?php echo $order->id; ?></td>
                   <td><?php echo $order->Description; ?></td>
                   <td>Status: <?php echo $order->getStatus(); ?></td>
-                  <td><a href="">View</a></td>
+                  <td><a href="<?php echo URL::route("project.order.view",array($order->ClassID, $order->id)); ?>">View</a></td>
                   </tr>
                     <?php endforeach; ?>
                 </tbody>

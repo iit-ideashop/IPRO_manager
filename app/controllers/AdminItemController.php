@@ -111,9 +111,7 @@ class AdminItemController extends BaseController{
                 });
                 break;
             case 5://picked up
-                Mail::send('emails.orderComplete', array('person'=>$user,'order'=>$order,'items'=>$itemCollection), function($message) use($user){
-                    $message->to($user->Email,$user->FirstName.' '.$user->LastName)->subject('Thanks for picking up your order  ');
-                });
+                //Pickup script sends an email, see AdminPickupController
                 break;
             case 6://cancelled
                 

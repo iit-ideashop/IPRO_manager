@@ -18,7 +18,7 @@
                   <td>Order: {{ $order->id }}</td>
                   <td>{{ $order->Description }}</td>
                   <td>Status: {{ $order->getStatus() }}</td>
-                  <td><a href="">View</a></td>
+                  <td><a href="{{URL::route("project.order.view",array($order->ClassID, $order->id))}}">View</a></td>
                   </tr>
                     @endforeach
                 </tbody>

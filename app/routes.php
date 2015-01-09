@@ -30,6 +30,7 @@ Route::group(array('before'=>'iit_user'),function(){
         Route::get('{id}', 'ProjectController@Index');
         Route::get('{id}/orders/new', 'OrderController@newOrder'); 
         Route::post('{id}/orders/new','OrderController@newOrderProcess');
+        Route::get('{projectid}/orders/{orderid}',array("as"=>"project.order.view","uses"=>"OrderController@viewOrder"))->where(array('projectid' => '[0-9]+'))->where(array('orderid' => '[0-9]+'));
     });
     
     Route::group(array('prefix'=>'api'), function(){
@@ -68,6 +69,10 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
             Route::get('/viewItems',array('as'=>'admin.order.pickup.viewItems', 'uses'=>'AdminPickupController@viewItems'));
             Route::post('/createPickup', array('as'=>'admin.order.pickup.createPickup','uses'=>'AdminPickupController@createPickup'));
             Route::get('/show/{id}', array('as'=>'admin.order.pickup.showCode','uses'=>'AdminPickupController@viewPickup'))->where(array('id' => '[0-9]+'));
+            Route::post("/override/{id}", array("as"=>"admin.order.pickup.override","uses"=>"AdminPickupController@overridePickup"))->where(array('id' => '[0-9]+'));
+            Route::post("/process/{id}", array("as"=>"admin.order.pickup.process","uses"=>"AdminPickupController@processPickup"))->where(array('id' => '[0-9]+'));
+            Route::post("/confirm/{id}", array("as"=>"admin.order.pickup.confirm","uses"=>"AdminPickupController@confirmPickup"))->where(array('id' => '[0-9]+'));
+            Route::post("/redo/{id}", array("as"=>"admin.order.pickup.redo","uses"=>"AdminPickupController@redoPickup"))->where(array('id' => '[0-9]+'));
         });
     });
     

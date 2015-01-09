@@ -30,8 +30,9 @@
         <li>Any items marked as "Returning" must be returned to the Ideashop at the end of the semester</li>
     </ul>
 <div class="row"><div class="col-xs-11">
-        {{ Form::route('kiosk.completePackagePickup',array("name"=>"completePickup","method"=>"post","id"=>"completePickup","class"=>"sigPad")) }}
+        {{ Form::open(array("route"=>'kiosk.completePackagePickup',"name"=>"completePickup","method"=>"post","id"=>"completePickup","class"=>"sigPad")) }}
         <input type="hidden" name="pickupid" value="{{$pickup->id}}">
+        <input type="hidden" name="AuthorizeCode" value="{{$pickup->AuthorizeCode}}">
         <div class="sig sigWrapper">
             <canvas class="pad" id="sigpad" width="550" height="200"></canvas>
             <input type="hidden" name="signatureData" id="sigpadoutput" class="output">
@@ -55,6 +56,7 @@
         function completePickup(){
             //Take the sig, make it into data and submit the form
             $("#sigpadoutput").attr("value",$(".sigPad").signaturePad().getSignatureImage());
+            $("#completePickup").submit();
         }
         var options = {
             drawOnly : true,

@@ -41,7 +41,22 @@
       The following people are approved to pickup items from this order
       <ul>
           <li>{{ Auth::user()->FirstName }} {{ Auth::user()->LastName }}</li>
-          <a class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Approve more team members for pickup</a>
+          <li>
+              <select name="firstApproved">
+                  <option value="0">Select a team member</option>
+                  @foreach($enrolledStudents as $enrolledStudent)
+                    <option value="{{$enrolledStudent->id}}">{{$enrolledStudent->FirstName}} {{$enrolledStudent->LastName}}</option>
+                  @endforeach
+              </select>
+          </li>
+          <li>
+              <select name="secondApproved">
+                  <option value="0">Select a team member</option>
+                  @foreach($enrolledStudents as $enrolledStudent)
+                      <option value="{{$enrolledStudent->id}}">{{$enrolledStudent->FirstName}} {{$enrolledStudent->LastName}}</option>
+                  @endforeach
+              </select>
+          </li>
       </ul>
       </div>
     </div>

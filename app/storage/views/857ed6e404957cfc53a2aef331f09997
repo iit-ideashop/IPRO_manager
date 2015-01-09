@@ -41,7 +41,22 @@
       The following people are approved to pickup items from this order
       <ul>
           <li><?php echo Auth::user()->FirstName; ?> <?php echo Auth::user()->LastName; ?></li>
-          <a class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Approve more team members for pickup</a>
+          <li>
+              <select name="firstApproved">
+                  <option value="0">Select a team member</option>
+                  <?php foreach($enrolledStudents as $enrolledStudent): ?>
+                    <option value="<?php echo $enrolledStudent->id; ?>"><?php echo $enrolledStudent->FirstName; ?> <?php echo $enrolledStudent->LastName; ?></option>
+                  <?php endforeach; ?>
+              </select>
+          </li>
+          <li>
+              <select name="secondApproved">
+                  <option value="0">Select a team member</option>
+                  <?php foreach($enrolledStudents as $enrolledStudent): ?>
+                      <option value="<?php echo $enrolledStudent->id; ?>"><?php echo $enrolledStudent->FirstName; ?> <?php echo $enrolledStudent->LastName; ?></option>
+                  <?php endforeach; ?>
+              </select>
+          </li>
       </ul>
       </div>
     </div>

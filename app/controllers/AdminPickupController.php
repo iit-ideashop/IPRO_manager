@@ -99,6 +99,18 @@ class AdminPickupController extends BaseController{
             }
         }
         $pickup->RetreiveCode = $code;
+        $code_valid = false;
+        $code = "";
+        $digits = 4;
+        while (!$code_valid) {
+            $code = rand(pow(10, $digits - 1), pow(10, $digits) - 1);
+            //Make sure our pickup request has a unique retreive code
+            $checkCode = Pickup::where("AuthorizeCode","=",$code)->get();
+            if($checkCode->isEmpty()){
+                $code_valid = true;
+            }
+        }
+        $pickup->AuthorizeCode = $code;
         $pickup->Completed = false;
         $pickup->save();
         //Pickup now has an ID, lets generate some pickup items.
@@ -130,5 +142,98 @@ class AdminPickupController extends BaseController{
         View::share("pickup",$pickup);
         return View::make('admin.pickup.showCode');
     }
+    //Show an admin approval page. This is the method used when the user signs the pickup. Only show if we have sig data.
+    public function confirmPickup($id){
+        $pickup = Pickup::find(intval($id));
+        if($pickup == null){
+            return Redirect::route("admin.order.pickup")->with("error",array("Cannot confirm pickup. Pickup does not exist"));
+        }
+        //Pickup is valid. Let's make sure we have sig data
+        if($pickup->SignatureData == null){
+            return Redirect::route("admin.order.pickup.showCode",$pickup->id)->with("error",array("User has not yet signed agreement"));
+        }
+        //If this is confirmed then we have a sig and we can show the confirm pickup page. Lets grab all the data we need
+        $student = $pickup->User()->first();
+        $pickupitems = $pickup->PickupItems()->lists("ItemID");
+        $items = Item::WhereIn("id",$pickupitems)->get();
+        View::share("pickup",$pickup);
+        View::share("student",$student);
+        View::share("items",$items);
+        return View::make("admin.pickup.confirmPickup");
+    }
+    //Overriding a pickup. needs override data submitted. shows the same view as confirmPickup
+    public function overridePickup($id){
+        $pickup = Pickup::find(intval($id));
+        if($pickup == null){
+            return Redirect::route("admin.order.pickup")->with("error",array("Pickup does not exist"));
+        }
+        $overrideReason = Input::get("overrideText");
+        if(trim($overrideReason) == ''){
+            return Redirect::route("admin.order.pickup.showCode",$pickup->id)->with("error",array("You need to provide an override reason if you want to override user approval"));
+        }
+        $pickup->OverrideReason = $overrideReason;
+        $pickup->save();
+        $student = $pickup->User()->first();
+        $pickupitems = $pickup->PickupItems()->lists("ItemID");
+        $items = Item::WhereIn("id",$pickupitems)->get();
+        View::share("pickup",$pickup);
+        View::share("student",$student);
+        View::share("items",$items);
+        return View::make("admin.pickup.confirmPickup");
+    }
+
+    //Takes the pickup and processes all items in the database, also sends out an email that items have been picked up.
+    public function processPickup($id){
+        //Pickup is confirmed. Lets make sure we have either sig data or a override reason before we continue
+        $pickup = Pickup::find(intval($id));
+        if($pickup == null){
+            return Redirect::route("admin.order.pickup")->with("error",array("Pickup does not exist"));
+        }
+        $onepieceofdata = false;
+        if($pickup->SignatureData != null){
+            $onepieceofdata = true;
+        }
+        if($pickup->OverrideReason != null){
+            $onepieceofdata = true;
+        }
+        if(!$onepieceofdata){
+            return Redirect::route("admin.order.pickup.showCode",$pickup->id)->with("error",array("You either need to provide a signature or an override reason to complete a pickup"));
+        }
+        //To process a pickup we need to take the pickup and mark it as completed
+        $pickup->Completed = true;
+        //Next remove the codes
+        $pickup->RetreiveCode = null;
+        $pickup->AuthorizeCode = null;
+        //save pickup
+        $pickup->save();
+        //Get pickup items
+        $pickupitems = $pickup->PickupItems()->lists("ItemID");
+        //Get the real items.
+        $student = $pickup->User()->first();
+        $items = Item::WhereIn("id",$pickupitems)->get();
+        //Foreach item mark as picked up.
+        foreach($items as $item){
+            $item->changeStatus(5);
+            $item->save();
+        }
+        //Each item has been marked as picked up. Let's send an email
+        Mail::send('emails.orderComplete', array('person'=>$student,'items'=>$items), function($message) use($student){
+            $message->to($student->Email,$student->FirstName.' '.$student->LastName)->subject('Thanks for picking up your order  ');
+        });
+        //Once the email is sent we can redirect to a different page
+        return Redirect::route("admin.order.pickup")->with("success",array("Order successfully picked up"));
+    }
+
+    public function redoPickup($id){
+        $pickup = Pickup::find(intval($id));
+        if($pickup == null){
+            return Redirect::route("admin.order.pickup")->with("error",array("Pickup does not exist"));
+        }
+        $pickup->SignatureData = null;
+        $pickup->OverrideData = null;
+        $pickup->save();
+        return Redirect::route("admin.order.pickup.showCode",$pickup->id);
+    }
+
 }
 

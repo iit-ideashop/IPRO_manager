@@ -12,9 +12,11 @@ class KioskController extends BaseController{
     function showPackagePickup(){
         //Pincode should be a number between 1000-9999
         $pincode = intval(Input::get("PINcode"));
-
+        if($pincode == null){
+            return Redirect::route("kiosk.showKiosk")->with("error",array("please enter a pincode to view a pickup"));
+        }
         //Use the pincode to find the appropriate pickup request
-        $pickup = Pickup::where("RetreiveCode","=",$pincode)->get();
+        $pickup = Pickup::where("RetreiveCode","=",$pincode)->where("Completed","=",false)->get();
         $pickup = $pickup[0];
         if($pickup == null) {
             return Redirect::route('kiosk.showKiosk')->with('error', array('The specified pickup code does not exist'));
@@ -59,6 +61,19 @@ class KioskController extends BaseController{
 
     function completePackagePickup(){
         //Take the data posted from the pickup page and update the database.
+        $sigData = Input::get("signatureData");
+        $authCode = intval(Input::get("AuthorizeCode"));
+        $pickupid = intval(Input::get("pickupid"));
+        //Find the pickup in the database
+        $pickup = Pickup::where("id",'=',$pickupid)->where("AuthorizeCode","=",$authCode)->limit(1)->get();
+        if($pickup == null){
+            return Redirect::route("kiosk.showKiosk")->with("error",array("Authorization mismatch. Please contact the administrator if you continue to have this issue."));
+        }
+        $pickup = $pickup[0];
+        //We have a valid pickup. Update the sig data and pass it on to the admin, admin still has to approve.
+        $pickup->SignatureData = $sigData;
+        $pickup->save();
+        return Redirect::route("kiosk.showKiosk")->with("success",array("Thank you for signing the pickup agreement"));
     }
 
 }
