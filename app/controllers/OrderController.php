@@ -14,7 +14,7 @@ class OrderController extends BaseController {
         View::share('project',$project);
         View::share('enrolledStudents',$enrolledStudents);
         View::share('account',$account);
-        return View::make('orders.new');
+        return View::make('Orders.new');
     }
     
     //Process a new order coming in
