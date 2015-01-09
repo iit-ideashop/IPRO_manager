@@ -129,7 +129,7 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
         });
         
         Route::group(array('prefix'=>'accounts'), function(){
-            Route::get('/editor/{id}','AdminAccountController@showGLEditor')->where(array('id'=> '[0-9]+'));
+            Route::get('/editor/{id}',array("as"=>"admin.accounts.editor", "uses"=>'AdminAccountController@showGLEditor'))->where(array('id'=> '[0-9]+'));
             Route::post('/editor/{id}','AdminAccountController@newGLEntry')->where(array('id'=>'[0-9]+'));
         });
 });

@@ -14,7 +14,7 @@
   <ul class="dropdown-menu" role="menu">
     <li><a href="#">Create Budget</a></li>
     <li><a href="#">View Orders</a></li>
-    <li><a href="#">Account Editor</a></li>
+    <li><a href="{{URL::route("admin.accounts.editor",$project->id)}}">Account Editor</a></li>
   </ul>
 </div>
     </h1>
