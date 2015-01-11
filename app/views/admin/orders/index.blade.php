@@ -18,14 +18,30 @@
     </div>
     <div id="filters" class="panel-collapse collapse">
       <div class="panel-body">
-      Fitlers would go here.
+          {{ Form::open() }}
       <ul>
-          <li>Filter by IPRO</li>
-          <li>Filter by Status</li>
-          <li>Show all for this semester</li>
-          <li>Show all for a previous semester</li>
-          <li>Filter by person</li>
+          <li>Filter by IPRO:
+              <select name="ipro">
+                  <option value="null">Select an ipro below</option>
+                @foreach($ipros as $ipro)
+                  <option value="{{$ipro->id}}">{{$ipro->UID}}</option>
+                    @endforeach
+              </select></li>
+          <li>Filter by Status: <select name="status">
+                  <option value="null">Select a status below</option>
+                  @foreach($orderstatuses as $key => $value)
+                      <option value="{{$value}}">{{$key}}</option>
+                  @endforeach
+              </select></li>
+          <li>Show all for a previous semester:<select name="semester">
+                  <option value="null">Select a semester below</option>
+                  @foreach($semesters as $key => $value)
+                      <option value="{{$value}}">{{$key}}</option>
+                  @endforeach
+              </select> </li>
       </ul>
+          {{ Form::submit("Filter",array("class"=>"btn btn-primary"))}}
+          {{ Form::close() }}
       </div>
     </div>
   </div>

@@ -230,7 +230,7 @@ class AdminPickupController extends BaseController{
             return Redirect::route("admin.order.pickup")->with("error",array("Pickup does not exist"));
         }
         $pickup->SignatureData = null;
-        $pickup->OverrideData = null;
+        $pickup->OverrideReason = null;
         $pickup->save();
         return Redirect::route("admin.order.pickup.showCode",$pickup->id);
     }

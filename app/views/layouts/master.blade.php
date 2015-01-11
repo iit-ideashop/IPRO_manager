@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
     <head>
-        <title>@yield('title')</title>
+        <title>IPRO Manager</title>
         <link rel="stylesheet" href="{{ URL::asset('packages/bootstrap/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ URL::asset('packages/bootstrap/css/dashboard.css') }}">
         @section('stylesheets') 

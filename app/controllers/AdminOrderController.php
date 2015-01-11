@@ -6,8 +6,19 @@ class AdminOrderController extends Controller {
     public function index(){
         //find the active semester
         $activeSemester = Semester::where('Active','=',true)->limit(1)->lists('id');
-        
+        $filters = array();
+        $filters['ipro'] = Input::get("ipro");
+        $filters['status'] = Input::get("status");
+        $filters['semester'] = Input::get("semester");
+        $filters['description'] = Input::get("description");
+
         //Get the projects in the semester
+        $ipros = Project::where('Semester','=',$activeSemester[0])->get();
+        View::share("ipros",$ipros);
+        $statuses = DB::table("orderStatus")->orderBy("id")->lists("id","status");
+        View::share("orderstatuses", $statuses);
+        $semesters = DB::table("semesters")->orderBy("id","desc")->lists("id","name");
+        View::share("semesters",$semesters);
         $projects = Project::where('Semester','=',$activeSemester[0])->lists('id');
         if(empty($projects)){
             $orders = array();
@@ -17,6 +28,7 @@ class AdminOrderController extends Controller {
             $orders = Order::whereIn('ClassID',$projects)->where('status','=',1)->get();
             View::share('orders',$orders);
         }
+        View::share("filters",$filters);
         return View::make('admin.orders.index');
     }
     

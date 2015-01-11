@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
     <head>
-        <title><?php echo $__env->yieldContent('title'); ?></title>
+        <title>IPRO Manager</title>
         <link rel="stylesheet" href="<?php echo URL::asset('packages/bootstrap/css/bootstrap.min.css'); ?>">
         <link rel="stylesheet" href="<?php echo URL::asset('packages/bootstrap/css/dashboard.css'); ?>">
         <?php $__env->startSection('stylesheets'); ?> 
