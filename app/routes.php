@@ -95,6 +95,7 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
         Route::get('/edit/{id}','AdminProjectController@edit');
         Route::post('/edit/{id}',array('before'=>'csrf','uses'=>'AdminProjectController@editProcess'));
         Route::get('/overview/{id}','AdminProjectController@overview');
+        Route::get('/enroll_users/{id}','AdminProjectController@enrollUsers')->where(array('id' => '[0-9]+'));
         
     });
     Route::group(array('prefix'=>'semesters'), function(){

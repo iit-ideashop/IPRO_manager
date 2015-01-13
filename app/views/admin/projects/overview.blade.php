@@ -5,7 +5,7 @@
 @section('content')
 
 <div class="page-header">
-    <h1>{{ $project->UID}} Overview 
+    <h1>{{ $project->UID}} Overview
     <!-- Split button -->   
     <div class="btn-group">
   <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">

@@ -113,7 +113,22 @@ class AdminProjectController extends BaseController{
         View::share('students',$students);
         return View::make('admin.projects.overview');
     }
-    
+
+    function enrollUsers($projectid){
+        //In this function we will show a hands on table to enroll users
+        //Look up the project so we can update the enrollment
+        $project = Project::find($projectid);
+        if(!$project){
+            return Redirect::route('')->with('error',array('could not locate project'));
+        }
+        //Pass the project on to the view
+        View::share('project',$project);
+        //Get the enrollment
+        $students = $project->Users()->get();
+        View::share("students",$students);
+        return View::make('admin.projects.enrollUsers');
+
+    }
     
 }
 
