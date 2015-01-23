@@ -107,7 +107,7 @@
         updateTotalCost();
         @if(Session::has('items'))
         @foreach(Session::get('items') as $item)
-            addMoreItems('{{ $item->Name }}', '{{ $item->Link }}', '{{ $item->PartNumber }}', '{{ $item->Cost }}', '{{ $item->Quantity }}', '{{ $item->Justification }}');
+            addMoreItems('{{ $item->Name }}', '{{ $item->Link }}', '{{ $item->PartNumber }}', '{{ $item->Cost }}', '{{ $item->Quantity }}','{{ $item->Shipping }}', '{{ $item->Justification }}');
         @endforeach
         @else
         addMoreItems();
@@ -123,13 +123,14 @@
     function destroyItem(divtag){
         $(divtag).remove();
     }
-    function addMoreItems(itemName,itemLink,itemPN,itemCost,itemQuantity,justification){
+    function addMoreItems(itemName,itemLink,itemPN,itemCost,itemQuantity,shippingCost,justification){
         itemName = itemName || '';
         itemLink = itemLink || '';
         itemPN = itemPN || '';
         itemCost = itemCost || '0';
         itemQuantity = itemQuantity || '1';
         justification = justification || '';
+        shippingCost = shippingCost || '0';
         var ItemID = countItems();
         var startTabIndex = (ItemID * 7) + 100;
         $('#itemGroup').append('<li class="list-group-item item" id="item'+ ItemID+'">' + 
@@ -149,7 +150,7 @@
                     '</div>' +
                   '<div class="col-sm-4">'+
                      '{{ Form::label('Costs','Cost', array('class'=>'col-sm-2 control-label')) }}' + 
-                    '<input type="text" class="form-control cost" name="Costs[]" itemID="'+ItemID+'" id="Cost'+ItemID+'" value="'+itemCost+'" onKeyUp="recalculateSingleTC('+ItemID+')" required tabindex="'+(startTabIndex + 3)+'">' +
+                    '<input type="text" class="form-control cost" name="Costs[]" itemID="'+ItemID+'" id="Cost'+ItemID+'" value="'+itemCost+'" onKeyUp="recalculateSingleTC('+ItemID+')" required tabindex="'+(startTabIndex + 4)+'">' +
                 '</div>' +
               '</div>' +
           '<div class="row">' +
@@ -159,32 +160,38 @@
           '</div>' +
               '<div class="col-sm-4">'+
                      '{{ Form::label('Quantitys','Quantity', array('class'=>'col-sm-2 control-label')) }}' + 
-                    '<input type="text" name="Quantitys[]" class="form-control quantity" itemID="'+ItemID+'" onKeyUp="recalculateSingleTC('+ItemID+')" id="Quantity'+ItemID+'" value="'+itemQuantity+'" required tabindex="'+(startTabIndex + 4)+'">' +
+                    '<input type="text" name="Quantitys[]" class="form-control quantity" itemID="'+ItemID+'" onKeyUp="recalculateSingleTC('+ItemID+')" id="Quantity'+ItemID+'" value="'+itemQuantity+'" required tabindex="'+(startTabIndex + 5)+'">' +
                 '</div>' +
               '</div>' +
           '<div class="row">' +
                   '<div class="col-sm-8">'+
                      '{{ Form::label('Justifications','Justification', array('class'=>'col-sm-2 control-label')) }}' + 
-                    '<textarea name="Justifications[]" rows="4" class="form-control" required tabindex="'+(startTabIndex + 5)+'">'+justification+'</textarea>' +
+                    '<textarea name="Justifications[]" rows="4" class="form-control" required tabindex="'+(startTabIndex + 3)+'">'+justification+'</textarea>' +
                 '</div>' +
                 '<div class="col-sm-4">' +
-                '<label for="totalCost'+ItemID+'" class="col-sm-4 control-label">Total Cost</label>'+
-                    '<input type="text" id="totalCost'+ItemID+'" class="form-control" disabled>' +
+        '<label for="shippingCost'+ItemID+'" class="col-sm-4 control-label">Shipping</label>'+
+        '<input type="text" id="shippingCost'+ItemID+'" itemID="'+ItemID+'" name="shippingCosts[]"  value="'+shippingCost+'" required onKeyUp="recalculateSingleTC('+ItemID+')" tabindex="'+(startTabIndex + 6)+'" class="form-control">' +
+        '<label for="totalCost'+ItemID+'" class="col-sm-4 control-label">Total Cost</label>'+
+        '<input type="text" id="totalCost'+ItemID+'" class="form-control" disabled>' +
+
                 '</div>' +
     '</li>');
         //Initialize our money plugin
         $('#Cost'+ItemID).maskMoney({thousands:',', decimal:'.', allowZero:true, prefix: '$ '});
         $('#totalCost'+ItemID).maskMoney({thousands:',', decimal:'.', allowZero:true, prefix: '$ '});
+        $('#shippingCost'+ItemID).maskMoney({thousands:',', decimal:'.', allowZero:true, prefix: '$ '});
         $('#Cost'+ItemID).maskMoney('mask');
         $('#totalCost'+ItemID).maskMoney('mask',0.00);
+        $('#shippingCost'+ItemID).maskMoney('mask',0.00);
         $('#Quantity'+ItemID).numeric();
     }
     
     function recalculateSingleTC(itemid){
        $('#totalCost'+itemid).attr('disabled',false);
        var Cost = $('#Cost'+itemid).maskMoney('unmasked')[0];
+        var shipping = $('#shippingCost'+itemid).maskMoney('unmasked')[0];
        var Qty = $('#Quantity'+itemid)[0].value;
-       $('#totalCost'+itemid).maskMoney('mask',(Cost * Qty));
+       $('#totalCost'+itemid).maskMoney('mask',(Cost * Qty)+shipping);
        $('#totalCost'+itemid).attr('disabled',true);
        recalculateAllTC();
     }
@@ -193,7 +200,8 @@
         var grandtotal = 0;
        $(".cost").each(function(){
            //Calculate all the costs
-           var singleCost = $(this).maskMoney('unmasked')[0] * $('#Quantity'+$(this).attr('itemid'))[0].value;
+
+           var singleCost = ($(this).maskMoney('unmasked')[0] * $('#Quantity'+$(this).attr('itemid'))[0].value) + $('#shippingCost'+$(this).attr('itemid')).maskMoney('unmasked')[0];
            grandtotal = grandtotal + singleCost;
        });
        $('#orderTotal').html(grandtotal.toFixed(2));

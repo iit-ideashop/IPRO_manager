@@ -28,7 +28,6 @@ class AuthController extends BaseController {
                 $user_count = User::where('Email','=',$result['email'])->count();
                 if($user_count >= 1){
                 }else{
-                    echo 'Creating new user';
                     $user = new User;
                     $user->FirstName = $result['given_name'];
                     $user->LastName = $result['family_name'];

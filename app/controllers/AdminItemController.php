@@ -8,11 +8,12 @@ class AdminItemController extends BaseController{
         $item->Name = Input::get('Name');
         $item->Link = Input::get('Link');
         $item->PartNumber = Input::get('PartNumber');
+
         //Let's see if the costs and quantities are changing and if we need to perform a gl entry
-        if(($item->Cost != Input::get('Cost')) || ($item->Quantity != Input::get('Quantity'))){
+        if(($item->Cost != Input::get('Cost')) || ($item->Quantity != Input::get('Quantity')) || ($item->Shipping != Input::get('Shipping'))){
             //Oh noes, we gotta figure out what to do next
-            $originalTotalCost = ($item->Cost * $item->Quantity);
-            $newTotalCost = (Input::get('Cost') * Input::get('Quantity'));
+            $originalTotalCost = ($item->Cost * $item->Quantity) + $item->Shipping;
+            $newTotalCost = (Input::get('Cost') * Input::get('Quantity')) + $item->Shipping;
             $amount = abs($originalTotalCost - $newTotalCost);
             //Also pull in the account
             $order = $item->Order()->first();
@@ -33,7 +34,8 @@ class AdminItemController extends BaseController{
         }
         $item->Cost = Input::get('Cost');
         $item->Quantity = Input::get('Quantity');
-        $item->TotalCost = (Input::get('Cost') * Input::get('Quantity'));
+        $item->shipping = Input::get('Shipping');
+        $item->TotalCost = (Input::get('Cost') * Input::get('Quantity')) + Input::get('Shipping');
         $item->Justification = Input::get('Justification');
         if($item->save()){
             //Save successful

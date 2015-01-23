@@ -32,6 +32,7 @@ class OrderController extends BaseController {
         $itemPNs = Input::get('PartNumbers');
         $itemCosts = Input::get('Costs');
         $itemQuantities = Input::get('Quantitys');
+        $itemShippings = Input::get("shippingCosts");
         $itemJustifications = Input::get('Justifications');
         $firstApproved = Input::get("firstApproved");
         $secondApproved = Input::get("secondApproved");
@@ -40,6 +41,7 @@ class OrderController extends BaseController {
         $grandTotal = 0;
         $order_has_error = false;
         $order_error = array();
+
         //Let's make sure we atleast have something submitted
         if(sizeof($itemNames) == 0){
             array_push($order_error, 'Please submit at least one item for ordering');
@@ -51,6 +53,7 @@ class OrderController extends BaseController {
            (sizeof($itemNames) == sizeof($itemPNs)) &&
            (sizeof($itemNames) == sizeof($itemCosts)) &&
            (sizeof($itemNames) == sizeof($itemQuantities)) &&
+            (sizeof($itemNames) == sizeof($itemShippings)) &&
            (sizeof($itemNames) == sizeof($itemJustifications))){
             //Arrays line up, continue
             for($i = 0; $i < sizeof($itemNames); $i++){
@@ -60,7 +63,8 @@ class OrderController extends BaseController {
                 $item->PartNumber = $itemPNs[$i];
                 $item->Cost = floatval(str_replace('$','',$itemCosts[$i]));
                 $item->Quantity = $itemQuantities[$i];
-                $item->TotalCost = ($item->Cost * $item->Quantity);
+                $item->Shipping = floatval(str_replace('$','',$itemShippings[$i]));
+                $item->TotalCost = ($item->Cost * $item->Quantity) + $item->Shipping;
                 $item->Justification = $itemJustifications[$i];
                 $item->Status = 1;
                 if(!$item->validate()){
