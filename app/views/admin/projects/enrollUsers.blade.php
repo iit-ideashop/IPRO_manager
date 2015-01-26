@@ -19,16 +19,10 @@
     </table>
 
     <div id="example"></div>
-
-
-
-
 @stop
 @section('javascript_bottom')
 <script>
-    var data = [
-        ["First Name", "Last Name", "Email", "CWID"]
-    ];
+    var data = [["First Name", "Last Name", "Email", "CWID"]];
 
     var container = $("#example");
     container.handsontable({
@@ -41,3 +35,9 @@
     });
 </script>
 @stop
+
+
+
+
+//make a list of tasks
+//send emails to rima
