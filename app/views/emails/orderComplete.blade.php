@@ -14,6 +14,7 @@
   <td><b>Part Number</b></td>
   <td><b>Cost</b></td>
   <td><b>Quantity</b></td>
+     <td><b>Shipping</b></td>
   <td><b>Total Cost</b></td>
  </tr>
 @foreach($items as $item)
@@ -23,6 +24,7 @@
     <td>{{ $item->PartNumber }}</td>
     <td>${{ number_format($item->Cost,2) }}</td>
     <td>{{ $item->Quantity }}</td>
+    <td>${{ number_format($item->Shipping,2) }}</td>
     <td>${{ number_format($item->TotalCost,2) }}</td>
 </tr>
 @endforeach

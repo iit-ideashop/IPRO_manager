@@ -10,8 +10,6 @@
   </button>
   <ul class="dropdown-menu" role="menu">
     <li><a href="#">Add Approved Pickups</a></li>
-    <li><a href="#">Add shipping costs</a></li>
-    <li><a href="#">Create Pickup</a></li>
   </ul>
 </div>
 
@@ -101,6 +99,28 @@
   </div>
 </div>
 
+<div class="panel-group" id="approvedPickups">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#approvedPickups" href="#approvedPickupsCollapse">
+                    Approved Pickups
+
+
+
+                </a>
+            </h4>
+        </div>
+        <div id="approvedPickupsCollapse" class="panel-collapse collapse">
+            <div class="panel-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 <div class="panel-group" id="orderNotes">
   <div class="panel panel-default">
@@ -183,6 +203,7 @@
                 <th>Justification</th>
                 <th>Cost</th>
                 <th>Quantity</th>
+                <th>Shipping</th>
                 <th>Total Cost</th>
                 <th>Returning</th>
                 <th>Status</th>
@@ -200,6 +221,7 @@
                 <th>Justification</th>
                 <th>Cost</th>
                 <th>Quantity</th>
+                <th>Shipping</th>
                 <th>Total Cost</th>
                 <th>Returning</th>
                 <th>Status</th>
@@ -233,6 +255,7 @@
                 <td>{{ $item->Justification }}</td>
                 <td>${{ number_format($item->Cost,2) }}</td>
                 <td>{{ $item->Quantity}}</td>
+                <td>${{ number_format($item->Shipping,2) }}</td>
                 <td>${{ number_format($item->TotalCost,2) }}</td>
                 @if($item->Returning)
                 <td>Yes</td>
@@ -313,11 +336,18 @@
     <div class="col-sm-10">
       {{ Form::text('Quantity',null,array('class'=>'form-control')) }}
     </div>
+              </div>
+  <div class="form-group">
+      {{ Form::label('Shipping','Shipping', array('class'=>'col-sm-2 control-label')) }}
+      <div class="col-sm-10">
+          {{ Form::text('Shipping',null,array('class'=>'form-control')) }}
+      </div>
+
   </div>
           <div class="form-group">
       {{ Form::label('TotalCost','Total Cost', array('class'=>'col-sm-2 control-label')) }} 
     <div class="col-sm-10">
-      {{ Form::text('TotalCost',null,array('class'=>'form-control')) }}
+      {{ Form::text('TotalCost',null,array('class'=>'form-control', 'disabled')) }}
     </div>
   </div>
           <div class="form-group">
@@ -335,42 +365,6 @@
   </div>
 </div>
 
-<div class="modal fade" id="{{$item->id}}ChangeStatusModal" tabindex="-1" role="dialog" aria-labelledby="{{$item->id}}ChangeStatusModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="{{$item->id}}ChangeStatusModalLabel">Change Order Status</h4>
-      </div>
-      <div class="modal-body">
-        {{ Form::model($item,array('route'=> array('admin.item.statusChange',$item->id),'class'=>'form-horizontal'))}}
-          <div class="form-group">
-      {{ Form::label('Status','Status', array('class'=>'col-sm-2 control-label')) }} 
-    <div class="col-sm-10">
-        
-        <select name="Status" class="form-control">
-            @foreach($itemStatuses as $itemStatus)
-            <option value="{{ $itemStatus->id}}"
-                    @if($item->Status == $itemStatus->id)
-                    selected="selected"
-                    @endif
-                    >{{ $itemStatus->status }}</option>
-            @endforeach
-        </select>
-      
-    </div>
-  </div>
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        {{ Form::submit('Change Status',array('class'=>'btn btn-default'))}}{{ Form::close() }}
-      </div>
-    </div>
-  </div>
-</div>
-
-
 <div class="modal fade" id="{{$item->id}}DeleteModal" tabindex="-1" role="dialog" aria-labelledby="{{$item->id}}DeleteModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -379,7 +373,7 @@
         <h4 class="modal-title" id="{{$item->id}}DeleteModalLabel">Delete</h4>
       </div>
       <div class="modal-body">
-        
+
           {{ Form::model($item,array('route'=> array('admin.item.delete',$item->id),'class'=>'form-horizontal'))}}
           Are you sure you want to delete  the item <b>{{ $item->Name}}</b>?<br>
           <h6>Items should usually be marked as Cancelled and not deleted</h6>
@@ -392,7 +386,6 @@
   </div>
 </div>
 @endforeach
-
 
 <!-- Order note modal-->
 <div class="modal fade" id="newNoteModal" tabindex="-1" role="dialog" aria-labelledby="newNoteModalLabel" aria-hidden="true">
@@ -431,8 +424,6 @@
     </div>
   </div>
 </div>
-
-
 
 <div class="modal fade" id="massStatusModal" tabindex="-1" role="dialog" aria-labelledby="massStatusModalLabel" aria-hidden="true">
   <div class="modal-dialog">

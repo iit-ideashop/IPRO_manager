@@ -55,6 +55,7 @@
                 <th>Justification</th>
                 <th>Cost</th>
                 <th>Quantity</th>
+                <th>Shipping</th>
                 <th>Total Cost</th>
                 <th>Returning</th>
                 <th>Status</th>
@@ -71,6 +72,7 @@
                 <th>Justification</th>
                 <th>Cost</th>
                 <th>Quantity</th>
+                <th>Shipping</th>
                 <th>Total Cost</th>
                 <th>Returning</th>
                 <th>Status</th>
@@ -88,6 +90,7 @@
                 <td>{{ $item->Justification }}</td>
                 <td>${{ number_format($item->Cost,2) }}</td>
                 <td>{{ $item->Quantity}}</td>
+                <td>${{ number_format($item->Shipping,2) }}</td>
                 <td>${{ number_format($item->TotalCost,2) }}</td>
                 @if($item->Returning)
                 <td>Yes</td>

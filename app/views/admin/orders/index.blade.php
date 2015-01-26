@@ -47,11 +47,6 @@
   </div>
 </div>
 
-
-
-
-
-
 <div class="table-responsive">
     <table class="table table-striped" id="orderListing">
         <thead>
