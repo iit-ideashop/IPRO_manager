@@ -89,14 +89,15 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
         Route::post('printLabel',array('before'=>'csrf','as'=>'admin.items.printLabels', 'uses'=>'AdminItemController@printLabels'));
     });
     Route::group(array('prefix'=>'projects'),function(){
-        Route::get('/{id?}','AdminProjectController@index')->where(array('id' => '[0-9]+'));
+        Route::get('/{id?}',array('as'=>'admin.projects','uses'=>'AdminProjectController@index'))->where(array('id' => '[0-9]+'));
         Route::get('/new','AdminProjectController@create');
         Route::post('/new','AdminProjectController@createProcess');
         Route::get('/edit/{id}','AdminProjectController@edit');
         Route::post('/edit/{id}',array('before'=>'csrf','uses'=>'AdminProjectController@editProcess'));
         Route::get('/overview/{id}','AdminProjectController@overview');
         Route::get('/enroll_users/{id}','AdminProjectController@enrollUsers')->where(array('id' => '[0-9]+'));
-        
+        Route::get('/uploadCognos/{sem_id}', array('as'=>'admin.projects.uploadCognos', 'uses'=>'AdminProjectController@uploadCognos'))->where(array('sem_id' => '[0-9]+'));
+        Route::post('/uploadCognos/{sem_id}',array('as'=>'admin.projects.uploadCognosProcess', 'uses'=>'AdminProjectController@uploadCognosProcess'))->where(array('sem_id' => '[0-9]+'));
     });
     Route::group(array('prefix'=>'semesters'), function(){
         Route::get('/','AdminSemesterController@index');

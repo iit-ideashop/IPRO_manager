@@ -6,7 +6,6 @@ class Project extends Ardent {
         'Name'=> 'required',
         'Description' => 'required',
         'Semester' => 'required',
-        'modifiedBy' => 'required'
     );
     public function Users(){
         return $this->belongsToMany('User','PeopleProjects','ClassID','UserID');
@@ -42,6 +41,11 @@ class Project extends Ardent {
     public static function getProjectUID($id){
         $project = Project::find($id)->pluck('UID');
         return $project;
+    }
+
+    public function beforeSave(){
+        //Before we save we have to make sure the modified by is updated
+        $this->modifiedBy = Auth::id();
     }
 }
 

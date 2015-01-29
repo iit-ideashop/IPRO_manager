@@ -3,7 +3,6 @@
         <script src="{{ URL::asset('packages/bootstrap/js/jquery.maskMoney.min.js') }}"></script>
         <script src="{{ URL::asset('packages/bootstrap/js/jquery.numeric.js') }}"></script>
 @stop
-
 @section('content')
 <h2 class='page-header'>New Order</h2>
 {{ Form::open() }}

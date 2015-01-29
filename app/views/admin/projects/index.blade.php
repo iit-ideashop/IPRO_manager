@@ -24,7 +24,7 @@ $(document).ready( function () {
             <a class="btn btn-default" href="/admin/semesters">Semester Manager</a></div>
 </div>
 
-<h2 class="sub-header">Projects for {{ $activeSemester->Name }} <a href="/admin/projects/new" class="btn btn-default">New</a></h2>
+<h2 class="sub-header">Projects for {{ $activeSemester->Name }} <a href="/admin/projects/new" class="btn btn-default">New</a>  <a href="{{ URL::route('admin.projects.uploadCognos', $activeSemester->id) }}" class="btn btn-default">Upload a Cognos Report</a></h2>
 <div class="table-responsive">
     <table class="table table-striped" id="projectListing">
         <thead>

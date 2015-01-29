@@ -21,7 +21,12 @@
         {{ Form::text('UID','',array('class'=>'form-control','placeholder'=>'IPRO 303')) }}
     </div>
 </div>
-
+<div class="form-group">
+    {{ Form::label('CRN','Course Registration Number', array('class'=>'col-sm-2 control-label')) }}
+    <div class="col-sm-8">
+        {{ Form::text('CRN','',array('class'=>'form-control','placeholder'=>'999999')) }}
+    </div>
+</div>
 <div class="form-group">
     {{ Form::label('Name','Name', array('class'=>'col-sm-2 control-label')) }} 
     <div class="col-sm-8">
