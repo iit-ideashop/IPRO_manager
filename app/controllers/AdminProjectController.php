@@ -146,6 +146,7 @@ class AdminProjectController extends BaseController{
         //Ok so we have a cognos report and an initial budget we should be assigning.
         //Let's see if the file has uploaded
         $semester = Semester::find(intval($semester_id));
+
         if($semester == null){
             return Redirect::route('admin.projects')->with('error',array('The provided semester does not exist'));
         }
@@ -164,6 +165,7 @@ class AdminProjectController extends BaseController{
         if($readerObject->getActiveSheet()->getCell('A1')->getValue() != 'Class List by Campus'){
             return Redirect::route('admin.projects.uploadCognos',$semester->id)->with('error',array('Please upload the correct cognos report. It starts with "Class List by Campus'));
         }
+        $log_array = array();
         //Alright, let's process this file and load this into the database.
         //Read each row and start building some sort of data structure.
         $start_row = 4;//Data starts at row 4
@@ -171,7 +173,6 @@ class AdminProjectController extends BaseController{
         $spreadsheet_data = array();
         $currentCRN = null;
         for($current_row = $start_row; $current_row <= $total_row; $current_row++) {
-
             //Row data is as follows: (Relevant data only)
             //A is Academic period, Ex: Spring 2015 is 201520, works like Fiscal years so Fall 2014 would have been 201510, last digits increase by 10 for each sem. Fall 2015 will be 201610 etc.
             //B is Course Registration Number
@@ -209,7 +210,7 @@ class AdminProjectController extends BaseController{
                     if (!$matchfound) {
                         //Add the student
                         $fullName = explode(",", $readerObject->getActiveSheet()->getCell('I' . $current_row)->getValue());
-                        $studentObj = array($fullName[0], $fullName[1], $readerObject->getActiveSheet()->getCell('H' . $current_row)->getValue(), $readerObject->getActiveSheet()->getCell('K' . $current_row)->getValue());
+                        $studentObj = array($fullName[1], $fullName[0], $readerObject->getActiveSheet()->getCell('H' . $current_row)->getValue(), $readerObject->getActiveSheet()->getCell('K' . $current_row)->getValue());
                         array_push($spreadsheet_data[$currentCRN][1], $studentObj);
                     }
 
@@ -236,7 +237,6 @@ class AdminProjectController extends BaseController{
             $database_data[$project->CRN][0] = $project->UID;
             $database_data[$project->CRN][1] = array();
             foreach($students as $student){
-                echo $student->AccessType;
                 $studentObj = array($student->FirstName, $student->LastName,$student->CWIDHash,$student->Email);
                 array_push($database_data[$project->CRN][1], $studentObj);
             }
@@ -258,14 +258,15 @@ class AdminProjectController extends BaseController{
                 $course->CRN = $courseCRN;
                 $course->Semester = $semester->id;
                 $course->save();
+                array_push($log_array, "Created ".$course->UID);
                 //Let's check if we need to grant initial budgets
                 if($initialBudget != 0){
                     //Grant some sort of initial budget
-                    ;
                     $account = new Account;
                     $account->ClassID = $course->id;
                     $account->Balance = 0;
                     $account->save();
+                    array_push($log_array, "Created Account for ".$course->UID);
                     $budget = new Budget;
                     $budget->AccountID = $account->id;
                     $budget->Amount = $initialBudget;
@@ -274,7 +275,9 @@ class AdminProjectController extends BaseController{
                     $budget->Requester = 1;
                     $budget->Approver = 1;
                     $budget->save();
+                    array_push($log_array, "Created Budget of $".$initialBudget." for ".$course->UID);
                     $account->Deposit("BUDGET",$initialBudget);
+
                 }
             }else{
                 $course = Project::where("CRN",'=',$courseCRN)->first();
@@ -291,9 +294,11 @@ class AdminProjectController extends BaseController{
                 $emailFound = false;
                 $email_search = $spreadsheetLine[1][$i][3];
                 //loop through the crn db and find new people
-                for($j = 0; $j < count($database_data[$courseCRN][1]); $j++){
-                    if($spreadsheetLine[1][$i][3] == $database_data[$courseCRN][1][$j][3]){
-                        $emailFound = true;
+                if(array_key_exists($courseCRN,$database_data)){
+                   for ($j = 0; $j < count($database_data[$courseCRN][1]); $j++) {
+                        if ($spreadsheetLine[1][$i][3] == $database_data[$courseCRN][1][$j][3]) {
+                            $emailFound = true;
+                        }
                     }
                 }
                 if(!$emailFound){
@@ -317,7 +322,10 @@ class AdminProjectController extends BaseController{
                     $peopleProject->ClassID = $course->id;
                     $peopleProject->AccessType = 1;
                     $peopleProject->save();
-                    //TODO, send a welcome email
+                    array_push($log_array, "Added ".$user->FirsrName." ".$user->LastName."(".$user->Email.") to ".$course->UID);
+                    Mail::send('emails.project.registered', array('person'=>$user,'project'=>$course), function($message) use($user){
+                        $message->to($user->Email,$user->FirstName.' '.$user->LastName)->subject('Welcome to IPRO Manager!');
+                    });
                 }
             }
         }
@@ -358,22 +366,22 @@ class AdminProjectController extends BaseController{
                         $user = User::where("Email", '=', $databaseLine[1][$i][3])->first();
                         $registration = PeopleProject::where('ClassID', '=', $course->id)->where("UserID", '=', $user->id)->first();
                         $registration->delete();
-                        var_dump($user->Email);
-                        exit;
+                        array_push($log_array, "Dropped ".$user->FirsrName." ".$user->LastName."(".$user->Email.") from ".$course->UID);
+                        Mail::send('emails.project.dropped', array('person'=>$user,'project'=>$course), function($message) use($user){
+                            $message->to($user->Email,$user->FirstName.' '.$user->LastName)->subject('IPRO Manager update!');
+                        });
                     }
                 }
             }
         }
-        //Here is our reporting section we will send to admins
-
-
-
-
-        echo "File extension:".$cognosFile->getClientOriginalExtension().'<br>';
-        echo "Path:".$cognosFile->getRealPath().'<br>';
-        echo "InitialBudget:".$initialBudget.'<br>';
-        exit;
+        $user = Auth::user();
+        $admins = User::Where("isAdmin","=",true)->get();
+        Mail::send('emails.log', array('person'=>$user,'reportType'=>'Cognos Upload','extraData'=>$semester->Name,'logdata'=>$log_array), function($message) use($admins){
+            foreach($admins as $admin){
+                $message->to($admin->Email,$admin->FirstName.' '.$admin->LastName);
+            }
+        $message->subject('IPRO Manager log created!');
+        });
+        return Redirect::route('admin.projects',$semester->id)->with('success', array("Cognos report successfully imported"));
     }
-    
 }
-
