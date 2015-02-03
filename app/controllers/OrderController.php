@@ -95,15 +95,17 @@ class OrderController extends BaseController {
         foreach($students as $student){
             array_push($enrolledStudents, $student->id);
         }
-        if(($firstApproved != Auth::id()) || ($firstApproved != 0)||(!in_array($firstApproved, $enrolledStudents))){
+        //
+
+        if(($firstApproved != Auth::id()) && ($firstApproved != 0) && (!in_array($firstApproved, $enrolledStudents))){
             array_push($approvedPickups, $firstApproved);
         }
-        if(($secondApproved != Auth::id())||($secondApproved != 0)|| (!in_array($secondApproved, $enrolledStudents))){
+
+        if(($secondApproved != Auth::id())&&($secondApproved != 0)&& (!in_array($secondApproved, $enrolledStudents))){
             array_push($approvedPickups,$secondApproved);
         }
         //Make the array unique
         array_unique($approvedPickups);
-
         if($order_has_error){
             return Redirect::to('/project/'.$id.'/orders/new')->with('error',$order_error)->with('items',$itemArray);
         }
