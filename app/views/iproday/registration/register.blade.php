@@ -83,6 +83,13 @@ Judge's Breakfast: {{ date('g:i a',strtotime($iproday->judgesStart)) }}<br>
         {{ Form::radio('judgedBefore','0') }} No
         </div>
 </div>
+@if($tracks->isEmpty())
+    <div class="row">
+        <div class="col-xs-offset-2 col-xs-10">
+        <b>Judges, please note:</b> Teams are still being sorted into Tracks.
+    We will email you when Track Selection is available.
+    </div></div><br>
+@else
 <div class="form-group">
     <div class="col-xs-offset-2 col-xs-4">
         <b>Which track would you prefer to judge?</b>
@@ -137,6 +144,8 @@ Judge's Breakfast: {{ date('g:i a',strtotime($iproday->judgesStart)) }}<br>
 </div>
     </div>
 </div>
+@endif
+
 
 <div class="form-group">
     {{ Form::label('dietaryRestrictions','Judges receive a complimentary breakfast and lunch. Do you have any dietary restrictions or require any special accommodations?',array('class'=>'col-xs-2 control-label')) }}

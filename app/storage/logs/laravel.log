@@ -5345,3 +5345,7 @@ Stack trace:
 #17 /Applications/XAMPP/xamppfiles/htdocs/IPRO_API/public/index.php(49): Illuminate\Foundation\Application->run()
 #18 /Applications/XAMPP/xamppfiles/htdocs/IPRO_API/server.php(19): require_once('/Applications/X...')
 #19 {main} [] []
+[2015-02-03 13:14:02] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'syntax error, unexpected ':', expecting '('' in /Applications/XAMPP/xamppfiles/htdocs/IPRO_API/app/storage/views/e6a535adf84de799500e51ccef342d85:100
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
