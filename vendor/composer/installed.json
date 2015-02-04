@@ -1181,9 +1181,59 @@
         ]
     },
     {
+        "name": "artdarek/oauth-4-laravel",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/artdarek/oauth-4-laravel.git",
+            "reference": "d7226ea17932ee31143bb33b499e6f0aeb7d8ce2"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/artdarek/oauth-4-laravel/zipball/d7226ea17932ee31143bb33b499e6f0aeb7d8ce2",
+            "reference": "d7226ea17932ee31143bb33b499e6f0aeb7d8ce2",
+            "shasum": ""
+        },
+        "require": {
+            "lusitanian/oauth": "~0.3",
+            "php": ">=5.3"
+        },
+        "require-dev": {
+            "illuminate/support": "~4"
+        },
+        "time": "2015-01-08 16:40:21",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Artdarek\\OAuth": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Artdarek",
+                "email": "artdarek@gmail.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "OAuth Service Provider for Laravel 4",
+        "homepage": "https://github.com/artdarek/oauth-4-laravel",
+        "keywords": [
+            "Lusitanian",
+            "laravel",
+            "oauth",
+            "php"
+        ]
+    },
+    {
         "name": "symfony/dom-crawler",
-        "version": "v2.5.9",
-        "version_normalized": "2.5.9.0",
+        "version": "v2.5.10",
+        "version_normalized": "2.5.10.0",
         "target-dir": "Symfony/Component/DomCrawler",
         "source": {
             "type": "git",
@@ -1237,8 +1287,8 @@
     },
     {
         "name": "symfony/browser-kit",
-        "version": "v2.5.9",
-        "version_normalized": "2.5.9.0",
+        "version": "v2.5.10",
+        "version_normalized": "2.5.10.0",
         "target-dir": "Symfony/Component/BrowserKit",
         "source": {
             "type": "git",
@@ -1294,18 +1344,18 @@
     },
     {
         "name": "symfony/console",
-        "version": "v2.5.9",
-        "version_normalized": "2.5.9.0",
+        "version": "v2.5.10",
+        "version_normalized": "2.5.10.0",
         "target-dir": "Symfony/Component/Console",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/Console.git",
-            "reference": "754f4b6de7b4a1d442f9b6a728bfb7adef54592c"
+            "reference": "f41807e67f00244f013bb96a66ac02f778a31209"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/Console/zipball/754f4b6de7b4a1d442f9b6a728bfb7adef54592c",
-            "reference": "754f4b6de7b4a1d442f9b6a728bfb7adef54592c",
+            "url": "https://api.github.com/repos/symfony/Console/zipball/f41807e67f00244f013bb96a66ac02f778a31209",
+            "reference": "f41807e67f00244f013bb96a66ac02f778a31209",
             "shasum": ""
         },
         "require": {
@@ -1319,7 +1369,7 @@
             "psr/log": "For using the console logger",
             "symfony/event-dispatcher": ""
         },
-        "time": "2015-01-06 17:40:45",
+        "time": "2015-01-25 04:37:39",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1351,8 +1401,8 @@
     },
     {
         "name": "symfony/css-selector",
-        "version": "v2.5.9",
-        "version_normalized": "2.5.9.0",
+        "version": "v2.5.10",
+        "version_normalized": "2.5.10.0",
         "target-dir": "Symfony/Component/CssSelector",
         "source": {
             "type": "git",
@@ -1404,8 +1454,8 @@
     },
     {
         "name": "symfony/finder",
-        "version": "v2.5.9",
-        "version_normalized": "2.5.9.0",
+        "version": "v2.5.10",
+        "version_normalized": "2.5.10.0",
         "target-dir": "Symfony/Component/Finder",
         "source": {
             "type": "git",
@@ -1453,22 +1503,25 @@
     },
     {
         "name": "symfony/debug",
-        "version": "v2.5.9",
-        "version_normalized": "2.5.9.0",
+        "version": "v2.5.10",
+        "version_normalized": "2.5.10.0",
         "target-dir": "Symfony/Component/Debug",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/Debug.git",
-            "reference": "672a71e72310099540dfb03da2da553896e88483"
+            "reference": "ed3019589cdadf32c521d1e181f9d72955645c67"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/Debug/zipball/672a71e72310099540dfb03da2da553896e88483",
-            "reference": "672a71e72310099540dfb03da2da553896e88483",
+            "url": "https://api.github.com/repos/symfony/Debug/zipball/ed3019589cdadf32c521d1e181f9d72955645c67",
+            "reference": "ed3019589cdadf32c521d1e181f9d72955645c67",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
+        },
+        "conflict": {
+            "symfony/http-kernel": ">=2.3,<2.3.24|~2.4.0|>=2.5,<2.5.9|>=2.6,<2.6.2"
         },
         "require-dev": {
             "symfony/class-loader": "~2.2",
@@ -1479,7 +1532,7 @@
             "symfony/http-foundation": "",
             "symfony/http-kernel": ""
         },
-        "time": "2015-01-03 21:12:45",
+        "time": "2015-01-16 14:51:58",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1511,18 +1564,18 @@
     },
     {
         "name": "symfony/http-foundation",
-        "version": "v2.5.9",
-        "version_normalized": "2.5.9.0",
+        "version": "v2.5.10",
+        "version_normalized": "2.5.10.0",
         "target-dir": "Symfony/Component/HttpFoundation",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/HttpFoundation.git",
-            "reference": "154d6c9ae8f7c27799a6119688dbd6026234441a"
+            "reference": "89c650efaca9540101004852d232c96672bbb91c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/154d6c9ae8f7c27799a6119688dbd6026234441a",
-            "reference": "154d6c9ae8f7c27799a6119688dbd6026234441a",
+            "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/89c650efaca9540101004852d232c96672bbb91c",
+            "reference": "89c650efaca9540101004852d232c96672bbb91c",
             "shasum": ""
         },
         "require": {
@@ -1531,7 +1584,7 @@
         "require-dev": {
             "symfony/expression-language": "~2.4"
         },
-        "time": "2015-01-03 11:12:44",
+        "time": "2015-02-01 09:36:16",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1566,18 +1619,18 @@
     },
     {
         "name": "symfony/event-dispatcher",
-        "version": "v2.6.3",
-        "version_normalized": "2.6.3.0",
+        "version": "v2.6.4",
+        "version_normalized": "2.6.4.0",
         "target-dir": "Symfony/Component/EventDispatcher",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/EventDispatcher.git",
-            "reference": "40ff70cadea3785d83cac1c8309514b36113064e"
+            "reference": "f75989f3ab2743a82fe0b03ded2598a2b1546813"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/40ff70cadea3785d83cac1c8309514b36113064e",
-            "reference": "40ff70cadea3785d83cac1c8309514b36113064e",
+            "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/f75989f3ab2743a82fe0b03ded2598a2b1546813",
+            "reference": "f75989f3ab2743a82fe0b03ded2598a2b1546813",
             "shasum": ""
         },
         "require": {
@@ -1594,7 +1647,7 @@
             "symfony/dependency-injection": "",
             "symfony/http-kernel": ""
         },
-        "time": "2015-01-05 14:28:40",
+        "time": "2015-02-01 16:10:57",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1626,18 +1679,18 @@
     },
     {
         "name": "symfony/http-kernel",
-        "version": "v2.5.9",
-        "version_normalized": "2.5.9.0",
+        "version": "v2.5.10",
+        "version_normalized": "2.5.10.0",
         "target-dir": "Symfony/Component/HttpKernel",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/HttpKernel.git",
-            "reference": "a218b9ba87b24c440e4e9cd171c880e83796a5bb"
+            "reference": "a28ec28c98e8f1db9b499fc449a5d33ec281ea2e"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/a218b9ba87b24c440e4e9cd171c880e83796a5bb",
-            "reference": "a218b9ba87b24c440e4e9cd171c880e83796a5bb",
+            "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/a28ec28c98e8f1db9b499fc449a5d33ec281ea2e",
+            "reference": "a28ec28c98e8f1db9b499fc449a5d33ec281ea2e",
             "shasum": ""
         },
         "require": {
@@ -1670,7 +1723,7 @@
             "symfony/dependency-injection": "",
             "symfony/finder": ""
         },
-        "time": "2015-01-07 12:32:08",
+        "time": "2015-02-02 09:26:53",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1702,24 +1755,24 @@
     },
     {
         "name": "symfony/process",
-        "version": "v2.5.9",
-        "version_normalized": "2.5.9.0",
+        "version": "v2.5.10",
+        "version_normalized": "2.5.10.0",
         "target-dir": "Symfony/Component/Process",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/Process.git",
-            "reference": "3309098ce4d9b5e44c04e51bf4541ea466fbe343"
+            "reference": "7b6632c849f87a062301e853f03f71d726520b58"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/Process/zipball/3309098ce4d9b5e44c04e51bf4541ea466fbe343",
-            "reference": "3309098ce4d9b5e44c04e51bf4541ea466fbe343",
+            "url": "https://api.github.com/repos/symfony/Process/zipball/7b6632c849f87a062301e853f03f71d726520b58",
+            "reference": "7b6632c849f87a062301e853f03f71d726520b58",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2015-01-05 20:58:03",
+        "time": "2015-01-25 04:37:39",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1751,18 +1804,18 @@
     },
     {
         "name": "symfony/routing",
-        "version": "v2.5.9",
-        "version_normalized": "2.5.9.0",
+        "version": "v2.5.10",
+        "version_normalized": "2.5.10.0",
         "target-dir": "Symfony/Component/Routing",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/Routing.git",
-            "reference": "47e350dadadabdf64c8dbab499a1132c567f9411"
+            "reference": "3a9c35ca312d8cb6a308b751f9a1cd92cd5d9277"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/Routing/zipball/47e350dadadabdf64c8dbab499a1132c567f9411",
-            "reference": "47e350dadadabdf64c8dbab499a1132c567f9411",
+            "url": "https://api.github.com/repos/symfony/Routing/zipball/3a9c35ca312d8cb6a308b751f9a1cd92cd5d9277",
+            "reference": "3a9c35ca312d8cb6a308b751f9a1cd92cd5d9277",
             "shasum": ""
         },
         "require": {
@@ -1783,7 +1836,7 @@
             "symfony/expression-language": "For using expression matching",
             "symfony/yaml": "For using the YAML loader"
         },
-        "time": "2015-01-05 08:51:41",
+        "time": "2015-01-13 14:58:43",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1821,18 +1874,18 @@
     },
     {
         "name": "symfony/security-core",
-        "version": "v2.5.9",
-        "version_normalized": "2.5.9.0",
+        "version": "v2.5.10",
+        "version_normalized": "2.5.10.0",
         "target-dir": "Symfony/Component/Security/Core",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/security-core.git",
-            "reference": "e0d8f52dbb7d6e6a5d8df26b56bc68d829c8d519"
+            "reference": "3a27d7b34ee62cb0fdf5ad970e7777912ef4722f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/security-core/zipball/e0d8f52dbb7d6e6a5d8df26b56bc68d829c8d519",
-            "reference": "e0d8f52dbb7d6e6a5d8df26b56bc68d829c8d519",
+            "url": "https://api.github.com/repos/symfony/security-core/zipball/3a27d7b34ee62cb0fdf5ad970e7777912ef4722f",
+            "reference": "3a27d7b34ee62cb0fdf5ad970e7777912ef4722f",
             "shasum": ""
         },
         "require": {
@@ -1854,7 +1907,7 @@
             "symfony/http-foundation": "",
             "symfony/validator": "For using the user password constraint"
         },
-        "time": "2015-01-05 20:58:03",
+        "time": "2015-01-25 04:37:39",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1886,8 +1939,8 @@
     },
     {
         "name": "symfony/translation",
-        "version": "v2.5.9",
-        "version_normalized": "2.5.9.0",
+        "version": "v2.5.10",
+        "version_normalized": "2.5.10.0",
         "target-dir": "Symfony/Component/Translation",
         "source": {
             "type": "git",
@@ -1944,8 +1997,8 @@
     },
     {
         "name": "symfony/filesystem",
-        "version": "v2.6.3",
-        "version_normalized": "2.6.3.0",
+        "version": "v2.6.4",
+        "version_normalized": "2.6.4.0",
         "target-dir": "Symfony/Component/Filesystem",
         "source": {
             "type": "git",
@@ -1992,242 +2045,24 @@
         "homepage": "http://symfony.com"
     },
     {
-        "name": "phpdocumentor/reflection-docblock",
-        "version": "2.0.3",
-        "version_normalized": "2.0.3.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-            "reference": "38743b677965c48a637097b2746a281264ae2347"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/38743b677965c48a637097b2746a281264ae2347",
-            "reference": "38743b677965c48a637097b2746a281264ae2347",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "3.7.*@stable"
-        },
-        "suggest": {
-            "dflydev/markdown": "1.0.*",
-            "erusev/parsedown": "~0.7"
-        },
-        "time": "2014-08-09 10:27:07",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "phpDocumentor": [
-                    "src/"
-                ]
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Mike van Riel",
-                "email": "mike.vanriel@naenius.com"
-            }
-        ]
-    },
-    {
-        "name": "symfony/class-loader",
-        "version": "v2.6.3",
-        "version_normalized": "2.6.3.0",
-        "target-dir": "Symfony/Component/ClassLoader",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/ClassLoader.git",
-            "reference": "deac802f76910708ab50d039806cfd1866895b52"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/ClassLoader/zipball/deac802f76910708ab50d039806cfd1866895b52",
-            "reference": "deac802f76910708ab50d039806cfd1866895b52",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "symfony/finder": "~2.0,>=2.0.5"
-        },
-        "time": "2015-01-05 14:28:40",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.6-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Symfony\\Component\\ClassLoader\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Symfony Community",
-                "homepage": "http://symfony.com/contributors"
-            },
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            }
-        ],
-        "description": "Symfony ClassLoader Component",
-        "homepage": "http://symfony.com"
-    },
-    {
-        "name": "barryvdh/laravel-ide-helper",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/barryvdh/laravel-ide-helper.git",
-            "reference": "7bc74b18447407448f36151f9703403138516a42"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/barryvdh/laravel-ide-helper/zipball/7bc74b18447407448f36151f9703403138516a42",
-            "reference": "7bc74b18447407448f36151f9703403138516a42",
-            "shasum": ""
-        },
-        "require": {
-            "illuminate/console": "4.x|5.0.x",
-            "illuminate/filesystem": "4.x|5.0.x",
-            "illuminate/support": "4.x|5.0.x",
-            "php": ">=5.3.0",
-            "phpdocumentor/reflection-docblock": "2.0.x",
-            "symfony/class-loader": "~2.3"
-        },
-        "require-dev": {
-            "doctrine/dbal": "~2.3"
-        },
-        "suggest": {
-            "doctrine/dbal": "Load information from the database about models for phpdocs (~2.3)"
-        },
-        "time": "2015-01-21 10:22:44",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.11-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Barryvdh\\LaravelIdeHelper\\": "src"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Barry vd. Heuvel",
-                "email": "barryvdh@gmail.com"
-            }
-        ],
-        "description": "Laravel IDE Helper, generates correct PHPDocs for all Facade classes, to improve auto-completion.",
-        "keywords": [
-            "autocomplete",
-            "codeintel",
-            "helper",
-            "ide",
-            "laravel",
-            "netbeans",
-            "phpdoc",
-            "phpstorm",
-            "sublime"
-        ]
-    },
-    {
-        "name": "artdarek/oauth-4-laravel",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/artdarek/oauth-4-laravel.git",
-            "reference": "d7226ea17932ee31143bb33b499e6f0aeb7d8ce2"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/artdarek/oauth-4-laravel/zipball/d7226ea17932ee31143bb33b499e6f0aeb7d8ce2",
-            "reference": "d7226ea17932ee31143bb33b499e6f0aeb7d8ce2",
-            "shasum": ""
-        },
-        "require": {
-            "lusitanian/oauth": "~0.3",
-            "php": ">=5.3"
-        },
-        "require-dev": {
-            "illuminate/support": "~4"
-        },
-        "time": "2015-01-08 16:40:21",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Artdarek\\OAuth": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Artdarek",
-                "email": "artdarek@gmail.com",
-                "role": "Developer"
-            }
-        ],
-        "description": "OAuth Service Provider for Laravel 4",
-        "homepage": "https://github.com/artdarek/oauth-4-laravel",
-        "keywords": [
-            "Lusitanian",
-            "laravel",
-            "oauth",
-            "php"
-        ]
-    },
-    {
         "name": "twitter/bootstrap",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/twbs/bootstrap.git",
-            "reference": "d5a2b27e1661f390e1f6cc00774f33effe0f03d3"
+            "reference": "391054fa2d50d0e19a2be852ca1a4bc0c356bb56"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/twbs/bootstrap/zipball/d5a2b27e1661f390e1f6cc00774f33effe0f03d3",
-            "reference": "d5a2b27e1661f390e1f6cc00774f33effe0f03d3",
+            "url": "https://api.github.com/repos/twbs/bootstrap/zipball/391054fa2d50d0e19a2be852ca1a4bc0c356bb56",
+            "reference": "391054fa2d50d0e19a2be852ca1a4bc0c356bb56",
             "shasum": ""
         },
         "replace": {
             "twitter/bootstrap": "self.version"
         },
-        "time": "2015-01-21 04:23:34",
+        "time": "2015-02-03 05:22:45",
         "type": "library",
         "extra": {
             "branch-alias": {
