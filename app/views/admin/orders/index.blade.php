@@ -16,30 +16,48 @@
         </a>
       </h4>
     </div>
-    <div id="filters" class="panel-collapse collapse">
+    <div id="filters" class="panel-collapse collapse
+    @if(Input::get('filters'))
+    in
+    @endif
+    ">
       <div class="panel-body">
-          {{ Form::open() }}
+          {{ Form::open(array('method' => 'get')) }}
       <ul>
           <li>Filter by IPRO:
               <select name="ipro">
-                  <option value="null">Select an ipro below</option>
+                  <option value="">Select an ipro below</option>
                 @foreach($ipros as $ipro)
-                  <option value="{{$ipro->id}}">{{$ipro->UID}}</option>
+
+                  <option value="{{$ipro->id}}"
+                      @if((Input::get('ipro')!= '') && (Input::get('ipro') == $ipro->id)){
+                           selected="selected";
+                      @endif
+                          >{{$ipro->UID}}</option>
                     @endforeach
               </select></li>
           <li>Filter by Status: <select name="status">
-                  <option value="null">Select a status below</option>
+                  <option value="">Select a status below</option>
                   @foreach($orderstatuses as $key => $value)
-                      <option value="{{$value}}">{{$key}}</option>
+                      <option value="{{$value}}"
+                              @if((Input::get('status')!= '') && (Input::get('status') == $value)){
+                                selected="selected";
+                              @endif
+                      >{{$key}}</option>
                   @endforeach
               </select></li>
           <li>Show all for a previous semester:<select name="semester">
-                  <option value="null">Select a semester below</option>
+                  <option value="">Select a semester below</option>
                   @foreach($semesters as $key => $value)
-                      <option value="{{$value}}">{{$key}}</option>
+                      <option value="{{$value}}"
+                              @if((Input::get('semester')!= '') && (Input::get('semester') == $value)){
+                                selected="selected";
+                              @endif
+                      >{{$key}}</option>
                   @endforeach
               </select> </li>
       </ul>
+          {{Form::hidden('filters',true)}}
           {{ Form::submit("Filter",array("class"=>"btn btn-primary"))}}
           {{ Form::close() }}
       </div>
@@ -68,6 +86,7 @@
             </tr>
         </tfoot>
         <tbody>
+
             @foreach($orders as $order)
             <tr>
                 <td>{{ $order->id }}</td>
@@ -78,6 +97,7 @@
                     </td>
             </tr>
         @endforeach
+
 </tbody>
 </table>
 </div>
@@ -88,7 +108,7 @@
 <script>
 $(document).ready( function () {
     $('#orderListing').DataTable({
-         "order": [[ 0, "desc" ]]
+        ordering:false,
     } );
 } );
 </script>

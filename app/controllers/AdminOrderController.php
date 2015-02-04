@@ -5,12 +5,26 @@ class AdminOrderController extends Controller {
     //Default route is to view all orders
     public function index(){
         //find the active semester
-        $activeSemester = Semester::where('Active','=',true)->limit(1)->lists('id');
         $filters = array();
-        $filters['ipro'] = Input::get("ipro");
-        $filters['status'] = Input::get("status");
-        $filters['semester'] = Input::get("semester");
-        $filters['description'] = Input::get("description");
+        if(Input::get("ipro") != ''){
+            $filters['ipro'] = intval(Input::get("ipro"));
+        }
+        if( Input::get("status") != ''){
+            $filters['status'] = intval(Input::get("status"));
+        }
+        if(Input::get("semester") != ''){
+            $filters['semester'] = Input::get("semester");
+        }
+        $activeSemester = null;
+        if(array_key_exists('semester',$filters)){
+            $activeSemester = Semester::where('id','=',$filters['semester'])->limit(1)->lists('id');
+        }else{
+            $activeSemester = Semester::where('Active','=',true)->limit(1)->lists('id');
+        }
+        if(count($activeSemester) == 0){
+            return Redirect::route('admin.orders')->with('error',array('The filtered semester does not exist'));
+        }
+
 
         //Get the projects in the semester
         $ipros = Project::where('Semester','=',$activeSemester[0])->get();
@@ -20,15 +34,34 @@ class AdminOrderController extends Controller {
         $semesters = DB::table("semesters")->orderBy("id","desc")->lists("id","name");
         View::share("semesters",$semesters);
         $projects = Project::where('Semester','=',$activeSemester[0])->lists('id');
+
         if(empty($projects)){
             $orders = array();
             View::share('orders',$orders);
         }else{
-            //We need to get the orders from this semester which are active or on status 1
-            $orders = Order::whereIn('ClassID',$projects)->where('status','=',1)->get();
+            //We need to get the orders from this semester and either apply filters or apply our default filter
+            $orders = null;
+
+            if(count($filters) != 0){
+                $orders = Order::whereIn('ClassID',$projects);
+                //Apply our filters
+                if(array_key_exists('ipro',$filters)){
+                    //apply the IPRO filter
+                    $orders = $orders->where('ClassID','=',$filters['ipro']);
+                }
+                if(array_key_exists('status',$filters)){
+                    $orders = $orders->where('status','=',$filters['status']);
+                }
+                $orders = $orders->orderBy('id','desc')->get();
+            }else{
+                $orders = Order::whereIn('ClassID',$projects)->where('status','!=',4)->orderBy('status')->orderBy('id','desc')->get();
+            }
+
             View::share('orders',$orders);
+
         }
         View::share("filters",$filters);
+
         return View::make('admin.orders.index');
     }
     
