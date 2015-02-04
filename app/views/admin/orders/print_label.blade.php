@@ -61,6 +61,4 @@
         $("#bc{{ $item->barcode }}").JsBarcode("{{$item->barcode}}",{format:"CODE39",displayValue:true,fontSize:20,quite:5, width:1,height:35});
         @endforeach
     </script>
-    
-    
 </html>

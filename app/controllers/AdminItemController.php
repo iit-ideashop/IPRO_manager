@@ -168,8 +168,10 @@ class AdminItemController extends BaseController{
         //Grab the item listing from the array
         $itemsCollection = Item::whereIn('id',$items)->get();
         //Loop through the item collection and generate barcodes for items that need them
+
         foreach($itemsCollection as $item){
             //Check that the item has a barcode
+
             if($item->barcode == NULL){
                 //Make le barcode, and if we make le barcode we should also change the item status to
                 $barcode = new Barcode;
@@ -178,7 +180,8 @@ class AdminItemController extends BaseController{
                 $barcode->save();
                 $item->barcode = $barcode->id;
             }
-            $item->Status = 4;
+
+            $item->changeStatus(4);
             $item->save();
         }
         View::share('items',$itemsCollection);

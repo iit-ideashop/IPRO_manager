@@ -68,7 +68,6 @@ class Order extends Ardent
         $complete = 0;
         $totalitems = 0;
         foreach ($items as $item) {
-            print $item->Status;
             //If ordered
             if ($item->Status == 3) {
                 $ordered++;
