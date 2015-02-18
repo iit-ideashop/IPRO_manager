@@ -34,7 +34,7 @@
         <input type="hidden" name="pickupid" value="{{$pickup->id}}">
         <input type="hidden" name="AuthorizeCode" value="{{$pickup->AuthorizeCode}}">
         <div class="sig sigWrapper">
-            <canvas class="pad" id="sigpad" width="550" height="200"></canvas>
+            <canvas class="pad" id="sigpad" style="border: dashed 1px black" width="550" height="200"></canvas>
             <input type="hidden" name="signatureData" id="sigpadoutput" class="output">
         </div>
     {{Form::close()}}
@@ -58,12 +58,13 @@
             $("#sigpadoutput").attr("value",$(".sigPad").signaturePad().getSignatureImage());
             $("#completePickup").submit();
         }
-        var options = {
-            drawOnly : true,
-            lineWidth: 0,
-            lineMargin: 0
-        };
+
         $(document).ready(function() {
+            var options = {
+                drawOnly : true,
+                lineWidth: 0,
+                lineMargin: 0
+            };
             $('.sigPad').signaturePad(options);
 
             var img = new Image();
@@ -72,6 +73,7 @@
             var c=document.getElementById("sigpad");
             var ctx=c.getContext("2d");
             ctx.drawImage(img,0,0,550,200);
+
         });
     </script>
 @stop
