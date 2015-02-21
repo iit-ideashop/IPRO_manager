@@ -1,6 +1,11 @@
 @extends('layouts.registration')
+@section('javascript')
+    <script src="{{ URL::asset('packages/bootstrap/js/fastclick.js') }}"></script>
+@stop
 @section('javascript_bottom')
     <script>
+        var attachFastClick = Origami.fastclick;
+        attachFastClick(document.body);
         function addNumber(element){
             document.getElementById('PINbox').value = document.getElementById('PINbox').value+element.value;
             if(document.getElementById('PINbox').value.length == 4){
