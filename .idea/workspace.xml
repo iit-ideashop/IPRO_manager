@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b858a7f-31e6-4e6e-8b37-6847a79df4ab" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/packages/bootstrap/js/fastclick.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/KioskController.php" afterPath="$PROJECT_DIR$/app/controllers/KioskController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/storage/logs/laravel.log" afterPath="$PROJECT_DIR$/app/storage/logs/laravel.log" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/kiosk/showKiosk.blade.php" afterPath="$PROJECT_DIR$/app/views/kiosk/showKiosk.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/kiosk/pickupPackage.blade.php" afterPath="$PROJECT_DIR$/app/views/kiosk/pickupPackage.blade.php" />
     </list>
     <ignored path="IPRO_API.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -51,11 +48,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="showKiosk.blade.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/views/kiosk/showKiosk.blade.php">
+      <file leaf-file-name="pickupPackage.blade.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/views/kiosk/pickupPackage.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.13968958" vertical-offset="0" max-vertical-offset="1782">
-              <caret line="7" column="39" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="39" />
+            <state vertical-scroll-proportion="0.68070954" vertical-offset="664" max-vertical-offset="1566">
+              <caret line="71" column="30" selection-start-line="71" selection-start-column="30" selection-end-line="71" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -133,13 +130,13 @@
         <option value="$PROJECT_DIR$/app/models/Item.php" />
         <option value="$PROJECT_DIR$/app/models/Order.php" />
         <option value="$PROJECT_DIR$/app/controllers/AdminItemController.php" />
-        <option value="$PROJECT_DIR$/app/views/kiosk/pickupPackage.blade.php" />
         <option value="$PROJECT_DIR$/app/models/Project.php" />
         <option value="$PROJECT_DIR$/app/views/admin/projects/overview.blade.php" />
         <option value="$PROJECT_DIR$/app/views/project/index.blade.php" />
         <option value="$PROJECT_DIR$/app/controllers/KioskController.php" />
         <option value="$PROJECT_DIR$/public/packages/bootstrap/js/fastclick.js" />
         <option value="$PROJECT_DIR$/app/views/kiosk/showKiosk.blade.php" />
+        <option value="$PROJECT_DIR$/app/views/kiosk/pickupPackage.blade.php" />
       </list>
     </option>
   </component>
@@ -1010,22 +1007,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/KioskController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="646" max-vertical-offset="1548">
-          <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/kiosk/pickupPackage.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="664" max-vertical-offset="1566">
-          <caret line="72" column="12" selection-start-line="72" selection-start-column="12" selection-end-line="72" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/layouts/registration.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="900">
@@ -1038,6 +1019,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.13968958" vertical-offset="0" max-vertical-offset="1782">
           <caret line="7" column="39" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/KioskController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="646" max-vertical-offset="1548">
+          <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/kiosk/pickupPackage.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.68070954" vertical-offset="664" max-vertical-offset="1566">
+          <caret line="71" column="30" selection-start-line="71" selection-start-column="30" selection-end-line="71" selection-end-column="30" />
           <folding />
         </state>
       </provider>
