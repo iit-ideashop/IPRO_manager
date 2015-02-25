@@ -41,7 +41,7 @@ class housekeeping extends Command {
 		$checks['open_orders'] = false;
 		$checks['open_budget_request'] = false;
 		$checks['LabTagItems'] = false;
-
+		$checks['sendEmail'] = false;
 		//Let's pull the orders from the DB and make sure that there are no open orders
 		//Start by pulling semester
 		$semester = Semester::where('active','=',true)->first();//Pull the last active semester
@@ -67,15 +67,22 @@ class housekeeping extends Command {
 		if(!$items->isEmpty()){
 			$checks['LabTagItems'] = true;
 		}
-		//Send that admin email thing...
-
-		$admins = User::Where("isAdmin","=",true)->get();
-		Mail::send('emails.housekeeping', array('checks'=>$checks), function($message) use($admins){
-			foreach($admins as $admin){
-				$message->to($admin->Email,$admin->FirstName.' '.$admin->LastName);
+		//Send that admin email thing if there are any tasks needing work
+		foreach($checks as $key=>$val){
+			if($val){
+				$checks['sendEmail'] = true;
 			}
-			$message->subject('IPRO Manager action required!');
-		});
+		}
+		if($checks['sendEmail']) {
+			$admins = User::Where("isAdmin", "=", true)->get();
+			Mail::send('emails.housekeeping', array('checks' => $checks), function ($message) use ($admins) {
+				foreach ($admins as $admin) {
+					$message->to($admin->Email, $admin->FirstName . ' ' . $admin->LastName);
+				}
+				$message->subject('IPRO Manager action required!');
+			});
+			$this->info('sending admin email');
+		}
 		$this->info('successfully completed housekeeping script');
 		return true;
 	}
