@@ -17,10 +17,10 @@ class KioskController extends BaseController{
         }
         //Use the pincode to find the appropriate pickup request
         $pickup = Pickup::where("RetreiveCode","=",$pincode)->where("Completed","=",false)->get();
-        $pickup = $pickup[0];
-        if($pickup == null) {
+        if($pickup->isEmpty()) {
             return Redirect::route('kiosk.showKiosk')->with('error', array('The specified pickup code does not exist'));
         }
+        $pickup = $pickup[0];
         //Next we proceed to pull the items from the pickup
         //Lets take the pickup and find the pickup's items.
         $pickupItems = $pickup->PickupItems()->lists("ItemID");

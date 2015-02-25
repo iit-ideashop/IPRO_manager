@@ -67,7 +67,7 @@
             };
             $('.sigPad').signaturePad(options);
 
-            var img = new Image();
+            var img = document.createElement("img");
             var imgData = "data:image/png;base64,{{$sigpad}}";
             img.src = imgData;
             var c=document.getElementById("sigpad");
