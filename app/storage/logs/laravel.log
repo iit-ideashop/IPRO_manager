@@ -6618,3 +6618,80 @@ Stack trace:
 #10 /Applications/XAMPP/xamppfiles/htdocs/IPRO_API/public/index.php(49): Illuminate\Foundation\Application->run()
 #11 /Applications/XAMPP/xamppfiles/htdocs/IPRO_API/server.php(19): require_once('/Applications/X...')
 #12 {main} [] []
+[2015-02-25 13:42:36] local.ERROR: exception 'RuntimeException' with message 'Not enough arguments.' in C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\symfony\console\Symfony\Component\Console\Input\Input.php:77
+Stack trace:
+#0 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\symfony\console\Symfony\Component\Console\Command\Command.php(248): Symfony\Component\Console\Input\Input->validate()
+#1 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\laravel\framework\src\Illuminate\Console\Command.php(100): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#2 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\symfony\console\Symfony\Component\Console\Application.php(889): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#3 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\symfony\console\Symfony\Component\Console\Application.php(193): Symfony\Component\Console\Application->doRunCommand(Object(housekeeping), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#4 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\symfony\console\Symfony\Component\Console\Application.php(124): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#5 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\artisan(59): Symfony\Component\Console\Application->run()
+#6 {main} [] []
+[2015-02-25 13:43:00] local.ERROR: exception 'BadMethodCallException' with message 'Call to undefined method Illuminate\Database\Query\Builder::last()' in C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:2170
+Stack trace:
+#0 [internal function]: Illuminate\Database\Query\Builder->__call('last', Array)
+#1 [internal function]: Illuminate\Database\Query\Builder->last()
+#2 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php(935): call_user_func_array(Array, Array)
+#3 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\app\commands\housekeeping.php(42): Illuminate\Database\Eloquent\Builder->__call('last', Array)
+#4 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\app\commands\housekeeping.php(42): LaravelBook\Ardent\Builder->last()
+#5 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\laravel\framework\src\Illuminate\Console\Command.php(112): housekeeping->fire()
+#6 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\symfony\console\Symfony\Component\Console\Command\Command.php(253): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#7 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\laravel\framework\src\Illuminate\Console\Command.php(100): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#8 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\symfony\console\Symfony\Component\Console\Application.php(889): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#9 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\symfony\console\Symfony\Component\Console\Application.php(193): Symfony\Component\Console\Application->doRunCommand(Object(housekeeping), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#10 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\symfony\console\Symfony\Component\Console\Application.php(124): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#11 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\artisan(59): Symfony\Component\Console\Application->run()
+#12 {main} [] []
+[2015-02-25 13:43:14] local.ERROR: exception 'ErrorException' with message 'Array to string conversion' in C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\laravel\framework\src\Illuminate\Console\Command.php:286
+Stack trace:
+#0 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\laravel\framework\src\Illuminate\Console\Command.php(286): Illuminate\Exception\Handler->handleError(8, 'Array to string...', 'C:\Users\Bart\D...', 286, Array)
+#1 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\app\commands\housekeeping.php(45): Illuminate\Console\Command->info(Array)
+#2 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\laravel\framework\src\Illuminate\Console\Command.php(112): housekeeping->fire()
+#3 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\symfony\console\Symfony\Component\Console\Command\Command.php(253): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#4 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\laravel\framework\src\Illuminate\Console\Command.php(100): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#5 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\symfony\console\Symfony\Component\Console\Application.php(889): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#6 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\symfony\console\Symfony\Component\Console\Application.php(193): Symfony\Component\Console\Application->doRunCommand(Object(housekeeping), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#7 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\symfony\console\Symfony\Component\Console\Application.php(124): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#8 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\artisan(59): Symfony\Component\Console\Application->run()
+#9 {main} [] []
+[2015-02-25 13:50:59] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'syntax error, unexpected 'return' (T_RETURN), expecting variable (T_VARIABLE) or '$'' in C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\app\commands\housekeeping.php:63
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2015-02-25 13:51:28] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'syntax error, unexpected 'return' (T_RETURN), expecting variable (T_VARIABLE) or '$'' in C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\app\commands\housekeeping.php:63
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2015-02-25 13:51:56] local.ERROR: exception 'BadMethodCallException' with message 'Call to undefined method Illuminate\Database\Query\Builder::BudgetRequests()' in C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:2170
+Stack trace:
+#0 [internal function]: Illuminate\Database\Query\Builder->__call('BudgetRequests', Array)
+#1 [internal function]: Illuminate\Database\Query\Builder->BudgetRequests()
+#2 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php(935): call_user_func_array(Array, Array)
+#3 [internal function]: Illuminate\Database\Eloquent\Builder->__call('BudgetRequests', Array)
+#4 [internal function]: LaravelBook\Ardent\Builder->BudgetRequests()
+#5 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Relations\Relation.php(281): call_user_func_array(Array, Array)
+#6 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\app\commands\housekeeping.php(50): Illuminate\Database\Eloquent\Relations\Relation->__call('BudgetRequests', Array)
+#7 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\app\commands\housekeeping.php(50): Illuminate\Database\Eloquent\Relations\HasMany->BudgetRequests()
+#8 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\laravel\framework\src\Illuminate\Console\Command.php(112): housekeeping->fire()
+#9 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\symfony\console\Symfony\Component\Console\Command\Command.php(253): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#10 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\laravel\framework\src\Illuminate\Console\Command.php(100): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#11 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\symfony\console\Symfony\Component\Console\Application.php(889): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#12 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\symfony\console\Symfony\Component\Console\Application.php(193): Symfony\Component\Console\Application->doRunCommand(Object(housekeeping), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#13 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\symfony\console\Symfony\Component\Console\Application.php(124): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#14 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\artisan(59): Symfony\Component\Console\Application->run()
+#15 {main} [] []
+[2015-02-25 13:52:44] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Call to undefined method Illuminate\Database\Eloquent\Collection::BudgetRequests()' in C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\app\commands\housekeeping.php:51
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2015-02-25 13:57:21] local.ERROR: exception 'ErrorException' with message 'Undefined variable: account_ids' in C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\app\commands\housekeeping.php:51
+Stack trace:
+#0 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\app\commands\housekeeping.php(51): Illuminate\Exception\Handler->handleError(8, 'Undefined varia...', 'C:\Users\Bart\D...', 51, Array)
+#1 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\laravel\framework\src\Illuminate\Console\Command.php(112): housekeeping->fire()
+#2 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\symfony\console\Symfony\Component\Console\Command\Command.php(253): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#3 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\laravel\framework\src\Illuminate\Console\Command.php(100): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#4 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\symfony\console\Symfony\Component\Console\Application.php(889): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#5 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\symfony\console\Symfony\Component\Console\Application.php(193): Symfony\Component\Console\Application->doRunCommand(Object(housekeeping), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#6 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\vendor\symfony\console\Symfony\Component\Console\Application.php(124): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#7 C:\Users\Bart\Documents\NetBeansProjects\IPRO_manager\artisan(59): Symfony\Component\Console\Application->run()
+#8 {main} [] []
