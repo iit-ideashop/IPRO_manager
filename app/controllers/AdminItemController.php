@@ -105,7 +105,6 @@ class AdminItemController extends BaseController{
             case 3://Ordered
                 Mail::send('emails.orderOrdered', array('person'=>$user,'order'=>$order,'items'=>$itemCollection), function($message) use($user){
                     $message->to($user->Email,$user->FirstName.' '.$user->LastName);
-                    $message->bcc("rkuprys@iit.edu", "Rima Kuprys, IPRO Overlord");
                     $message->subject('IPRO order purchased!');
                 });
                 break;
