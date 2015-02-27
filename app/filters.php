@@ -137,3 +137,29 @@ Route::filter('iit_user', function(){
         return Redirect::to('/authenticate');
     }
 });
+
+Route::filter("project_enrolled", function($route){
+    $project_id = $route->getParameter("projectid");
+    $project = Project::find($project_id);
+    if($project == null){
+       return Redirect::route('dashboard')->with("error",array("The specified project does not exist"));
+    }
+    //Now to check for access
+    if(!$project->isEnrolled()){
+        return Redirect::route('dashboard')->with("error",array("You are not enrolled in that project"));
+    }
+});
+
+Route::filter("project_instructor", function($route){
+    $project_id = $route->getParameter("projectid");
+    $project = Project::find($project_id);
+    if($project == null){
+        return Redirect::route('dashboard')->with("error",array("The specified project does not exist"));
+    }
+    //Now to check for access
+    if($project->getAccessLevel() == 0){//Not enrolled
+        return Redirect::route('dashboard')->with("error",array("You do not have sufficient privileges to view that page"));
+    }elseif($project->getAccessLevel() < 2){
+        return Redirect::route('project.dashboard', $project->id)->with("error",array("You do not have sufficient privileges to view that page"));
+    }
+});

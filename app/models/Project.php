@@ -32,7 +32,7 @@ class Project extends Ardent {
         return $this->hasManyThrough('OrderNote','Order','ClassID','OrderID');
     }
     public function subProjects(){
-        return $this->hasMany('Project','id','ParentID');
+        return $this->hasMany('Project','ParentClass');
     }
 
     public function parentProject(){

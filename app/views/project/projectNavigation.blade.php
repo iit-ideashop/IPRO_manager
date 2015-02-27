@@ -22,7 +22,7 @@
                             <li><a href="#">New Order</a></li>
                             <li><a href="#">New Budget Request</a></li>
                             <li><a href="#"></a></li>
-                            @if($class->getAccessLevel() == 3)
+                            @if($class->getAccessLevel() > 1)
                                 <li class="dropdown-header">Instructor Actions</li>
                                 <li><a href="{{ URL::route('project.groupmanager',$class->id) }}">Group Management</a></li>
                             @endif
