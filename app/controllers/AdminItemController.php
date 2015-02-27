@@ -104,7 +104,8 @@ class AdminItemController extends BaseController{
         switch($newStatus){
             case 3://Ordered
                 Mail::send('emails.orderOrdered', array('person'=>$user,'order'=>$order,'items'=>$itemCollection), function($message) use($user){
-                    $message->to($user->Email,$user->FirstName.' '.$user->LastName)->subject('IPRO order purchased!');
+                    $message->to($user->Email,$user->FirstName.' '.$user->LastName);
+                    $message->subject('IPRO order purchased!');
                 });
                 break;
             case 4://Received

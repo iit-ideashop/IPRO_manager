@@ -34,6 +34,14 @@ Route::group(array('before'=>'iit_user'),function(){
         Route::post('{id}/orders/new',array('as'=>'project.order.newProcess','uses'=>'OrderController@newOrderProcess'))->where(array('id' => '[0-9]+'));
         Route::get('{projectid}/orders/{orderid}',array("as"=>"project.order.view","uses"=>"OrderController@viewOrder"))->where(array('projectid' => '[0-9]+'))->where(array('orderid' => '[0-9]+'));
         Route::get('{projectid}/groupmanager', array('as'=>'project.groupmanager','uses'=>'ProjectController@groupManager'))->where(array('projectid' => '[0-9]+'));
+        Route::group(array('prefix' => 'api'), function(){
+            Route::get('getGroups/{projectid}', array("as"=>"project.api.getGroups", "uses" => "ProjectAPIController@getGroups"))->where(array('projectid' => '[0-9]+'));
+            Route::post('addGroup/{projectid}', array("as"=>"project.api.addGroup", "uses" => "ProjectAPIController@addGroup"))->where(array('projectid' => '[0-9]+'));
+            Route::post('removeGroup/{projectid}', array("as"=>"project.api.removeGroup", "uses" => "ProjectAPIController@removeGroup"))->where(array('projectid' => '[0-9]+'));
+            Route::post('enrollStudent/{projectid}', array("as"=>"project.api.enrollStudent", "uses" => "ProjectAPIController@enrollStudent"))->where(array('projectid' => '[0-9]+'));
+            Route::post('dropStudent/{projectid}', array("as"=>"project.api.dropStudent", "uses" => "ProjectAPIController@dropStudent"))->where(array('projectid' => '[0-9]+'));
+            Route::post('transferFunds/{projectid}', array("as"=>"project.api.transferFunds", "uses" => "ProjectAPIController@transferFunds"))->where(array('projectid' => '[0-9]+'));
+        });
     });
     
     Route::group(array('prefix'=>'api'), function(){

@@ -156,8 +156,12 @@ class OrderController extends BaseController {
         }
         //all items saved, order created, redirect to project page with success message
         $account->Withdrawl('ORDER',$order->OrderTotal,$order->id);
-        Mail::send('emails.orderCreate', array('person'=>$order->User()->first(),'order'=>$order,'items'=>$order->Items()->get()), function($message){
-            $message->to(Auth::user()->Email,Auth::user()->FirstName.' '.Auth::user()->LastName)->subject('IPRO Order Received!');
+        Mail::send('emails.orderCreate', array('person'=>$order->User()->first(),'order'=>$order,'items'=>$order->Items()->get(), 'project'=>$project), function($message){
+            $message->to(Auth::user()->Email,Auth::user()->FirstName.' '.Auth::user()->LastName);
+            $message->to("rkuprys@iit.edu", "Rima Kuprys, IPRO Purchasing Overlord");
+            $message->subject('IPRO Order Received!');
+            $headers = $message->getHeaders();
+            $headers->addTextHeader('X-MC-PreserveRecipients', 'false');
         });
         return Redirect::to('/project/'.$id)->with('success',array('Order Successfully created!'));
             
