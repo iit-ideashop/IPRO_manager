@@ -27,10 +27,13 @@ Route::group(array('before'=>'iit_user'),function(){
     Route::get('/help',array('as' => 'help', 'uses' =>'HomeController@showHelp'));
     //Project Route group
     Route::group(array('prefix' => 'project'), function(){
-        Route::get('{id}', 'ProjectController@Index');
-        Route::get('{id}/orders/new', 'OrderController@newOrder'); 
-        Route::post('{id}/orders/new','OrderController@newOrderProcess');
+        Route::get('{id}', array('as'=>'project.dashboard','uses'=>'ProjectController@Index'))->where(array('id' => '[0-9]+'));
+        Route::get('{id}/orders', array('as'=>'project.orders', 'uses'=>'ProjectController@showOrders'))->where(array('id' => '[0-9]+'));
+        Route::get('{id}/roster', array('as'=>'project.roster', 'uses'=>'ProjectController@showRoster'))->where(array('id' => '[0-9]+'));
+        Route::get('{id}/orders/new',array('as'=>'project.order.new','uses'=>'OrderController@newOrder'))->where(array('id' => '[0-9]+'));
+        Route::post('{id}/orders/new',array('as'=>'project.order.newProcess','uses'=>'OrderController@newOrderProcess'))->where(array('id' => '[0-9]+'));
         Route::get('{projectid}/orders/{orderid}',array("as"=>"project.order.view","uses"=>"OrderController@viewOrder"))->where(array('projectid' => '[0-9]+'))->where(array('orderid' => '[0-9]+'));
+        Route::get('{projectid}/groupmanager', array('as'=>'project.groupmanager','uses'=>'ProjectController@groupManager'))->where(array('projectid' => '[0-9]+'));
     });
     
     Route::group(array('prefix'=>'api'), function(){

@@ -34,6 +34,7 @@ class Project extends Ardent {
     public function subProjects(){
         return $this->hasMany('Project','id','ParentID');
     }
+
     public function parentProject(){
         return $this->belongsTo('Project','ParentID');
     }
@@ -47,5 +48,26 @@ class Project extends Ardent {
         //Before we save we have to make sure the modified by is updated
         $this->modifiedBy = Auth::id();
     }
+
+    //This function checks that the logged in user is enrolled in the class he/she is trying to edit or do things to
+    public function isEnrolled(){
+        $enrollment = PeopleProject::where('UserID','=',Auth::id())->where('ClassID','=',$this->id)->get();
+        if($enrollment->isEmpty()){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public function getAccessLevel(){
+        //Returns the logged in users accessType for the project
+        $accessType = PeopleProject::where('UserID','=',Auth::id())->where('ClassID','=',$this->id)->get();
+        if($accessType->isEmpty()){
+            return 0;
+        }else{
+            return $accessType[0]->AccessType;
+        }
+    }
+
 }
 

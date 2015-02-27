@@ -1,4 +1,4 @@
-<h2 class="sub-header">Orders  <a href="<?php echo URL::to('project/'.$selected_class.'/orders/new'); ?>" class="btn btn-default">New</a></h2>
+<h2 class="sub-header">Orders  <a href="<?php echo URL::route('project.order.new',$class->id); ?>" class="btn btn-default">New</a></h2>
           <div class="table-responsive">
             <table class="table table-striped" id="Orders">
               <thead>
@@ -17,7 +17,7 @@
                   <td>Order: <?php echo $order->id; ?></td>
                   <td><?php echo $order->Description; ?></td>
                   <td>Status: <?php echo $order->getStatus(); ?></td>
-                  <td><a class="btn btn-default" href="<?php echo URL::to('/project/'.$selected_class.'/orders/'.$order->id); ?>">View</a></td>
+                  <td><a class="btn btn-default" href="<?php echo URL::route('project.order.view',array('projectid'=>$class->id, 'orderid'=>$order->id)); ?>">View</a></td>
                   </tr>
                     <?php endforeach; ?>
                 </tbody>

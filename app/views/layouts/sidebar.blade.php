@@ -3,12 +3,12 @@
 <div class="col-sm-3 col-md-2 sidebar">
             <p>Enrolled IPROs</p>
           <ul class="nav nav-sidebar">
-            @foreach ($navigation['classes'] as $class)
+            @foreach ($navigation['classes'] as $project)
                 <li  
-                @if ($class->id == @$selected_class)
+                @if ($project->id == @$class->id)
                    class="active"
                 @endif
-                        ><a href="/project/{{ $class->id}}">{{ $class->Name }}</a></li>
+                        ><a href="/project/{{ $project->id}}">{{ $project->Name }}</a></li>
             @endforeach
           </ul>
             @if(isset($navigation['admin']))
