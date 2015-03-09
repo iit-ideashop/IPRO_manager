@@ -8,3 +8,5 @@ composer.lock
 Thumbs.db
 _ide_helper.php
 .idea/*
+.idea/workspace.xml
+app/storage/logs/laravel.log

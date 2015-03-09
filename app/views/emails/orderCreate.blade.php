@@ -9,6 +9,7 @@
 <table class="tableBlue" width="100%" cellpadding="3px" cellspacing="3px">
 <tr>
 <td>
+<p>Project: {{ $project->UID }}</p>
 <p>Order Name: {{ $order->Description }}</p>
 <p>Order Total: ${{ number_format($order->OrderTotal,2)}}</p>
 <p>Order Placed: {{ date('D F jS Y, g:i a',strtotime($order->created_at)) }}</p>
