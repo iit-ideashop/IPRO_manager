@@ -25,6 +25,20 @@ class ProjectAPIController extends BaseController{
 
     }
 
+    public function getStudents($projectid){
+        //Pull down the project
+        $project = Project::where('id','=',$projectid)->first();
+        //Pull the users
+        $students = $project->Users()->get();
+        //Package it up in a different array
+        $studentArray = array();
+        foreach($students as $student){
+            array_push($studentArray, array($student->id,$student->FirstName,$student->LastName,$student->Email));
+        }
+        return Response::json($studentArray,$status=200);
+
+    }
+
     public function addGroup(){
 
     }
