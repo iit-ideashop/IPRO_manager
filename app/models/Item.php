@@ -59,6 +59,7 @@ class Item extends Ardent {
          default:
              $orderNote->Notes = 'Status changed to '.$this->getStatus();
         }
+        $this->save();
         $orderNote->save();
         
     }

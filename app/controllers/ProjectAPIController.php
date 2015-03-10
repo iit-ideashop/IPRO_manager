@@ -39,7 +39,13 @@ class ProjectAPIController extends BaseController{
 
     }
 
-    public function addGroup(){
+    public function addGroup($projectid){
+        //Test the jquery ajax code
+        $groupUID = Input::get("groupUID");
+        $groupName = Input::get("groupName");
+        $groupDesc = Input::get("groupDesc");
+        //Now let's take the data and make a new group
+        $project = new Project;
 
     }
 
