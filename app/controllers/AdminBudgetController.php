@@ -57,7 +57,7 @@ class AdminBudgetController extends BaseController{
         //must provide request id, comments and budget approval
         //Post data
         $comment = Input::get('requestComment');
-        $amount = floatval(Input::get('budgetAmount'));
+        $amount = floatval(str_replace(",","",Input::get('budgetAmount')));
         $budgetID = Input::get('requestID');
         //Pull the budget request
         $request = BudgetRequest::find($budgetID);
