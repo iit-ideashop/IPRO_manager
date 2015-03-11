@@ -96,7 +96,6 @@ class AdminItemController extends BaseController{
         //Now we need to take each item, update the status, save it, create an email listing and we are in business
         foreach($itemCollection as $item){
             $item->changeStatus($newStatus);
-            $item->save();
         }
         $order = Order::find($orderID);
         $user = $order->User()->first();

@@ -4,9 +4,14 @@
 class OrderController extends BaseController {
 
     public function newOrder($id){
+
         //We know the project id this order is being created for
         //Let's pull the project id and the user info that we have
         $project = Project::find($id);
+        //Make sure that the user is enrolled
+        if(!$project->isEnrolled()){
+            return Redirect::route('dashboard')->with('error',array('You must be enrolled in the class to see that page'));
+        }
         //User is already available
         //Grab the acct info
         $account = $project->Account()->first();
@@ -83,6 +88,9 @@ class OrderController extends BaseController {
         //All items have been validated, we know they will enter db without a problem
         //Next we need to check the account to make sure the account can cover this purchase
         $project = Project::find($id);
+        if(!$project->isEnrolled()){
+            return Redirect::route('dashboard')->with('error',array('You must be enrolled in the class to place an order'));
+        }
         $account = $project->Account()->first();
         if($grandTotal > $account->Balance){
             //Whoops, a bit over budget
@@ -162,6 +170,9 @@ class OrderController extends BaseController {
     public function viewOrder($projectid,$orderid){
         //in the function we are going to show the user the order and project. First we confirm the users enrollment in the project.
         $project = Project::find(intval($projectid));
+        if(!$project->isEnrolled()){
+            return Redirect::route('dashboard')->with('error',array('You must be enrolled in the class to view that page'));
+        }
         //lets see if the person is enrolled in the project
         $projusers = $project->Users()->where('UserID',"=",Auth::id())->get();
         if($projusers->isEmpty()){

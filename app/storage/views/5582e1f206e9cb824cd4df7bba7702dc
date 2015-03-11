@@ -3,12 +3,12 @@
 <div class="col-sm-3 col-md-2 sidebar">
             <p>Enrolled IPROs</p>
           <ul class="nav nav-sidebar">
-            <?php foreach($navigation['classes'] as $class): ?>
+            <?php foreach($navigation['classes'] as $project): ?>
                 <li  
-                <?php if($class->id == @$selected_class): ?>
+                <?php if($project->id == @$class->id): ?>
                    class="active"
                 <?php endif; ?>
-                        ><a href="/project/<?php echo $class->id; ?>"><?php echo $class->Name; ?></a></li>
+                        ><a href="/project/<?php echo $project->id; ?>"><?php echo $project->Name; ?></a></li>
             <?php endforeach; ?>
           </ul>
             <?php if(isset($navigation['admin'])): ?>
