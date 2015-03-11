@@ -13,7 +13,7 @@ class AdminAccountController extends BaseController{
         return View::make('admin.accounts.editor');
     }
     
-    function newGLEntry($accountID){
+    function newGLEntry($projectid){
         //We need to create a new account GL entry for the speicified account
         $gl = new ledgerEntry;
         //Grab the posted entry type
@@ -30,7 +30,7 @@ class AdminAccountController extends BaseController{
         //Let's get the dollars
         $money = floatval(Input::get('amount'));
         $money = number_format($money,2);
-        $account = Account::find($accountID);
+        $account = Account::where('ClassID','=',$projectid)->first();
         //Let's make it happen
         if($cd == "CREDIT"){
             //Give the account monies
