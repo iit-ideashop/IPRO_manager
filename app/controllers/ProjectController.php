@@ -7,11 +7,11 @@ class ProjectController extends BaseController{
 
         $class = Project::find($id);
         //Let's get this projects account
-        $account = Account::where('ClassID','=',$class->id)->get();
+        $account = $class->Account()->get();
         if($account->isEmpty()){
             $account = new Account;
-            $account->Balance = 0.00;
-            Session::flash('error',array('Your project is missing a spending account. Please contact the administrator to setup a spending account'));
+            $account->ClassID = $class->id;
+            $account->save();
         }else{
             //Once we have the class we need to pull the budgets for the class
             $account = $account[0];//Grab only 1 account
@@ -34,11 +34,11 @@ class ProjectController extends BaseController{
     public function showOrders($id){
         $class = Project::find($id);
         //Let's get this projects account
-        $account = Account::where('ClassID','=',$class->id)->get();
+        $account = $class->Account()->get();
         if($account->isEmpty()){
             $account = new Account;
-            $account->Balance = 0.00;
-            Session::flash('error',array('Your project is missing a spending account. Please contact the administrator to setup a spending account'));
+            $account->ClassID = $class->id;
+            $account->save();
         }else{
             //Once we have the class we need to pull the budgets for the class
             $account = $account[0];//Grab only 1 account
@@ -55,11 +55,11 @@ class ProjectController extends BaseController{
     public function showRoster($id){
         $class = Project::find($id);
         //Let's get this projects account
-        $account = Account::where('ClassID','=',$class->id)->get();
+        $account = $class->Account()->get();
         if($account->isEmpty()){
             $account = new Account;
-            $account->Balance = 0.00;
-            Session::flash('error',array('Your project is missing a spending account. Please contact the administrator to setup a spending account'));
+            $account->ClassID = $class->id;
+            $account->save();
         }else{
             //Once we have the class we need to pull the budgets for the class
             $account = $account[0];//Grab only 1 account
@@ -79,8 +79,8 @@ class ProjectController extends BaseController{
         $account = $class->Account()->get();
         if($account->isEmpty()){
             $account = new Account;
-            $account->Balance = 0.00;
-            Session::flash('error',array('Your project is missing a spending account. Please contact the administrator to setup a spending account'));
+            $account->ClassID = $class->id;
+            $account->save();
         }else{
             //Once we have the class we need to pull the budgets for the class
             $account = $account[0];//Grab only 1 account

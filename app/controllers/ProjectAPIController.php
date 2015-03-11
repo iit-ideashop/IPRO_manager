@@ -13,6 +13,12 @@ class ProjectAPIController extends BaseController{
             //Take the group and make its own key in the Grouparray
             $groupArray[$group->UID] = array();
             $account = $group->Account()->first();//Get the group's spending account $$$$..
+            if($account == null){
+                //make a spending account for the group
+                $account = new Account;
+                $account->ClassID = $group->id;
+                $account->save();
+            }
             //Next make Array 0 the group data as an array and array 1 as the user array
             $groupArray[$group->UID][0] = array($group->id,$group->UID, $group->Name, $account->Balance);
             //Pull down the group's enrolled students

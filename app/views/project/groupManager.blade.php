@@ -268,7 +268,8 @@
                             alert(data['errorarr']);
                         }else if(data['success']){
                             //Successfully added person, make another line for this person in the table and provide all needed code for deleting
-                            $("#students-"+groupid).append('<tr><td>'+studentFullName+'</td><td><a href="mailto:'+studentEmail+'">'+studentEmail+'</a></td><td><button class="btn btn-danger" type="button" onclick="dropStudent(\''+groupid+'\',\''+studentEmail+'\')">'+
+                            var studentUsername = studentEmail.substr(0,studentEmail.lastIndexOf("@"));
+                            $("#students-"+groupid).append('<tr id="student-table-row-'+groupid+'-'+studentUsername+'"><td>'+studentFullName+'</td><td><a href="mailto:'+studentEmail+'">'+studentEmail+'</a></td><td><button class="btn btn-danger" type="button" onclick="dropStudent(\''+groupid+'\',\''+studentEmail+'\')">'+
                             'Remove <span class="badge">X</span>'+
                             '</button></td></tr>');
                         }
