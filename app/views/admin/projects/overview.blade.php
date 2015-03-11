@@ -12,7 +12,8 @@
     Actions <span class="caret"></span>
   </button>
   <ul class="dropdown-menu" role="menu">
-    <li><a href="#">Create Budget</a></li>
+    <!-- <li><a href="#">Create Budget</a></li> -->
+      <li><a href="{{URL::route("project.dashboard",$project->id)}}">Project Dashboard</a></li>
     <li><a href="{{URL::route("admin.orders",array('ipro'=>$project->id, 'status'=>'', 'semester'=>'', 'filters'=>'1'))}}">View Orders</a></li>
     <li><a href="{{URL::route("admin.accounts.editor",$project->id)}}">Account Editor</a></li>
       <li><a href="{{URL::route("project.groupmanager",$project->id)}}">Group Manager</a></li>
