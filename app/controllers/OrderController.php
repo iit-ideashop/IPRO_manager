@@ -10,7 +10,7 @@ class OrderController extends BaseController {
         $project = Project::find($id);
         //Make sure that the user is enrolled
         if(!$project->isEnrolled()){
-            return Redirect::route('dashboard')->with('error',array('You must be enrolled in the class to see that page'));
+            return Redirect::route('dashboard')->with('error',array('You must be enrolled in the class to place an order'));
         }
         //User is already available
         //Grab the acct info
@@ -170,17 +170,8 @@ class OrderController extends BaseController {
     public function viewOrder($projectid,$orderid){
         //in the function we are going to show the user the order and project. First we confirm the users enrollment in the project.
         $project = Project::find(intval($projectid));
-        if(!$project->isEnrolled()){
-            return Redirect::route('dashboard')->with('error',array('You must be enrolled in the class to view that page'));
-        }
-        //lets see if the person is enrolled in the project
-        $projusers = $project->Users()->where('UserID',"=",Auth::id())->get();
-        if($projusers->isEmpty()){
-            return Redirect::route("dashboard")->with("error",array("You do not have access to view that order"));
-        }
         //Now let's pull the order
         $order = Order::find(intval($orderid));
-
         //Make sure the order belongs to this project
         if($order->ClassID != $project->id){
             return Redirect::route("dashboard")->with("error",array("You do not have access to view that order"));
@@ -193,7 +184,5 @@ class OrderController extends BaseController {
         View::share("order",$order);
         View::share("items",$items);
         return View::make("Orders.view");
-
-
     }
 }

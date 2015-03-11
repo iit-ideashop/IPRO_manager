@@ -74,7 +74,7 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
     Route::group(array('prefix'=>'orders'), function(){
         //admin/orders group
         Route::get('/',array('as'=>'admin.orders','uses'=>'AdminOrderController@index'));
-        Route::get('/{id}','AdminOrderController@manage')->where(array('id' => '[0-9]+'));
+        Route::get('/{id}',array('as'=>'admin.order.manage','uses'=>'AdminOrderController@manage'))->where(array('id' => '[0-9]+'));
         Route::post('/{id}/CreateNote',array('before'=>'csrf','as'=>'admin.order.createNote','uses'=>'AdminOrderController@createNote'));
         Route::group(array('prefix'=>'pickup'), function(){
             //admin/orders/pickup route group
