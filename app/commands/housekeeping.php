@@ -66,9 +66,21 @@ class housekeeping extends Command {
 		$items = Item::whereIn('OrderID',$order_ids)->where('status','=','7')->get();
 		if(!$items->isEmpty()){
 			$checks['LabTagItems'] = true;
+			//We need to notify the protolab_requires_order distribution list of an open order
+			//Grab people we need to notify
+			$protolab_users = DistributionList::where("distributionList","=","protolab_requires_order")->lists("UserID");
+			$protolab_users_obj = User::whereIn("id",$protolab_users)->get(); //User objects of anyone on the protolab distribution list
+			Mail::send('emails.prototypingLab.protolab_requires_order', array('items' => $items), function ($message) use ($protolab_users_obj) {
+				foreach ($protolab_users_obj as $protolab_user) {
+					$message->to($protolab_user->Email, $protolab_user->FirstName . ' ' . $protolab_user->LastName);
+				}
+				$message->subject('[IPRO Manager] Prototyping Lab Action Required');
+			});
 		}
+
+
 		//Send that admin email thing if there are any tasks needing work
-		foreach($checks as $key=>$val){
+		/*foreach($checks as $key=>$val){
 			if($val){
 				$checks['sendEmail'] = true;
 			}
@@ -82,7 +94,7 @@ class housekeeping extends Command {
 				$message->subject('IPRO Manager action required!');
 			});
 			$this->info('sending admin email');
-		}
+		}*/
 		$this->info('successfully completed housekeeping script');
 		return true;
 	}
