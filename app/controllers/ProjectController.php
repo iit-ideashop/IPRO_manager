@@ -32,12 +32,43 @@ class ProjectController extends BaseController{
 
     //Show a page containing ipro orders
     public function showOrders($id){
+        $class = Project::find($id);
+        //Let's get this projects account
+        $account = Account::where('ClassID','=',$class->id)->get();
+        if($account->isEmpty()){
+            $account = new Account;
+            $account->Balance = 0.00;
+            Session::flash('error',array('Your project is missing a spending account. Please contact the administrator to setup a spending account'));
+        }else{
+            //Once we have the class we need to pull the budgets for the class
+            $account = $account[0];//Grab only 1 account
+        }
+        $orders = Order::where('ClassID','=',$class->id)->get();
+        View::share('account',$account);
+        View::share('class',$class);
+        View::share('orders',$orders);
+        return View::make('project.orders');
 
     }
 
     //Show a page with the class roster
     public function showRoster($id){
-
+        $class = Project::find($id);
+        //Let's get this projects account
+        $account = Account::where('ClassID','=',$class->id)->get();
+        if($account->isEmpty()){
+            $account = new Account;
+            $account->Balance = 0.00;
+            Session::flash('error',array('Your project is missing a spending account. Please contact the administrator to setup a spending account'));
+        }else{
+            //Once we have the class we need to pull the budgets for the class
+            $account = $account[0];//Grab only 1 account
+        }
+        $students = $class->Users()->get();
+        View::share('account',$account);
+        View::share('class',$class);
+        View::share('students',$students);
+        return View::make('project.roster');
     }
 
     //Show the faculty group manager to create smaller groups for the class

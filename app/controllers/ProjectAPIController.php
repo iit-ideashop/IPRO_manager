@@ -12,8 +12,9 @@ class ProjectAPIController extends BaseController{
         foreach($groups as $group){
             //Take the group and make its own key in the Grouparray
             $groupArray[$group->UID] = array();
+            $account = $group->Account()->first();//Get the group's spending account $$$$..
             //Next make Array 0 the group data as an array and array 1 as the user array
-            $groupArray[$group->UID][0] = array($group->id,$group->UID, $group->Name);
+            $groupArray[$group->UID][0] = array($group->id,$group->UID, $group->Name, $account->Balance);
             //Pull down the group's enrolled students
             $groupArray[$group->UID][1] = array();
             $students = $group->Users()->get();
@@ -25,6 +26,13 @@ class ProjectAPIController extends BaseController{
 
     }
 
+    public function getAccountBalance($projectid){
+        $project = Project::where('id','=',$projectid)->first();
+        $account = $project->Account()->first();
+        return Response::json($account->Balance);
+
+    }
+    //todo: make this function more secure, only allow pull if instructor for this project.
     public function getStudents($projectid){
         //Pull down the project
         $project = Project::where('id','=',$projectid)->first();
@@ -192,10 +200,58 @@ class ProjectAPIController extends BaseController{
 
     }
 
-    public function transferFunds(){
-
+    public function transferFunds($projectid){
+        //Get the posted data and pull the project
+        $parentProject = Project::where('id','=',$projectid)->first();
+        $groupid = Input::get("groupid");
+        $amount = Input::get("amount");
+        //Lets pull the subgroup
+        $subgroup = Project::where('id','=',$groupid)->first();
+        //Let's pull the parent account
+        $parentAccount = $parentProject->Account()->first();
+        //Let's pull the subgroup account
+        $subgroupAccount = $subgroup->Account()->first();
+        //return JSON object
+        $returnObj = array();
+        $returnObj['error'] = false;
+        $returnObj['errorarr'] = array();
+        //Check if group exists
+        if($subgroup == null){
+            $returnObj['error'] = true;
+            array_push($returnObj['errorarr'], "Something went wrong. ERR: Group does not exist");
+        }
+        if($subgroupAccount == null){
+            $returnObj['error'] = true;
+            array_push($returnObj['errorarr'], "Something went wrong. ERR: Group is missing spending account");
+        }
+        if($parentAccount == null){
+            $returnObj['error'] = true;
+            array_push($returnObj['errorarr'], "Something went wrong. ERR: Project is missing spending account");
+        }
+        //we checked for fatal errors, if there are errors at this point we should just return the JSON
+        if($returnObj['error']){
+            return Response::json($returnObj);
+        }
+        //Next we verify the subgroup is a subgroup of the parent group
+        if($subgroup->ParentClass != $parentProject->id){
+            $returnObj['error'] = true;
+            array_push($returnObj['errorarr'], "Something went wrong. ERR: Group is not associated with parent");
+        }
+        if($amount > $parentAccount->Balance){
+            $returnObj['error'] = true;
+            array_push($returnObj['errorarr'], "Something went wrong. ERR: Parent Account does not have sufficient funds");
+        }
+        //Verifications completed. Transfer the money
+        if(!$returnObj['error']) {
+            if($parentAccount->Withdrawl("TRANSFER",$amount,$subgroup->id)){
+                $subgroupAccount->Deposit("TRANSFER",$amount,$parentProject->id);
+                $returnObj['success'] = true;
+            }else{
+                $returnObj['error'] = true;
+                array_push($returnObj['errorarr'], "Something went wrong. ERR: Parent Account does not have sufficient funds");
+            }
+        }
+        return Response::json($returnObj);
     }
-
-
 }
 

@@ -38,6 +38,7 @@ Route::group(array('before'=>'iit_user'),function(){
         Route::group(array('prefix' => 'api','before'=>'project_instructor'), function(){
             Route::get('getGroups/{projectid}', array("as"=>"project.api.getGroups", "uses" => "ProjectAPIController@getGroups"))->where(array('projectid' => '[0-9]+'));
             Route::get('getStudents/{projectid}', array("as"=>"project.api.getStudents", "uses" => "ProjectAPIController@getStudents"))->where(array('projectid' => '[0-9]+'));
+            Route::get('getAccountBalance/{projectid}', array("as"=>"project.api.getAccountBalance", "uses" => "ProjectAPIController@getAccountBalance"))->where(array('projectid' => '[0-9]+'));
             Route::post('addGroup/{projectid}', array("as"=>"project.api.addGroup", "uses" => "ProjectAPIController@addGroup"))->where(array('projectid' => '[0-9]+'));
             Route::post('removeGroup/{projectid}', array("as"=>"project.api.removeGroup", "uses" => "ProjectAPIController@removeGroup"))->where(array('projectid' => '[0-9]+'));
             Route::post('enrollStudent/{projectid}', array("as"=>"project.api.enrollStudent", "uses" => "ProjectAPIController@enrollStudent"))->where(array('projectid' => '[0-9]+'));

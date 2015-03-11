@@ -1,5 +1,7 @@
 @extends('layouts.master')
-@include('layouts.typeahead')
+@include('layouts.autocomplete')
+@include('layouts.fontawesome')
+@include('layouts.maskMoney')
 @section('content')
     @include('project.projectNavigation')
     <div class="page-header">
@@ -7,7 +9,7 @@
     </div>
     <div id="groupManagerContainer"></div>
 
-
+<!-- New Group Modal -->
     <div class="modal fade" id="newGroupModal" tabindex="-1" role="dialog" aria-labelledby="newGroupModal" aria-hidden="true">>
         <div class="modal-dialog">
             <div class="modal-content">
@@ -18,7 +20,7 @@
                 <div class="modal-body">
                     <p>
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Unique Identifier:</label>
+                            <label for="uniqueID">Unique Identifier:</label>
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon1">{{$class->UID}}-</span>
                             <input type="text" id="uniqueID" class="form-control" placeholder="Enter unique identifier" aria-describedby="basic-addon1">
@@ -27,13 +29,13 @@
                     </p>
                     <p>
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Full Name:</label>
+                            <label for="fullName">Full Name:</label>
                             <input type="text" id="fullName" class="form-control" placeholder="Enter group's full name">
                         </div>
                     </p>
                     <p>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Description:</label>
+                        <label for="group-description">Description:</label>
                         <textarea class="form-control" id="group-description"></textarea>
                     </div>
                     </p>
@@ -45,6 +47,46 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+<!-- Funds Transfer Modal -->
+    <div class="modal fade" id="fundsTransferModal" tabindex="-1" role="dialog" aria-labelledby="fundsTransferModal" aria-hidden="true">>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Transfering Funds to <span id="transfer-funds-group-name"></span></h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="fund-transfer-group-id" value="">
+                    <div class="row">
+                        <div class="col-xs-5" style="text-align: center;"><i class="fa fa-university fa-4x"></i></div>
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-5" style="text-align: center;"><i class="fa fa-group fa-4x"></i></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-5">
+                            <div class="form-group">
+                                <label for="funding-account">Account Balance:</label>
+                                <input type="text" id="funding-account-balance" class="form-control" style="text-align: center;" disabled>
+                            </div>
+                        </div>
+                        <div class="col-xs-2" style="text-align: center;"><i class="fa fa-usd fa-2x text-success"></i>  <i class="fa fa-arrow-right fa-2x"></i></div>
+                        <div class="col-xs-5">
+                            <div class="form-group">
+                                <label for="group-account">Transfer Amount:</label>
+                                <input type="text" id="group-account-transfer" class="form-control" style="text-align: center;">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="funds-transfer-cancel">Cancel</button>
+                    <button type="button" class="btn btn-success" id="transfer-funds-complete">Transfer Funds</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
 
 
 @stop
@@ -54,6 +96,7 @@
         var groupData = null;
         var enrolledStudentArray = null;
         var ProjectName = "{{$class->UID}}";
+        var accountBalance = 0.00;
 
         $(document).ready(function(){
             //Run on page startup
@@ -67,15 +110,34 @@
             $("#group-create-cancel").on('click',function(){
                 clearGroupModal();
             });
+            $("#funds-transfer-cancel").on('click',function(){
+                clearTransferFunds();
+            });
+            $("#transfer-funds-complete").on('click',function(){
+               transferFunds();
+            });
 
             //Next we need to run an ajax request and build the groups panel on the page
-
+            refreshAccountBalance();
             loadEnrolledStudents();
             reloadGroups();
+            //Apply mask money
+            $('#group-account-transfer').maskMoney({thousands:',', decimal:'.', allowZero:true, prefix: '$ '});
 
 
         });
-
+        function refreshAccountBalance(){
+            //Get the primary project's account balance
+            $.ajax("{{URL::route('project.api.getAccountBalance',$class->id)}}")
+                .done(function(data){
+                    accountBalance = data;
+                    $("#funding-account-balance").val("$"+accountBalance);
+                    $("#parentProjectAccountBalance").html("Account: $"+accountBalance);
+                })
+                .fail(function(){
+                    alert("Could not get Account Balance from server. Try reloading the page");
+                });
+        }
 
         function clearGroupModal(){
             //Clear the new group modal
@@ -137,6 +199,7 @@
                             '<a data-toggle="collapse" data-parent="#group-collapse-'+internalData[0][0]+'" href="#group-collapse-link-'+internalData[0][0]+'" aria-expanded="true" aria-controls="group-collapse-link-'+internalData[0][0]+'">'+
                                     internalData[0][1]+
                             '</a>'+
+                            '<div class="pull-right">Group Account Balance: $'+internalData[0][3]+'</div>'+
                             '</h4>'+
                             '</div>'+
                             '<div id="group-collapse-link-'+internalData[0][0]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="group-collapse-heading-'+internalData[0][0]+'">'+
@@ -151,16 +214,19 @@
                             '</div>'+
                             '</div><br>');
                             //Build the control panel
-                            $("#group-"+internalData[0][0]+"-controlPanel").append('<div class="form-group">'+
+                            $("#group-"+internalData[0][0]+"-controlPanel").append('<div class="row"><div class="col-xs-10"><div class="form-group">'+
                             '<label for="enrollStudent">Enroll Student</label>'+
                             '<input type="text" class="form-control" id="enrollStudent-'+internalData[0][0]+'" placeholder="Start typing students name...">'+
-                            '</div>');
+                            '</div></div><div class="col-xs-2"><br><button id="transfer-funds-'+internalData[0][0]+'" class="btn btn-success">Transfer Funds</button></div></div>');
                             $("#enrollStudent-"+internalData[0][0]).autocomplete({
                                 lookup: enrolledStudentArray,
                                 onSelect: function (suggestion) {
                                     registerStudent(internalData[0][0], suggestion.data, suggestion.value);
                                     $("#enrollStudent-"+internalData[0][0]).val("");
                                 }
+                            });
+                            $("#transfer-funds-"+internalData[0][0]).on('click',function(){
+                                showTransferFunds(internalData[0][0], internalData[0][1]);
                             });
 
                             $("#group-collapse-"+internalData[0][0]+"-body").append('<table class="table-condensed table-striped table" id="students-'+internalData[0][0]+'"><tr><th>First Name, Last Name</th><th>Email</th><th>-</td></tr></table>');
@@ -227,6 +293,53 @@
                         }
                     });
 
+        }
+
+        function showTransferFunds(groupid, groupname){
+            //Show the modal
+            refreshAccountBalance();
+            $("#transfer-funds-group-name").html(groupname);
+            $("#group-account-transfer").val("$ 0.00");
+            $("#fund-transfer-group-id").val(groupid);
+            $("#fundsTransferModal").modal("show");
+        }
+
+        function clearTransferFunds(){
+            //Clear data out of the transfer funds modal
+            $("#group-account-transfer").val("$ 0.00");
+            $("#transfer-funds-group-name").html("");
+            $("#fund-transfer-group-id").val(0);
+        }
+
+        function transferFunds(){
+            //process data in the modal
+            var transferAmount = $("#group-account-transfer").maskMoney('unmasked')[0];
+            if(transferAmount > accountBalance){
+                transferAmount = accountBalance;
+            }
+            var groupname = $("#transfer-funds-group-name").html();
+            var transferfunds = confirm("Are you sure you want to transfer $"+transferAmount.toFixed(2)+" to "+groupname+"?");
+            var groupid = $("#fund-transfer-group-id").val();
+            if(transferfunds) {
+                $.ajax({
+                    method: "POST",
+                    url: "{{URL::route('project.api.transferFunds',$class->id)}}",
+                    data: {groupid: groupid, amount: transferAmount}
+                })
+                        .done(function (data) {
+                            if (data['error'] == true) {
+                                alert(data['errorarr']);
+                            } else if (data['success']) {
+                                //Funds successfully transferred
+                                reloadGroups();
+
+                            }
+                        });
+                refreshAccountBalance();
+                clearTransferFunds();
+                $("#fundsTransferModal").modal("hide");
+
+            }
         }
 
         var substringMatcher = function(strs) {
