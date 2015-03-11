@@ -239,6 +239,7 @@
                                 '</button></td></tr>');
                             });
                         });
+                        refreshAccountBalance();
 
                     })
                     .fail(function(){
