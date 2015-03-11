@@ -145,8 +145,10 @@ Route::filter("project_enrolled", function($route){
        return Redirect::route('dashboard')->with("error",array("The specified project does not exist"));
     }
     //Now to check for access
-    if(!$project->isEnrolled()){
-        return Redirect::route('dashboard')->with("error",array("You are not enrolled in that project"));
+    if(!Auth::user()->isAdmin) {
+        if (!$project->isEnrolled()) {
+            return Redirect::route('dashboard')->with("error", array("You are not enrolled in that project"));
+        }
     }
 });
 
@@ -157,9 +159,11 @@ Route::filter("project_instructor", function($route){
         return Redirect::route('dashboard')->with("error",array("The specified project does not exist"));
     }
     //Now to check for access
-    if($project->getAccessLevel() == 0){//Not enrolled
-        return Redirect::route('dashboard')->with("error",array("You do not have sufficient privileges to view that page"));
-    }elseif($project->getAccessLevel() < 2){
-        return Redirect::route('project.dashboard', $project->id)->with("error",array("You do not have sufficient privileges to view that page"));
+    if(!Auth::user()->isAdmin) {
+        if ($project->getAccessLevel() == 0) {//Not enrolled
+            return Redirect::route('dashboard')->with("error", array("You do not have sufficient privileges to view that page"));
+        } elseif ($project->getAccessLevel() < 2) {
+            return Redirect::route('project.dashboard', $project->id)->with("error", array("You do not have sufficient privileges to view that page"));
+        }
     }
 });

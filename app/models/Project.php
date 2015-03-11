@@ -59,6 +59,15 @@ class Project extends Ardent {
         }
     }
 
+    public function isStudent($userid){
+        $enrollment = PeopleProject::where('UserID','=',$userid)->where('ClassID','=',$this->id)->get();
+        if($enrollment->isEmpty()){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     public function getAccessLevel(){
         //Returns the logged in users accessType for the project
         $accessType = PeopleProject::where('UserID','=',Auth::id())->where('ClassID','=',$this->id)->get();

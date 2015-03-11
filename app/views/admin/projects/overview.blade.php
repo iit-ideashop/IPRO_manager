@@ -15,6 +15,7 @@
     <li><a href="#">Create Budget</a></li>
     <li><a href="{{URL::route("admin.orders",array('ipro'=>$project->id, 'status'=>'', 'semester'=>'', 'filters'=>'1'))}}">View Orders</a></li>
     <li><a href="{{URL::route("admin.accounts.editor",$project->id)}}">Account Editor</a></li>
+      <li><a href="{{URL::route("project.groupmanager",$project->id)}}">Group Manager</a></li>
   </ul>
 </div>
     </h1>

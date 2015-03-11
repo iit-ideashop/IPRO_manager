@@ -1,5 +1,5 @@
 @extends('layouts.master')
-
+@include('layouts.typeahead')
 @section('content')
     @include('project.projectNavigation')
     <div class="page-header">
@@ -70,8 +70,9 @@
 
             //Next we need to run an ajax request and build the groups panel on the page
 
-            reloadGroups();
             loadEnrolledStudents();
+            reloadGroups();
+
 
         });
 
@@ -93,11 +94,15 @@
                 url: "{{URL::route('project.api.addGroup',$class->id)}}",
                 data: { groupUID: groupUID, groupName: groupName, groupDesc: groupDesc }
             })
-            .done(function( msg ) {
-                alert( "Data Saved: " + msg );
-                $("#newGroupModal").modal("hide");
-                clearGroupModal();
-                reloadGroups();
+            .done(function( data ) {
+                        console.log(data);
+                if(data['error']){
+                    alert(data['errorarr']);
+                }else {
+                    $("#newGroupModal").modal("hide");
+                    clearGroupModal();
+                    reloadGroups();
+                }
             });
 
         }
@@ -148,15 +153,24 @@
                             //Build the control panel
                             $("#group-"+internalData[0][0]+"-controlPanel").append('<div class="form-group">'+
                             '<label for="enrollStudent">Enroll Student</label>'+
-                            '<input type="text" class="form-control" id="enrollStudent" placeholder="Start typing students name...">'+
+                            '<input type="text" class="form-control" id="enrollStudent-'+internalData[0][0]+'" placeholder="Start typing students name...">'+
                             '</div>');
+                            $("#enrollStudent-"+internalData[0][0]).autocomplete({
+                                lookup: enrolledStudentArray,
+                                onSelect: function (suggestion) {
+                                    registerStudent(internalData[0][0], suggestion.data, suggestion.value);
+                                    $("#enrollStudent-"+internalData[0][0]).val("");
+                                }
+                            });
 
-
-                            $("#group-collapse-"+internalData[0][0]+"-body").append('<table class="table-condensed table-striped table" id="students-'+internalData[0][0]+'"><tr><th>First Name, Last Name</th><th>Email</th></tr></table>');
+                            $("#group-collapse-"+internalData[0][0]+"-body").append('<table class="table-condensed table-striped table" id="students-'+internalData[0][0]+'"><tr><th>First Name, Last Name</th><th>Email</th><th>-</td></tr></table>');
                             //Next loop the internalData[1] array for all the students
                             $.each(internalData[1], function(index,student){
                                 //Add data to the table
-                                $("#students-"+internalData[0][0]).append('<tr><td>'+student[1]+', '+student[2]+'</td><td><a href="mailto:'+student[3]+'">'+student[3]+'</a></td></tr>');
+                                var studentUsername = student[3].substr(0,student[3].lastIndexOf("@"));
+                                $("#students-"+internalData[0][0]).append('<tr id="student-table-row-'+internalData[0][0]+'-'+studentUsername+'"><td>'+student[1]+', '+student[2]+'</td><td><a href="mailto:'+student[3]+'">'+student[3]+'</a></td><td><button class="btn btn-danger" type="button" onclick="dropStudent(\''+internalData[0][0]+'\',\''+student[3]+'\')">'+
+                                'Remove <span class="badge">X</span>'+
+                                '</button></td></tr>');
                             });
                         });
 
@@ -176,6 +190,68 @@
                         alert("Could not fetch students from server. Try reloading the page");
                     });
         }
+
+        function registerStudent(groupid, studentEmail, studentFullName){
+            $.ajax({
+                method: "POST",
+                url: "{{URL::route('project.api.enrollStudent',$class->id)}}",
+                data: { groupid: groupid, studentEmail: studentEmail }
+            })
+                    .done(function( data ) {
+                        if(data['error'] == true){
+                            alert(data['errorarr']);
+                        }else if(data['success']){
+                            //Successfully added person, make another line for this person in the table and provide all needed code for deleting
+                            $("#students-"+groupid).append('<tr><td>'+studentFullName+'</td><td><a href="mailto:'+studentEmail+'">'+studentEmail+'</a></td><td><button class="btn btn-danger" type="button" onclick="dropStudent(\''+groupid+'\',\''+studentEmail+'\')">'+
+                            'Remove <span class="badge">X</span>'+
+                            '</button></td></tr>');
+                        }
+                    });
+
+
+        }
+
+        function dropStudent(groupid, studentEmail){
+            $.ajax({
+                method: "POST",
+                url: "{{URL::route('project.api.dropStudent',$class->id)}}",
+                data: { groupid: groupid, studentEmail: studentEmail }
+            })
+                    .done(function( data ) {
+                        if(data['error'] == true){
+                            alert(data['errorarr']);
+                        }else if(data['success']){
+                            //Successfully added person, make another line for this person in the table and provide all needed code for deleting
+                            var studentUsername = studentEmail.substr(0,studentEmail.lastIndexOf("@"));
+                            $("#student-table-row-"+groupid+"-"+studentUsername).remove();
+                        }
+                    });
+
+        }
+
+        var substringMatcher = function(strs) {
+            return function findMatches(q, cb) {
+                var matches, substrRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                // iterate through the pool of strings and for any string that
+                // contains the substring `q`, add it to the `matches` array
+                $.each(strs, function(i, str) {
+                    if (substrRegex.test(str)) {
+                        // the typeahead jQuery plugin expects suggestions to a
+                        // JavaScript object, refer to typeahead docs for more info
+                        matches.push({ value: str });
+                    }
+                });
+
+                cb(matches);
+            };
+        };
     </script>
 @stop
 

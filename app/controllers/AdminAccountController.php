@@ -2,9 +2,9 @@
 
 class AdminAccountController extends BaseController{
 
-    function showGLEditor($accountID){
+    function showGLEditor($projectID){
         //Pull up the account
-        $account = Account::find($accountID);
+        $account = Account::where('ClassID','=',$projectID)->first();
         //Next pull the account's GL data and show it off
         $gl = $account->GL()->latest()->get();
         //Show the data on the gl form
