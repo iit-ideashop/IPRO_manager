@@ -65,6 +65,11 @@ class OrderController extends BaseController {
                 $item = new Item;
                 $item->Name = $itemNames[$i];
                 $item->Link = $itemLinks[$i];
+                if(!filter_var($item->Link,FILTER_VALIDATE_URL)){
+                    //Url is invalid
+                    array_push($order_error, 'Link "'.$item->Link.'" for '.$item->Name.' is invalid. All links must be in form "http://website.tld".');
+                    $order_has_error = true;
+                }
                 $item->PartNumber = $itemPNs[$i];
                 $item->Cost = floatval(str_replace('$','',$itemCosts[$i]));
                 $item->Quantity = $itemQuantities[$i];
@@ -114,9 +119,7 @@ class OrderController extends BaseController {
         }
         //Make the array unique
         array_unique($approvedPickups);
-        if($order_has_error){
-            return Redirect::to('/project/'.$id.'/orders/new')->with('error',$order_error)->with('items',$itemArray);
-        }
+
         //Ok all passed, we have enough funding, and all items are validated, let's create this order
         $order = new Order;
         $order->PeopleID = Auth::id();
@@ -134,6 +137,9 @@ class OrderController extends BaseController {
                     $order_has_error = true;
                     array_push($order_error, 'Your order contains errors, please correct them');
                 }
+        }
+        if($order_has_error){
+            return Redirect::to('/project/'.$id.'/orders/new')->with('error',$order_error)->with('items',$itemArray);
         }
         //order should now have an id
         //Save all the items

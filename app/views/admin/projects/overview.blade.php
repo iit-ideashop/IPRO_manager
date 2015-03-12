@@ -19,6 +19,7 @@
       <li><a href="{{URL::route("project.groupmanager",$project->id)}}">Group Manager</a></li>
   </ul>
 </div>
+        <div class="pull-right">Account Balance: ${{ number_format($account->Balance,2) }}</div>
     </h1>
     <h3>{{$project->Name}}</h3>
 </div>

@@ -108,6 +108,7 @@
         @foreach(Session::get('items') as $item)
             addMoreItems('{{ $item->Name }}', '{{ $item->Link }}', '{{ $item->PartNumber }}', '{{ $item->Cost }}', '{{ $item->Quantity }}','{{ $item->Shipping }}', '{{ $item->Justification }}');
         @endforeach
+            recalculateAllTC();
         @else
         addMoreItems();
         @endif
@@ -180,9 +181,10 @@
         $('#totalCost'+ItemID).maskMoney({thousands:',', decimal:'.', allowZero:true, prefix: '$ '});
         $('#shippingCost'+ItemID).maskMoney({thousands:',', decimal:'.', allowZero:true, prefix: '$ '});
         $('#Cost'+ItemID).maskMoney('mask');
-        $('#totalCost'+ItemID).maskMoney('mask',0.00);
-        $('#shippingCost'+ItemID).maskMoney('mask',0.00);
+        $('#totalCost'+ItemID).maskMoney('mask');
+        $('#shippingCost'+ItemID).maskMoney('mask');
         $('#Quantity'+ItemID).numeric();
+        recalculateSingleTC(ItemID);
     }
     
     function recalculateSingleTC(itemid){

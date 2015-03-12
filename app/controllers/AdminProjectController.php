@@ -107,7 +107,7 @@ class AdminProjectController extends BaseController{
         $budgetReq = $project->BudgetRequests()->get();
         View::share('budgetRequests',$budgetReq);
         //Account
-        $acct = $project->Account()->get();
+        $acct = $project->Account()->first();
         View::share('account',$acct);
         //Students 
         $students = $project->Users()->get();

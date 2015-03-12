@@ -17,7 +17,11 @@ $(document).ready( function () {
     <div class="form-group">`
 <select class="form-control" id="semester_selection">
     @foreach ($semesters as $semester)
-    <option value="{{ $semester->id }}">{{ $semester->Name }}</option>
+    <option
+            @if($activeSemester->id == $semester->id)
+                selected="selected"
+            @endif
+            value="{{ $semester->id }}">{{ $semester->Name }}</option>
     @endforeach
 </select></div>
         <div class="form-group">
