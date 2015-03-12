@@ -13,14 +13,14 @@ class AdminItemController extends BaseController{
         if(($item->Cost != Input::get('Cost')) || ($item->Quantity != Input::get('Quantity')) || ($item->Shipping != Input::get('Shipping'))){
             //Oh noes, we gotta figure out what to do next
             $originalTotalCost = ($item->Cost * $item->Quantity) + $item->Shipping;
-            $newTotalCost = (Input::get('Cost') * Input::get('Quantity')) + $item->Shipping;
+            $newTotalCost = (Input::get('Cost') * Input::get('Quantity')) + Input::get('Shipping');
             $amount = abs($originalTotalCost - $newTotalCost);
             //Also pull in the account
             $order = $item->Order()->first();
             $project = $order->Project()->first();
             $account = $project->Account()->first();
             if($originalTotalCost > $newTotalCost){
-                $account->Deposit('RECONCILE',$amount,$item->id);
+                $account->Deposit('RECONCILE',$amount,$item->OrderID);
             }elseif($originalTotalCost < $newTotalCost){
                     if(!$account->Withdrawl('RECONCILE',$amount,$item->id)){
                         return Redirect::to('/admin/orders/'.$item->OrderID)->with('error',array('Insufficient funds to cover changes'));
@@ -97,6 +97,8 @@ class AdminItemController extends BaseController{
         foreach($itemCollection as $item){
             $item->changeStatus($newStatus);
         }
+        //After we are done let's update the order
+        Order::recalculate($orderID);
         $order = Order::find($orderID);
         $user = $order->User()->first();
         //Prepare the email, different emails based on the status we are updating to. 
@@ -111,6 +113,7 @@ class AdminItemController extends BaseController{
                 Mail::send('emails.orderPickup', array('person'=>$user,'order'=>$order,'items'=>$itemCollection), function($message) use($user){
                     $message->to($user->Email,$user->FirstName.' '.$user->LastName)->subject('IPRO order ready for pickup!');
                 });
+
                 break;
             case 5://picked up
                 //Pickup script sends an email, see AdminPickupController
