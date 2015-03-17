@@ -212,6 +212,10 @@ return array(
         'vandercook.edu',
         'shimer.edu'
     ),
+
+    'StorageURLs' => array(
+        'printSubmissions' => public_path().'/printSubmissions/'
+    ),
     
     
 

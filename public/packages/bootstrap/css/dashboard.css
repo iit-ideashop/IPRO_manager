@@ -103,3 +103,13 @@ body {
   display: inline-block;
   border-radius: 50%;
 }
+
+
+/*
+*   vertical Divider used for Divs
+*/
+
+.verticalDivider {
+    border-right:1px dashed #16222c;
+    height:80%;
+}

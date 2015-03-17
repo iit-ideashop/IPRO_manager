@@ -150,6 +150,18 @@ Route::filter("project_enrolled", function($route){
             return Redirect::route('dashboard')->with("error", array("You are not enrolled in that project"));
         }
     }
+    //Share details about the project with the view
+    View::share('class',$project);
+    $account = $project->Account()->get();
+    if($account->isEmpty()){
+        $account = new Account;
+        $account->ClassID = $project->id;
+        $account->save();
+    }else{
+        //Once we have the class we need to pull the budgets for the class
+        $account = $account[0];//Grab only 1 account
+    }
+    View::share('account',$account);
 });
 
 Route::filter("project_instructor", function($route){

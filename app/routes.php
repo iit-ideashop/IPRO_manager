@@ -33,6 +33,10 @@ Route::group(array('before'=>'iit_user'),function(){
         Route::get('{projectid}/orders/new',array('as'=>'project.order.new','uses'=>'OrderController@newOrder'))->where(array('projectid' => '[0-9]+'));
         Route::post('{projectid}/orders/new',array('as'=>'project.order.newProcess','uses'=>'OrderController@newOrderProcess'))->where(array('projectid' => '[0-9]+'));
         Route::get('{projectid}/orders/{orderid}',array("as"=>"project.order.view","uses"=>"OrderController@viewOrder"))->where(array('projectid' => '[0-9]+'))->where(array('orderid' => '[0-9]+'));
+        Route::get('{projectid}/printSubmission',array("as"=>"project.printSubmission","uses"=>"ProjectController@printSubmission"))->where(array('projectid' => '[0-9]+'));
+        Route::post('{projectid}/printSubmission/files',array("as"=>"project.printSubmission.files","uses"=>"ProjectController@printSubmissionUpload"))->where(array('projectid' => '[0-9]+'));
+
+        //Group manager routes
         Route::get('{projectid}/groupmanager', array('as'=>'project.groupmanager','before'=>'project_instructor','uses'=>'ProjectController@groupManager'))->where(array('projectid' => '[0-9]+'));
         //Protected with project_instructor
         Route::group(array('prefix' => 'api','before'=>'project_instructor'), function(){
