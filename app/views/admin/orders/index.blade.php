@@ -46,6 +46,18 @@
                       >{{$key}}</option>
                   @endforeach
               </select></li>
+          <li>Filter by Item Status: <select name="itemstatus">
+                  <option value="">Select an item status below</option>
+                  @foreach($itemstatuses as $key => $value)
+                      <option value="{{$value}}"
+                              @if((Input::get('itemstatus')!= '') && (Input::get('itemstatus') == $value)){
+                              selected="selected";
+                              @endif
+                              >{{$key}}</option>
+                  @endforeach
+              </select> </li>
+
+
           <li>Show all for a previous semester:<select name="semester">
                   <option value="">Select a semester below</option>
                   @foreach($semesters as $key => $value)

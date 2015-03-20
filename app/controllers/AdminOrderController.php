@@ -12,6 +12,9 @@ class AdminOrderController extends Controller {
         if( Input::get("status") != ''){
             $filters['status'] = intval(Input::get("status"));
         }
+        if( Input::get("itemstatus") != ''){
+            $filters['itemstatus'] = intval(Input::get("itemstatus"));
+        }
         if(Input::get("semester") != ''){
             $filters['semester'] = Input::get("semester");
         }
@@ -31,6 +34,8 @@ class AdminOrderController extends Controller {
         View::share("ipros",$ipros);
         $statuses = DB::table("orderStatus")->orderBy("id")->lists("id","status");
         View::share("orderstatuses", $statuses);
+        $itemstatuses = DB::table("itemStatus")->orderBy("id")->lists("id","status");
+        View::share("itemstatuses", $itemstatuses);
         $semesters = DB::table("semesters")->orderBy("id","desc")->lists("id","name");
         View::share("semesters",$semesters);
         $projects = Project::where('Semester','=',$activeSemester[0])->lists('id');
@@ -45,6 +50,14 @@ class AdminOrderController extends Controller {
             if(count($filters) != 0){
                 $orders = Order::whereIn('ClassID',$projects);
                 //Apply our filters
+                //Apply the item status filter
+                if(array_key_exists('itemstatus',$filters)){
+                    $ordersWithStatus = Item::where('status','=',$filters['itemstatus'])->lists('OrderID');//Get items that have the speicfic status, returns an array of ordersIDs that have that order
+                    if(count($ordersWithStatus) == 0){
+                        $ordersWithStatus = array("-1");
+                    }
+                    $orders = $orders->whereIn('id',$ordersWithStatus);
+                }
                 if(array_key_exists('ipro',$filters)){
                     //apply the IPRO filter
                     $orders = $orders->where('ClassID','=',$filters['ipro']);
@@ -52,6 +65,7 @@ class AdminOrderController extends Controller {
                 if(array_key_exists('status',$filters)){
                     $orders = $orders->where('status','=',$filters['status']);
                 }
+
                 $orders = $orders->orderBy('id','desc')->get();
             }else{
                 $orders = Order::whereIn('ClassID',$projects)->where('status','!=',4)->orderBy('status')->orderBy('id','desc')->get();
