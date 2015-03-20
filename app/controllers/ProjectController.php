@@ -49,7 +49,8 @@ class ProjectController extends BaseController{
     }
 
     public function printSubmissionUpload($projectid){
-        return Response::json("Hey");
+        //sleep(10);
+        return Response::json("hey");
     }
 }
 

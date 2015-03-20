@@ -16,7 +16,8 @@
                 <p>36 x 48</p>
                 <p>48 x 36</p>
                 <p>Other upon approval</p>
-                {{ Form::file("posterupload",array("class"=>"btn btn-primary","value"=>"Upload .pdf")) }}
+                <a onclick="$('#posterupload').click();" class="btn btn-primary"><i class="fa fa-file-pdf-o"></i> Select poster .pdf</a>
+                {{ Form::file("posterupload",array("style"=>"display:none;","id"=>"brochureUpload")) }}
             </div>
         </div>
         <div class="col-xs-5">
@@ -77,7 +78,6 @@
                 //File is pdf and is 100mb or smaller.
                 var fd = new FormData();
                 fd.append("fileUpload",file);
-                console.log(fd);
                 $.ajax({
                     url: '{{ URL::route('project.printSubmission.files',$class->id) }}',
                     type: 'POST',
@@ -120,8 +120,10 @@
             $("#fileUploadPercentage").attr("aria-valuenow", percent);
             $("#fileUploadPercentage").css("width", percent+"%");
             //Only show progress > 10%
-            if(percent > 10) {
+            if((percent > 10) && (percent < 100)) {
                 $("#fileUploadPercentage").html("Upload Progress: " + percent + "%");
+            }else if(percent == 100){
+                $("#fileUploadPercentage").html("Processing upload...");
             }else{
                 $("#fileUploadPercentage").html("...");
             }
