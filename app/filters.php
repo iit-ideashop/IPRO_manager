@@ -39,9 +39,6 @@ App::before(function($request)
             }
             View::share('navigation',$returnArray);
         }else{
-            
-               
-           
         }
 });
 
@@ -127,14 +124,20 @@ Route::filter('auth_admin', function(){
             return Redirect::to('/dashboard');
         }
     }else{
-    //User isn't even logged in, send to admin login page
-        return Redirect::to('/authenticate');
+        //User isn't even logged in, send to admin login page
+        //Save the route we are trying to access
+        Session::put('routing.intended.parameters',Route::getCurrentRoute()->parameters());
+        Session::put('routing.intended.route',Route::getCurrentRoute()->getName());
+        return Redirect::route('authenticate');
     }
 });
 
 Route::filter('iit_user', function(){
     if(!Auth::check()){
-        return Redirect::to('/authenticate');
+        //Save the route we are trying to access
+        Session::put('routing.intended.parameters',Route::getCurrentRoute()->parameters());
+        Session::put('routing.intended.route',Route::getCurrentRoute()->getName());
+        return Redirect::route('authenticate');
     }
 });
 

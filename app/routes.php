@@ -12,12 +12,22 @@
 */
 //***** UNSECURED SITE ROUTES *****///
 Route::group(array(),function(){
-    Route::get('/', 'HomeController@showHome');
-    Route::get('/authenticate', 'AuthController@authenticate');
-    Route::get('/notAuthorized','AuthController@notAuthorized');
+    Route::get('/', array('as'=>'home','uses'=>'HomeController@showHome'));
+    Route::get('/authenticate', array('as'=>'authenticate','uses'=>'AuthController@authenticate'));
+    Route::get('/notAuthorized',array('as'=>'unauthorized','uses'=>'AuthController@notAuthorized'));
     Route::get('/kiosk', array('as'=> 'kiosk.showKiosk', 'uses'=>'KioskController@showKiosk'));
     Route::post('/kiosk',array('as'=>'kiosk.pickupPackage', 'before'=>'csrf','uses'=>'KioskController@showPackagePickup'));
     Route::post('/completePacakgePickup',array('as'=>'kiosk.completePackagePickup', 'before'=>'csrf','uses'=>'KioskController@completePackagePickup'));
+});
+
+//***** IPRO DAY ROUTES *****///
+Route::group(array('prefix'=> 'iproday'),function(){
+    //***** IPRO DAY REGISTRATION *****///
+    Route::group(array('prefix'=>'registration'),function(){
+        Route::get('/',array('as'=>'iproday.registration','uses'=>'IPRODayRegistrationController@index'));
+        Route::get('/{id}', array('as'=>'iproday.registration.showRegistration','uses'=>'IPRODayRegistrationController@showRegistration'))->where(array('id' => '[0-9]+'));
+        Route::post('/{id}', array('as'=>'iproday.registration.processRegistration','uses'=>'IPRODayRegistrationController@register'))->where(array('id' => '[0-9]+'));
+    });
 });
 
 //***** Authorized User Routes ******//
@@ -50,26 +60,15 @@ Route::group(array('before'=>'iit_user'),function(){
             Route::post('transferFunds/{projectid}', array("as"=>"project.api.transferFunds", "uses" => "ProjectAPIController@transferFunds"))->where(array('projectid' => '[0-9]+'));
         });
     });
-    
+
+    //May have to be refactored to include all project API's in the same controller and namespace/route
     Route::group(array('prefix'=>'api'), function(){
-        Route::get('/userByCwid/{projectid}/{cwid}','AjaxApiController@userByCwid')->where(array('projectid' => '[0-9]+'));
+        Route::get('/userByCwid/{projectid}/{cwid}',array('as'=>'api.userByCWID','uses'=>'AjaxApiController@userByCwid'))->where(array('projectid' => '[0-9]+'));
     });
     
 });
 
-    /*
-     * IPRO Day routes
-     */
-    Route::group(array('prefix'=> 'iproday'),function(){
-        /*
-        * IPRO Day registration
-        */
-        Route::group(array('prefix'=>'registration'),function(){
-           Route::get('/','IPRODayRegistrationController@index');
-           Route::get('/{id}', 'IPRODayRegistrationController@showRegistration')->where(array('id' => '[0-9]+'));
-           Route::post('/{id}', 'IPRODayRegistrationController@register')->where(array('id' => '[0-9]+'));
-        });
-    });
+
 
 
 //**** Admin Routes *****//
@@ -100,46 +99,46 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
         Route::post('/edit',array('before'=>'csrf','as'=>'admin.items.edit', 'uses'=>'AdminItemController@massEditProcess'));
         Route::post('{id}/statusChange',array('before'=>'csrf','as'=>'admin.item.statusChange', 'uses'=>'AdminItemController@statusChangeProcess'));
         Route::post('/statusChange',array('before'=>'csrf','as'=>'admin.items.statusChange', 'uses'=>'AdminItemController@massStatusChangeProcess'));
-        Route::get('{id}/markReturning', 'AdminItemController@markItemReturning');
-        Route::get('{id}/markNotReturning', 'AdminItemController@markItemNotReturning');
+        Route::get('{id}/markReturning', array('as'=>'admin.items.markReturning','uses'=>'AdminItemController@markItemReturning'));
+        Route::get('{id}/markNotReturning', array('as'=>'admin.items.markNotReturning','uses'=>'AdminItemController@markItemNotReturning'));
         Route::post('/markReturning',array('before'=>'csrf','as'=>'admin.items.markReturning', 'uses'=>'AdminItemController@massMarkReturningProcess'));
         Route::post('{id}/delete',array('before'=>'csrf','as'=>'admin.item.delete', 'uses'=>'AdminItemController@deleteItem'));
         Route::post('printLabel',array('before'=>'csrf','as'=>'admin.items.printLabels', 'uses'=>'AdminItemController@printLabels'));
     });
     Route::group(array('prefix'=>'projects'),function(){
         Route::get('/{id?}',array('as'=>'admin.projects','uses'=>'AdminProjectController@index'))->where(array('id' => '[0-9]+'));
-        Route::get('/new','AdminProjectController@create');
-        Route::post('/new','AdminProjectController@createProcess');
-        Route::get('/edit/{id}','AdminProjectController@edit');
-        Route::post('/edit/{id}',array('before'=>'csrf','uses'=>'AdminProjectController@editProcess'));
-        Route::get('/overview/{id}','AdminProjectController@overview');
-        Route::get('/enroll_users/{id}','AdminProjectController@enrollUsers')->where(array('id' => '[0-9]+'));
+        Route::get('/new',array('as'=>'admin.projects.new','uses'=>'AdminProjectController@create'));
+        Route::post('/new',array('as'=>'admin.projects.newProcess','uses'=>'AdminProjectController@createProcess'));
+        Route::get('/edit/{id}',array('as'=>'admin.projects.edit','uses'=>'AdminProjectController@edit'));
+        Route::post('/edit/{id}',array('before'=>'csrf','as'=>'admin.projects.editProcess','uses'=>'AdminProjectController@editProcess'));
+        Route::get('/overview/{id}',array('as'=>'admin.projects.overview','uses'=>'AdminProjectController@overview'));
+        Route::get('/enroll_users/{id}',array('as'=>'admin.projects.enrollUsers','uses'=>'AdminProjectController@enrollUsers'))->where(array('id' => '[0-9]+'));
         Route::get('/uploadCognos/{sem_id}', array('as'=>'admin.projects.uploadCognos', 'uses'=>'AdminProjectController@uploadCognos'))->where(array('sem_id' => '[0-9]+'));
         Route::post('/uploadCognos/{sem_id}',array('as'=>'admin.projects.uploadCognosProcess', 'uses'=>'AdminProjectController@uploadCognosProcess'))->where(array('sem_id' => '[0-9]+'));
     });
     Route::group(array('prefix'=>'semesters'), function(){
-        Route::get('/','AdminSemesterController@index');
-        Route::get('/new','AdminSemesterController@create');
-        Route::post('/new', array('before'=>'csrf','uses'=>'AdminSemesterController@createProcess'));
+        Route::get('/',array('as'=>'admin.semesters','uses'=>'AdminSemesterController@index'));
+        Route::get('/new',array('as'=>'admin.semester.create','uses'=>'AdminSemesterController@create'));
+        Route::post('/new', array('before'=>'csrf','as'=>'admin.semesters.createProcess','uses'=>'AdminSemesterController@createProcess'));
         Route::get('/edit/{id}',array('as'=>'admin.semesters.edit','uses'=>'AdminSemesterController@edit'));
         Route::post('/edit/{id}',array('as'=>'admin.semesters.edit','before'=>'csrf','uses'=>'AdminSemesterController@editProcess'));
-        Route::get('/delete/{id}','AdminSemesterController@delete');
-        Route::get('/makeActive/{id}', 'AdminSemesterController@makeActive');
+        Route::get('/delete/{id}',array('as'=>'admin.semesters.delete','uses'=>'AdminSemesterController@delete'));
+        Route::get('/makeActive/{id}', array('as'=>'admin.semesters.makeActive','uses'=>'AdminSemesterController@makeActive'));
     });
         
     Route::group(array('prefix'=>'iproday'), function(){
         //Generic controller for showing a dashboard page
-        Route::get('/','AdminIPRODayController@index');
+        Route::get('/',array('as'=>'admin.iproday','uses'=>'AdminIPRODayController@index'));
         Route::group(array('prefix'=>'{id}','where'=>array('id' => '[0-9]+')),function(){
             //Reporting route
-            Route::get('/report/{report}','AdminIPRODayController@reporting');
+            Route::get('/report/{report}',array('as'=>'admin.iproday.report','uses'=>'AdminIPRODayController@reporting'));
         });
         
     });
 
         Route::group(array('prefix'=>'budgets'), function(){
             Route::get('/',array('as' => 'admin_budgets','uses' => 'AdminBudgetController@index'));
-            Route::get('{id}/view','AdminBudgetController@viewBudget')->where(array('id' => '[0-9]+'));
+            Route::get('{id}/view',array('as'=>'admin.budgets.view','uses'=>'AdminBudgetController@viewBudget'))->where(array('id' => '[0-9]+'));
             //Inside of budgets we have two different "Routes", Requests and actual approved budgets
             Route::group(array('prefix'=>'requests'), function(){
                 Route::get('{id}/view',array('as'=>'admin.budget.viewRequest','uses'=>'AdminBudgetController@viewRequest'))->where(array('id' => '[0-9]+'));
@@ -150,6 +149,6 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
         
         Route::group(array('prefix'=>'accounts'), function(){
             Route::get('/editor/{id}',array("as"=>"admin.accounts.editor", "uses"=>'AdminAccountController@showGLEditor'))->where(array('id'=> '[0-9]+'));
-            Route::post('/editor/{id}','AdminAccountController@newGLEntry')->where(array('id'=>'[0-9]+'));
+            Route::post('/editor/{id}',array('as'=>'admin.accounts.newGLEntry','uses'=>'AdminAccountController@newGLEntry'))->where(array('id'=>'[0-9]+'));
         });
 });
