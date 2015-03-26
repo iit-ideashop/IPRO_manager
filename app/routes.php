@@ -1,4 +1,5 @@
 <?php
+//***** ALL ROTUES MUST CONTAIN ROUTE NAMES TO WORK PROPERLY WITH ROUTING CODE IN OAUTH *****///
 
 /*
 |--------------------------------------------------------------------------
