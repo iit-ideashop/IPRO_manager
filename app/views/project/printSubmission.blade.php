@@ -33,16 +33,7 @@
             </div>
         </div>
     </div>
-    <br>
-    <div class="row">
-        <div class="col-xs-10 col-xs-offset-1">
-            <div class="progress">
-                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;" id="fileUploadPercentage">
-                </div>
-            </div>
-        </div>
-    </div>
-    <br>
+    <div class="page-header"><h3>Files uploaded for {{ $class->Name }}</h3></div>
     <table class="table table-striped" id="fileuploadstable">
         <tr>
             <th> </th>
@@ -97,6 +88,7 @@
                     }
                     controlVar = controlVar + 1;
                 }
+                processUploads();
             });
         });
 
@@ -104,8 +96,13 @@
         //When we process uploads we have to take the upload array and process it one by one
         //each time this function runs it will take 1 file from the fileuploads array and upload it
         function processUploads(){
+            //Take the first item from the uploads array
+            if(filesArray.length == 0){
+                return false;
+            }
+            var fileObj = filesArray.shift();
             var fd = new FormData();
-            fd.append("fileUpload",file);
+            fd.append("fileUpload",fileObj.file);
             $.ajax({
                 url: '{{ URL::route('project.printSubmission.files',$class->id) }}',
                 type: 'POST',
@@ -120,13 +117,16 @@
                         console.log(evt);
                         if (evt.lengthComputable) {
                             var percentComplete = evt.loaded / evt.total;
-                            updateFileUploadPercentage(percentComplete*100);
+                            updateFileUploadPercentage(percentComplete*100, fileObj.controlid);
                         }
                     }, false);
                     return xhr;
                 },
                 success: function(data, textStatus, jqXHR){
-                    alert(data);
+                    //Run this function again in 100ms
+                    completeFileUpload(fileObj.controlid);
+                    setTimeout(processUploads(), 100);
+                    alert("done");
                 },
                 error: function(data, textStatus, jqXHR){
                     alert("error");
@@ -138,16 +138,23 @@
 
         function updateFileUploadPercentage(percentage,barid){
             var percent = Math.ceil(percentage);
-            $("#fileUploadPercentage").attr("aria-valuenow", percent);
-            $("#fileUploadPercentage").css("width", percent+"%");
+            $("#upload"+barid+"progress").attr("aria-valuenow", percent);
+            $("#upload"+barid+"progress").css("width", percent+"%");
             //Only show progress > 10%
             if((percent > 10) && (percent < 100)) {
-                $("#fileUploadPercentage").html("Upload Progress: " + percent + "%");
+                $("#upload"+barid+"progress").html("Upload Progress: " + percent + "%");
             }else if(percent == 100){
-                $("#fileUploadPercentage").html("Processing upload...");
+                $("#upload"+barid+"progress").html("Processing upload...");
             }else{
-                $("#fileUploadPercentage").html("...");
+                $("#upload"+barid+"progress").html("...");
             }
+        }
+
+        function completeFileUpload(barid){
+            $("#upload"+barid+"progress").addClass("progress-bar-success");
+            $("#upload"+barid+"progress").removeClass("active");
+            $("#upload"+barid+"progress").removeClass("progress-bar-striped");
+            $("#upload"+barid+"progress").html("Complete!");
         }
 
         function addUploadedMaterialLine(filename, filesize, uploaded_by, dimensions, show_override){
