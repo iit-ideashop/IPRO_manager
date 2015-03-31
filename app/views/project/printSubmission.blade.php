@@ -49,7 +49,7 @@
 @section('javascript_bottom')
     <script>
         var filesArray = [];
-        var controlVar = 0;
+        var controlVar = 1;
         var processingUploads = false;
         $(document).on("ready",function(){
             $("#brochureUpload").on("change",function(event){
@@ -100,6 +100,11 @@
             if(filesArray.length == 0){
                 return false;
             }
+            if(!processingUploads){
+                processingUploads = true;
+            }else{
+                return false;
+            }
             var fileObj = filesArray.shift();
             var fd = new FormData();
             fd.append("fileUpload",fileObj.file);
@@ -114,7 +119,6 @@
                 xhr: function() {
                     var xhr = new window.XMLHttpRequest();
                     xhr.upload.addEventListener("progress", function(evt) {
-                        console.log(evt);
                         if (evt.lengthComputable) {
                             var percentComplete = evt.loaded / evt.total;
                             updateFileUploadPercentage(percentComplete*100, fileObj.controlid);
@@ -123,15 +127,27 @@
                     return xhr;
                 },
                 success: function(data, textStatus, jqXHR){
-                    //Run this function again in 100ms
                     completeFileUpload(fileObj.controlid);
-                    setTimeout(processUploads(), 100);
-                    alert("done");
+                    console.log(data);
+                    //Process the incoming data and make sure we don't have an array with error
+                    if(data.error){
+                        //If the array contains an error we have to show an error.
+                        alert(data.error);
+                        return false;
+                    }
+                    //Let's take the file object returned and do magic with it
+                    console.log("controlvar: "+fileObj.controlid);
+                    addUploadedMaterialLine(data.filename, data.filesize, data.uploaded_by, data.upload_time, data.dimensions, data.thumbnail,data.fileid, data.needs_override, fileObj.controlid);
+
                 },
                 error: function(data, textStatus, jqXHR){
-                    alert("error");
                     console.log(data);
                     console.log(textStatus);
+                },
+                complete: function(jqXHR, textStatus){
+                    processingUploads = false;
+                    //Run this function again in 100ms
+                    setTimeout(processUploads(), 100);
                 }
             });
         }
@@ -157,8 +173,39 @@
             $("#upload"+barid+"progress").html("Complete!");
         }
 
-        function addUploadedMaterialLine(filename, filesize, uploaded_by, dimensions, show_override){
+        function addUploadedMaterialLine(filename, filesize, uploaded_by, uploaded_timestamp, dimensions, thumbnail_url, file_id, show_override, replace_id){
+            replace_id = replace_id || 0;
+            if(replace_id != 0){
+                //Need to replace an object
+                $("#upload"+replace_id+"row").replaceWith('<tr id="file'+file_id+'row">' +
+                '<td><img src="'+thumbnail_url+'"></td>' + //Thumbnail
+                '<td>'+filename+'</td>' + //filename
+                '<td>'+filesize+'</td>' + // filesize
+                '<td>'+dimensions+'</td>' + //dimensions
+                '<td>'+uploaded_by+'</td>' + //uploader
+                '<td>'+uploaded_timestamp+'</td>' + //time of upload
+                '<td id="file'+file_id+'status"></td>' + //override or status
+                '</tr>');
+            }else{
+                //Adding a new file object from other call
+                console.log("new file?");
+            }
+            if(show_override){
+                $("#file"+file_id+"status").html('<div style="text-align: center">The file you uploaded does not meet our dimension specifications.'+
+                        'If you are certain the file you uploaded has correct dimensions you can override this message and submit the file.'+
+                        'If we find that the file dimensions are not correct we will reject your submission and you will have to resubmit the file. '+
+                        '<br>Override? <br><button class="btn btn-danger">No, Delete this submission</button>  <button class="btn btn-success">Yes, override my file</button></div>');
+            }else{
+                $("#file"+file_id+"status").html('<span class="fa-stack"><i class="fa fa-file-pdf-o fa-2x"></i></span>' +
+                '<span class="fa-stack fa-lg">' +
+                '<i class="fa fa-square-o fa-stack-2x"></i>' +
+                '<i class="fa fa-check fa-stack-1x text-success"></i>' +
+                '</span>');
+            }
+
+            /*
             $("#fileuploadstable").append('<tr>' +
+
             '<td></td>' + //Thumbnail
             '<td>'+filename+'</td>' + //filename
             '<td>'+filesize+'</td>' + // filesize
@@ -166,6 +213,7 @@
             '<td>'+uploaded_by+'</td>' + //uploader
             '<td></td>' + //override
             '</tr>');
+             */
         }
     </script>
 @stop

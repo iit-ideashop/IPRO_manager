@@ -50,7 +50,24 @@ class ProjectController extends BaseController{
 
     public function printSubmissionUpload($projectid){
         sleep(3);
-        return Response::json("hey");
+        $fileSubmission = Input::file("fileUpload");
+        if(!$fileSubmission->isValid()){
+            $error_array = array();
+            $error_array['error'] = "Error when upload file. File is invalid";
+            return Response::json($error_array);
+        }
+        //Take the file and return the filename or rather the file object
+        $fileobject = array();
+        $fileobject['filename'] = $fileSubmission->getClientOriginalName();
+        $fileobject['thumbnail'] = "http://placehold.it/50x50"; //50x50 thumbnail image
+        $fileobject['link'] = "http://google.com";
+        $fileobject['filesize'] = ".43"; // Filesize in megabytes, up to two decimal places
+        $fileobject['dimensions'] = "36x48";//file dimensions in inches
+        $fileobject['uploaded_by'] = "Test User"; //Full name of person who uploaded the file
+        $fileobject['upload_time'] = time();//Timestamp the file was uploaded during
+        $fileobject['needs_override'] = true;
+        $fileobject['fileid'] = rand(1,500000);
+        return Response::json($fileobject);
     }
 }
 
