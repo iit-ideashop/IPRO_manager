@@ -10,6 +10,7 @@ _ide_helper.php
 .idea/*
 .idea/workspace.xml
 app/storage/logs/laravel.log
+app/storage/printSubmissions/*
 CONTRIBUTING.md
 IPRO_API.iml
 

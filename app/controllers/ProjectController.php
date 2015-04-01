@@ -49,13 +49,61 @@ class ProjectController extends BaseController{
     }
 
     public function printSubmissionUpload($projectid){
-        sleep(3);
+        //We already verified we are enrolled in the $projectid or we are admin.
+        //We can create files with the $projectid easily.
         $fileSubmission = Input::file("fileUpload");
         if(!$fileSubmission->isValid()){
             $error_array = array();
-            $error_array['error'] = "Error when upload file. File is invalid";
+            $error_array['error'] = "Error when uploading file. File is invalid";
             return Response::json($error_array);
         }
+        //Take the file and verify it is a pdf
+        if($fileSubmission->getMimeType() != "application/pdf"){
+            $error_array = array();
+            $error_array['error'] = "Error when uploading file. File must be a PDF";
+            return Response::json($error_array);
+        }
+        //Next take the file and verify that it is less than 150mb
+        if ($fileSubmission->getSize() > 150000000){
+            $error_array = array();
+            $error_array['error'] = "Error when uploading file. File is too large";
+            return Response::json($error_array);
+        }
+        //Create a new printsubmission object in the database
+        $printSubmission = new PrintSubmission();
+        $printSubmission->UserID = Auth::id();
+        $printSubmission->ProjectID = $projectid;
+        $printSubmission->original_filename = $fileSubmission->getClientOriginalName();
+        $printSubmission->size = number_format($fileSubmission->getSize() / 1000000, 2)." Mb";
+        $printSubmission->count_copies = 1;
+        $printSubmission->file_type = "Poster";
+        $printSubmission->override = false;
+        $printSubmission->status = 2;
+        $printSubmission->save();
+        $printSubmission->filename = $printSubmission->id."_".$printSubmission->file_type.".pdf";
+        $printSubmission->thumb_filename = $printSubmission->id."_".$printSubmission->file_type."_thumb.png";
+        $printSubmission->save();
+        //File is ok, lets save it so we can work with it
+        //Take the file and move it to our secured location (Allows only downloads by owners, admins and people in the same ipro and print admins)
+        $fileSubmission->move(Config::get("app.StorageURLs.printSubmissions"),$printSubmission->filename);
+        //Create a thumbnail and upload it to the thumbnail public directory
+
+        $thumbnail = new Imagick();
+        $pdffile = fopen(Config::get("app.StorageURLs.printSubmissions").$printSubmission->filename, "r");
+        $thumbnail->readImageFile($pdffile);
+        exit;
+        $thumbnail->setImageFormat("png");
+        $thumbnail->scaleImage(50,50,true);
+        $thumbnail->writeImage(Config::get("app.StorageURLs.printSubmissions_thumbs").$printSubmission->thumb_filename);
+
+
+        //Next we need to verify the pdf dimensions are the correct dimensions
+
+        //Save the file if dimensions are ok and send student an email
+        //Mark override as true in the database and give the user the override option
+
+
+
         //Take the file and return the filename or rather the file object
         $fileobject = array();
         $fileobject['filename'] = $fileSubmission->getClientOriginalName();

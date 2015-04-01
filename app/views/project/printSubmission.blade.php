@@ -2,6 +2,19 @@
 @include('layouts.fontawesome')
 @section('content')
     @include('project.projectNavigation')
+    <?php
+            try{
+    $thumbnail = new Imagick(Config::get("app.StorageURLs.printSubmissions")."5_Poster.pdf[0]");
+    //$pdffile = fopen(Config::get("app.StorageURLs.printSubmissions")."5_Poster.pdf", "r");
+    //$thumbnail->readImageFile($pdffile);
+    $thumbnail->setImageFormat("png");
+    $thumbnail->scaleImage(50,50,true);
+    //$thumbnail->writeImage(Config::get("app.StorageURLs.printSubmissions_thumbs").$printSubmission->thumb_filename);
+    }catch (Exception $e) {
+        echo 'Caught exception: ',  $e->getMessage(), "\n";
+    }
+    ?>
+
     <div class="page-header">
         <h1>Print IPRO Day materials</h1>
     </div>
@@ -72,8 +85,8 @@
                         fileHasErrors = true;
                     }
                     //We have a pdf!
-                    if(fileArr[i].size > 100000000){
-                        //Greater than 100mb
+                    if(fileArr[i].size > 150000000){
+                        //Greater than 150mb
                         $("#upload"+controlVar+"statusBlock").html("The selected file is greater than the 100mb limit");
                         fileHasErrors = true;
                     }

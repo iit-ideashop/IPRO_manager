@@ -30,11 +30,10 @@ App::before(function($request)
             }
             if(Auth::user()->isAdmin){
                 $returnArray['admin'] = array(
-                    array('link'=>'/admin/budgets','text'=>'Budget Requests'),
-                    array('link'=>'/admin/orders','text'=>'Orders'),
-                    array('link'=>'/admin/user','text'=>'User Management'),
-                    array('link'=>'/admin/projects','text'=>'Project Management'),
-                    array('link'=>'/admin/iproday', 'text'=>'IPRO Day Management'),
+                    array('route'=>'admin_budgets','text'=>'Budget Requests'),
+                    array('route'=>'admin.orders','text'=>'Orders'),
+                    array('route'=>'admin.projects','text'=>'Project Management'),
+                    array('route'=>'admin.iproday', 'text'=>'IPRO Day Management'),
                 );
             }
             View::share('navigation',$returnArray);

@@ -214,7 +214,8 @@ return array(
     ),
 
     'StorageURLs' => array(
-        'printSubmissions' => public_path().'/printSubmissions/'
+        'printSubmissions' => storage_path().'/printSubmissions/',
+		'printSubmissions_thumbs' => public_path().'/printThumbs/'
     ),
     
     
