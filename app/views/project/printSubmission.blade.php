@@ -2,19 +2,6 @@
 @include('layouts.fontawesome')
 @section('content')
     @include('project.projectNavigation')
-    <?php
-            try{
-    $thumbnail = new Imagick(Config::get("app.StorageURLs.printSubmissions")."5_Poster.pdf[0]");
-    //$pdffile = fopen(Config::get("app.StorageURLs.printSubmissions")."5_Poster.pdf", "r");
-    //$thumbnail->readImageFile($pdffile);
-    $thumbnail->setImageFormat("png");
-    $thumbnail->scaleImage(50,50,true);
-    //$thumbnail->writeImage(Config::get("app.StorageURLs.printSubmissions_thumbs").$printSubmission->thumb_filename);
-    }catch (Exception $e) {
-        echo 'Caught exception: ',  $e->getMessage(), "\n";
-    }
-    ?>
-
     <div class="page-header">
         <h1>Print IPRO Day materials</h1>
     </div>

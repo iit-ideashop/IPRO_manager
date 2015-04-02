@@ -36,6 +36,18 @@ App::before(function($request)
                     array('route'=>'admin.iproday', 'text'=>'IPRO Day Management'),
                 );
             }
+            //Check for printshop link
+            if(Auth::user()->checkRole("ROLE_PRINT_SHOP")){
+                if(array_key_exists("admin", $returnArray)){
+                    array_push($returnArray["admin"], array('route'=>'role.printing','text'=>'Printing Management'));
+                }else{
+                    $returnArray['admin'] = array(
+                        array('route'=>'role.printing','text'=>'Printing Management')
+                    );
+                }
+            }
+
+
             View::share('navigation',$returnArray);
         }else{
         }

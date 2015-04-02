@@ -77,44 +77,69 @@ class ProjectController extends BaseController{
         $printSubmission->size = number_format($fileSubmission->getSize() / 1000000, 2)." Mb";
         $printSubmission->count_copies = 1;
         $printSubmission->file_type = "Poster";
-        $printSubmission->override = false;
-        $printSubmission->status = 2;
+        $printSubmission->override = true;
+        $printSubmission->status = 1;
         $printSubmission->save();
         $printSubmission->filename = $printSubmission->id."_".$printSubmission->file_type.".pdf";
-        $printSubmission->thumb_filename = $printSubmission->id."_".$printSubmission->file_type."_thumb.png";
         $printSubmission->save();
         //File is ok, lets save it so we can work with it
         //Take the file and move it to our secured location (Allows only downloads by owners, admins and people in the same ipro and print admins)
         $fileSubmission->move(Config::get("app.StorageURLs.printSubmissions"),$printSubmission->filename);
-        //Create a thumbnail and upload it to the thumbnail public directory
-
-        $thumbnail = new Imagick();
-        $pdffile = fopen(Config::get("app.StorageURLs.printSubmissions").$printSubmission->filename, "r");
-        $thumbnail->readImageFile($pdffile);
-        exit;
-        $thumbnail->setImageFormat("png");
-        $thumbnail->scaleImage(50,50,true);
-        $thumbnail->writeImage(Config::get("app.StorageURLs.printSubmissions_thumbs").$printSubmission->thumb_filename);
-
-
         //Next we need to verify the pdf dimensions are the correct dimensions
-
+        $pdfinfo_output = shell_exec("pdfinfo ".Config::get("app.StorageURLs.printSubmissions").$printSubmission->filename);
+        $pdfdata = explode("\n", $pdfinfo_output); //puts it into an array
+        //Take pdfinfo output and figure out the dimensions in point
+        $pdfdimensions_width = 0;
+        $pdfdimensions_height = 0;
+        for($c=0; $c < count($pdfdata); $c++) {
+            if(stristr($pdfdata[$c],"Page size") == true) {
+                $pdfdimensions = trim(substr($pdfdata[$c], strpos($pdfdata[$c], ":") + 1, strlen($pdfdata[$c])));
+                $pdfdimensions = trim(substr($pdfdimensions, 0, strpos($pdfdimensions, "p"))); // width x height
+                $pdfdimensions_width = trim(substr($pdfdimensions, 0, strpos($pdfdimensions, "x")));
+                $pdfdimensions_height = trim(substr($pdfdimensions, strpos($pdfdimensions, "x") + 1, strlen($pdfdimensions)));
+                $printSubmission->dimensions = ($pdfdimensions_width / 72) . " x " . ($pdfdimensions_height / 72);
+            }
+        }
         //Save the file if dimensions are ok and send student an email
-        //Mark override as true in the database and give the user the override option
-
+        if($printSubmission->file_type == "Poster"){
+            //Verify poster sizes
+            $posterSizeArray = Config::get("app.approved_poster_sizes");
+            for($i = 0; $i < count($posterSizeArray); $i++){
+                if(($pdfdimensions_width == $posterSizeArray[$i]["width"]) && ($pdfdimensions_height == $posterSizeArray[$i]["height"])){
+                    //We have a poster match
+                    //Poster size approved!
+                    $printSubmission->override = false;
+                    $printSubmission->status = 2;
+                    $i = count($posterSizeArray);
+                }
+            }
+        }elseif($printSubmission->file_type == "Brochure"){
+            //Verify brochure sizes
+            $brochureSizeArray = Config::get("app.approved_brochure_sizes");
+            for($i = 0; $i < count($brochureSizeArray); $i++){
+                if(($pdfdimensions_width == $brochureSizeArray[$i]["width"]) && ($pdfdimensions_height == $brochureSizeArray[$i]["height"])){
+                    //Approved size
+                    $printSubmission->override = false;
+                    $printSubmission->status = 2;
+                    $i = count($brochureSizeArray);
+                }
+            }
+        }
+        $printSubmission->save();
+        //Send the email or schedule an email to be dispatched
 
 
         //Take the file and return the filename or rather the file object
         $fileobject = array();
-        $fileobject['filename'] = $fileSubmission->getClientOriginalName();
-        $fileobject['thumbnail'] = "http://placehold.it/50x50"; //50x50 thumbnail image
-        $fileobject['link'] = "http://google.com";
-        $fileobject['filesize'] = ".43"; // Filesize in megabytes, up to two decimal places
-        $fileobject['dimensions'] = "36x48";//file dimensions in inches
-        $fileobject['uploaded_by'] = "Test User"; //Full name of person who uploaded the file
-        $fileobject['upload_time'] = time();//Timestamp the file was uploaded during
-        $fileobject['needs_override'] = true;
-        $fileobject['fileid'] = rand(1,500000);
+        $fileobject['filename'] = $printSubmission->original_filename;
+        $fileobject['link'] = "http://google.com"; // needs to be finished
+        $fileobject['filesize'] = $printSubmission->size; // Filesize in megabytes, up to two decimal places
+        $fileobject['dimensions'] = $printSubmission->dimensions;//file dimensions in inches
+        $fileobject['uploaded_by'] = User::getFullNameWithId(Auth::id()); //Full name of person who uploaded the file
+        $date_created = date('m/d/Y g:i a',$printSubmission->created_at->timestamp);
+        $fileobject['upload_time'] = $date_created;//Timestamp the file was uploaded during
+        $fileobject['needs_override'] = $printSubmission->override;
+        $fileobject['fileid'] = $printSubmission->id;
         return Response::json($fileobject);
     }
 }
