@@ -37,9 +37,9 @@ App::before(function($request)
                 );
             }
             //Check for printshop link
-            if(Auth::user()->checkRole("ROLE_PRINT_SHOP")){
+            if(Auth::user()->checkRole("ROLE_PRINTING")){
                 if(array_key_exists("admin", $returnArray)){
-                    array_push($returnArray["admin"], array('route'=>'role.printing','text'=>'Printing Management'));
+                    array_push($returnArray["admin"], array('route'=>'printing','text'=>'Printing Management'));
                 }else{
                     $returnArray['admin'] = array(
                         array('route'=>'role.printing','text'=>'Printing Management')
@@ -133,6 +133,22 @@ Route::filter('auth_admin', function(){
         //User is logged in
         if(!Auth::user()->isAdmin){
             return Redirect::to('/dashboard');
+        }
+    }else{
+        //User isn't even logged in, send to admin login page
+        //Save the route we are trying to access
+        Session::put('routing.intended.parameters',Route::getCurrentRoute()->parameters());
+        Session::put('routing.intended.route',Route::getCurrentRoute()->getName());
+        return Redirect::route('authenticate');
+    }
+});
+
+Route::filter('role_printer', function(){
+    if(Auth::check()){
+        //User is logged in
+        //If user is an admin or has the ROLE_PRINTING then we allow access
+        if((!Auth::user()->isAdmin) && (!User::checkRole("ROLE_PRINTING"))){
+            return Redirect::to("dashboard");
         }
     }else{
         //User isn't even logged in, send to admin login page

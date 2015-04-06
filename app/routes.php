@@ -66,7 +66,35 @@ Route::group(array('before'=>'iit_user'),function(){
     Route::group(array('prefix'=>'api'), function(){
         Route::get('/userByCwid/{projectid}/{cwid}',array('as'=>'api.userByCWID','uses'=>'AjaxApiController@userByCwid'))->where(array('projectid' => '[0-9]+'));
     });
-    
+
+
+    //**** Special Role Access Routes, Requires IIT login *****//
+    Route::group(array('prefix'=>'printing','before'=>'role_printer'),function(){
+        Route::get("/downloadFile/{fileid}", array("as"=>"printing.downloadfile","uses"=>"PrintingController@downloadFile"))->where(array('fileid' => '[0-9]+'));
+
+        Route::group(array('before'=>'role_printer'), function(){
+            //Show the default printing page and determine where to redirect people
+            Route::get("", array("as"=>"printing","uses"=>"PrintingController@index"));
+            //These routes are for the printer and for admins
+            Route::get("/awaitingPrint", array("as"=>"printing.awaitingPrint","uses"=>"PrintingController@awaitingPrint"));
+            Route::get("/printed", array("as"=>"printing.printed","uses"=>"PrintingController@printed"));
+        });
+
+        Route::group(array('before'=>'auth_admin'), function(){
+            //These routes are for admins only
+            Route::get("/awaitingApproval", array("as"=>"printing.awaitingApproval","uses"=>"PrintingController@awaitingApproval"));
+            Route::get("/awaitingPickup", array("as"=>"printing.awaitingPickup","uses"=>"PrintingController@awaitingPickup"));
+            Route::get("/projectReport", array("as"=>"printing.projectReport","uses"=>"PrintingController@projectReport"));
+        });
+    });
+
+
+
+
+
+
+
+
 });
 
 
@@ -96,11 +124,6 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
             Route::post("/confirm/{id}", array("as"=>"admin.order.pickup.confirm","uses"=>"AdminPickupController@confirmPickup"))->where(array('id' => '[0-9]+'));
             Route::post("/redo/{id}", array("as"=>"admin.order.pickup.redo","uses"=>"AdminPickupController@redoPickup"))->where(array('id' => '[0-9]+'));
         });
-    });
-
-    Route::group(array('prefix'=>'printing'),function(){
-        //Show the default printing page
-        Route::get("/", array("as"=>"role.printing","uses"=>"PrintingController@index"));
     });
     
     Route::group(array('prefix'=>'items'),function(){
