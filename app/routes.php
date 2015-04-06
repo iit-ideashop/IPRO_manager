@@ -74,7 +74,11 @@ Route::group(array('before'=>'iit_user'),function(){
 
 //**** Admin Routes *****//
 Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
-    
+    Route::get("phpinfo", function(){
+        phpinfo();
+        exit;
+    });
+
     Route::group(array('prefix'=>'orders'), function(){
         //admin/orders group
         Route::get('/',array('as'=>'admin.orders','uses'=>'AdminOrderController@index'));
@@ -92,6 +96,11 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
             Route::post("/confirm/{id}", array("as"=>"admin.order.pickup.confirm","uses"=>"AdminPickupController@confirmPickup"))->where(array('id' => '[0-9]+'));
             Route::post("/redo/{id}", array("as"=>"admin.order.pickup.redo","uses"=>"AdminPickupController@redoPickup"))->where(array('id' => '[0-9]+'));
         });
+    });
+
+    Route::group(array('prefix'=>'printing'),function(){
+        //Show the default printing page
+        Route::get("/", array("as"=>"role.printing","uses"=>"PrintingController@index"));
     });
     
     Route::group(array('prefix'=>'items'),function(){

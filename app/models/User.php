@@ -40,4 +40,17 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
             return $user[0]->FirstName.' '.$user[0]->LastName;
             
         }
+
+        static public function checkRole($role, $userid = 0){
+            if($userid == 0){
+                $userid = Auth::id();
+            }
+            $result = DB::table('user_roles')->where('UserID','=', $userid)->where("Role",'=',$role)->get();
+            if(count($result) > 0) {
+                //User has the assigned role
+                return true;
+            }else{
+                return false;
+            }
+        }
 }

@@ -72,8 +72,8 @@
                         fileHasErrors = true;
                     }
                     //We have a pdf!
-                    if(fileArr[i].size > 100000000){
-                        //Greater than 100mb
+                    if(fileArr[i].size > 150000000){
+                        //Greater than 150mb
                         $("#upload"+controlVar+"statusBlock").html("The selected file is greater than the 100mb limit");
                         fileHasErrors = true;
                     }

@@ -8,14 +8,15 @@
                 @if ($project->id == @$class->id)
                    class="active"
                 @endif
-                        ><a href="/project/{{ $project->id}}">{{ $project->Name }}</a></li>
+                        >
+                    <a href="{{URL::route("project.dashboard",$project->id )}}">{{ $project->Name }}</a></li>
             @endforeach
           </ul>
             @if(isset($navigation['admin']))
             <p>Administration</p>
             <ul class='nav nav-sidebar'>
                 @foreach ($navigation ['admin'] as $links)
-                <li><a href='{{ $links['link'] }}'>{{ $links['text'] }}</a></li>
+                <li><a href='{{ URL::route($links["route"]) }}'>{{ $links['text'] }}</a></li>
                 @endforeach
             </ul>
             @endif

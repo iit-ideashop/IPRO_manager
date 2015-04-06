@@ -30,13 +30,24 @@ App::before(function($request)
             }
             if(Auth::user()->isAdmin){
                 $returnArray['admin'] = array(
-                    array('link'=>'/admin/budgets','text'=>'Budget Requests'),
-                    array('link'=>'/admin/orders','text'=>'Orders'),
-                    array('link'=>'/admin/user','text'=>'User Management'),
-                    array('link'=>'/admin/projects','text'=>'Project Management'),
-                    array('link'=>'/admin/iproday', 'text'=>'IPRO Day Management'),
+                    array('route'=>'admin_budgets','text'=>'Budget Requests'),
+                    array('route'=>'admin.orders','text'=>'Orders'),
+                    array('route'=>'admin.projects','text'=>'Project Management'),
+                    array('route'=>'admin.iproday', 'text'=>'IPRO Day Management'),
                 );
             }
+            //Check for printshop link
+            if(Auth::user()->checkRole("ROLE_PRINT_SHOP")){
+                if(array_key_exists("admin", $returnArray)){
+                    array_push($returnArray["admin"], array('route'=>'role.printing','text'=>'Printing Management'));
+                }else{
+                    $returnArray['admin'] = array(
+                        array('route'=>'role.printing','text'=>'Printing Management')
+                    );
+                }
+            }
+
+
             View::share('navigation',$returnArray);
         }else{
         }
