@@ -31,27 +31,21 @@
                             ><a href="{{ URL::route('printing.printed') }}">Printed</a></li>
                         @if(Auth::user()->isAdmin)
                             <li
-                            @if(Route::currentRouteName() == 'printing.awaitingPickup')
+                            @if(Route::currentRouteName() == 'printing.checkin')
                                 class="active"
                                     @endif
-                                    ><a href="{{URL::route('printing.awaitingPickup')}}">Check-in Poster</a></li>
+                                    ><a href="{{URL::route('printing.checkin')}}">Check-in Poster</a></li>
                             <li
-                            @if(Route::currentRouteName() == 'printing.awaitingPickup')
+                            @if(Route::currentRouteName() == 'printing.posterpickup')
                                 class="active"
                                     @endif
-                                    ><a href="{{URL::route('printing.awaitingPickup')}}">Awaiting Pickup</a></li>
-                            <li
-                            @if(Route::currentRouteName() == 'printing.awaitingPickup')
-                                class="active"
-                                    @endif
-                                    ><a href="{{URL::route('printing.awaitingPickup')}}">Pickup Poster</a></li>
+                                    ><a href="{{URL::route('printing.posterpickup')}}">Pickup Poster</a></li>
                             <li
                             @if(Route::currentRouteName() == 'printing.projectReport')
                                 class="active"
                                     @endif
                                     ><a href="{{URL::route('printing.projectReport')}}">Project Report</a></li>
                         @endif
-
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->

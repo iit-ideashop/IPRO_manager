@@ -37,7 +37,7 @@ App::before(function($request)
                 );
             }
             //Check for printshop link
-            if(Auth::user()->checkRole("ROLE_PRINTING")){
+            if((Auth::user()->checkRole("ROLE_PRINTING")) || (Auth::user()->isAdmin)){
                 if(array_key_exists("admin", $returnArray)){
                     array_push($returnArray["admin"], array('route'=>'printing','text'=>'Printing Management'));
                 }else{

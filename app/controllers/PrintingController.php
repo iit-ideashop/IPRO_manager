@@ -27,15 +27,30 @@ class PrintingController extends BaseController{
     }
 
     public function awaitingPrint(){
-
+        //Pull down files awaiting print by the printer
+        $files = PrintSubmission::where("status","=",3)->get();
+        View::share("files",$files);
+        return View::make('printing.awaitingPrint');
     }
 
     public function printed(){
-
+        //Pull down files printed by the printer
+        $files = PrintSubmission::where("status","=",4)->get();
+        View::share("files",$files);
+        return View::make('printing.printed');
     }
 
-    public function awaitingPickup(){
+    public function checkInPosters(){
+         $files = PrintSubmission::where("status","=",4)->get();
+         View::share("files",$files);
+         return View::make('printing.checkinposter');
+    }
 
+    public function posterPickup(){
+        //Pull down files printed by the printer
+        $files = PrintSubmission::where("status","=",5)->get();
+        View::share("files",$files);
+        return View::make('printing.posterPickup');
     }
 
     public function projectReport(){
@@ -45,6 +60,23 @@ class PrintingController extends BaseController{
     public function downloadFile($fileid){
         //Check for auth of admin or printadmin or see if user is enrolled in the project to be allowed to download the file
         return Response::download(Config::get("app.StorageURLs.printSubmissions")."2_Poster.pdf","My_Little_Pony.pdf");
+    }
+
+    public function viewFile($fileid){
+        $file = Config::get("app.StorageURLs.printSubmissions")."2_Poster.pdf";  // <- Replace with the path to your .pdf file
+        // check if the file exists
+        echo $file;
+        if (file_exists($file)) {
+            // read the file into a string
+            $content = file_get_contents($file);
+            // create a Laravel Response using the content string, an http response code of 200(OK),
+            //  and an array of html headers including the pdf content type
+            return Response::make($content, 200, array('content-type' => 'application/pdf'));
+        }else{
+            return Response::make("File does not exist or is not available");
+    }
+
+
     }
 }
 

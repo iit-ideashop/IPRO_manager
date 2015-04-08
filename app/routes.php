@@ -71,7 +71,7 @@ Route::group(array('before'=>'iit_user'),function(){
     //**** Special Role Access Routes, Requires IIT login *****//
     Route::group(array('prefix'=>'printing','before'=>'role_printer'),function(){
         Route::get("/downloadFile/{fileid}", array("as"=>"printing.downloadfile","uses"=>"PrintingController@downloadFile"))->where(array('fileid' => '[0-9]+'));
-
+        Route::get("/viewFile/{fileid}", array("as"=>"printing.viewfile","uses"=>"PrintingController@viewFile"))->where(array('fileid' => '[0-9]+'));
         Route::group(array('before'=>'role_printer'), function(){
             //Show the default printing page and determine where to redirect people
             Route::get("", array("as"=>"printing","uses"=>"PrintingController@index"));
@@ -83,7 +83,8 @@ Route::group(array('before'=>'iit_user'),function(){
         Route::group(array('before'=>'auth_admin'), function(){
             //These routes are for admins only
             Route::get("/awaitingApproval", array("as"=>"printing.awaitingApproval","uses"=>"PrintingController@awaitingApproval"));
-            Route::get("/awaitingPickup", array("as"=>"printing.awaitingPickup","uses"=>"PrintingController@awaitingPickup"));
+            Route::get("/checkin", array("as"=>"printing.checkin","uses"=>"PrintingController@checkInPosters"));
+            Route::get("/posterPickup", array("as"=>"printing.posterpickup","uses"=>"PrintingController@posterPickup"));
             Route::get("/projectReport", array("as"=>"printing.projectReport","uses"=>"PrintingController@projectReport"));
         });
     });
