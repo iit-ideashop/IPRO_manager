@@ -28,6 +28,12 @@
                                 class="active"
                             @endif
                             ><a href="{{ URL::route('project.roster',$class->id) }}">Roster</a></li>
+                    <li
+                    @if(Route::currentRouteName() == 'project.printSubmission')
+                        class="active"
+                            @endif
+                            ><a href="{{ URL::route('project.printSubmission',$class->id) }}">Submit PDFs</a></li>
+
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">

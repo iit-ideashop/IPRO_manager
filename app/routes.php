@@ -46,7 +46,8 @@ Route::group(array('before'=>'iit_user'),function(){
         Route::get('{projectid}/orders/{orderid}',array("as"=>"project.order.view","uses"=>"OrderController@viewOrder"))->where(array('projectid' => '[0-9]+'))->where(array('orderid' => '[0-9]+'));
         Route::get('{projectid}/printSubmission',array("as"=>"project.printSubmission","uses"=>"ProjectController@printSubmission"))->where(array('projectid' => '[0-9]+'));
         Route::post('{projectid}/printSubmission/files',array("as"=>"project.printSubmission.files","uses"=>"ProjectController@printSubmissionUpload"))->where(array('projectid' => '[0-9]+'));
-
+        Route::get('{projectid}/printSubmission/getfiles',array("as"=>"project.printSubmission.getfiles","uses"=>"ProjectController@getProjectFiles"))->where(array('projectid' => '[0-9]+'));
+        Route::post('{projectid}/printSubmission/override',array("as"=>"project.printSubmission.override","uses"=>"ProjectController@overridePrintSubmission"))->where(array('projectid' => '[0-9]+'));
         //Group manager routes
         Route::get('{projectid}/groupmanager', array('as'=>'project.groupmanager','before'=>'project_instructor','uses'=>'ProjectController@groupManager'))->where(array('projectid' => '[0-9]+'));
         //Protected with project_instructor
@@ -69,7 +70,7 @@ Route::group(array('before'=>'iit_user'),function(){
 
 
     //**** Special Role Access Routes, Requires IIT login *****//
-    Route::group(array('prefix'=>'printing','before'=>'role_printer'),function(){
+    Route::group(array('prefix'=>'printing'),function(){
         Route::get("/downloadFile/{fileid}", array("as"=>"printing.downloadfile","uses"=>"PrintingController@downloadFile"))->where(array('fileid' => '[0-9]+'));
         Route::get("/viewFile/{fileid}", array("as"=>"printing.viewfile","uses"=>"PrintingController@viewFile"))->where(array('fileid' => '[0-9]+'));
         Route::group(array('before'=>'role_printer'), function(){

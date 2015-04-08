@@ -74,9 +74,14 @@ class PrintingController extends BaseController{
             return Response::make($content, 200, array('content-type' => 'application/pdf'));
         }else{
             return Response::make("File does not exist or is not available");
+        }
     }
 
 
-    }
+
+    //***** The following functions are API functions used for JSON requests ******//
+
+
+
 }
 

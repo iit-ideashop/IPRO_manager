@@ -16,8 +16,6 @@
                 <p>36 x 48</p>
                 <p>48 x 36</p>
                 <p>Other upon approval</p>
-                <a onclick="$('#posterupload').click();" class="btn btn-primary"><i class="fa fa-file-pdf-o"></i> Select poster .pdf</a>
-                {{ Form::file("posterupload",array("style"=>"display:none;","id"=>"posterUpload","multiple"=>true)) }}
             </div>
         </div>
         <div class="col-xs-5">
@@ -28,15 +26,27 @@
                 <p>8.5 x 11</p>
                 <p>11 x 8.5</p>
                 <p>Other upon approval</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-5 col-xs-offset-1 verticalDivider">
+            <div style="text-align: center">
+                <a onclick="$('#posterUpload').click();" class="btn btn-primary"><i class="fa fa-file-pdf-o"></i> Select poster .pdf</a>
+                {{ Form::file("posterupload[]",array("style"=>"display:none;","id"=>"posterUpload","multiple"=>true)) }}
+            </div>
+        </div>
+        <div class="col-xs-5">
+            <div style="text-align: center">
                 <a onclick="$('#brochureUpload').click();" class="btn btn-primary"><i class="fa fa-file-pdf-o"></i> Select brochure .pdf</a>
                 {{ Form::file("brochureupload[]",array("style"=>"display:none;","id"=>"brochureUpload","multiple"=>true)) }}
             </div>
         </div>
     </div>
+
     <div class="page-header"><h3>Files uploaded for {{ $class->Name }}</h3></div>
     <table class="table table-striped" id="fileuploadstable">
         <tr>
-            <th> </th>
             <th>Filename</th>
             <th>Size</th>
             <th>Dimensions</th>
@@ -56,42 +66,72 @@
                 //Verify the selected file is a .pdf
                 //We need to loop through the files array
                 var fileArr = event.target.files;
-                //For loop each file
-                for(var i=0; i < fileArr.length; i++){
-                    var fileHasErrors = false;
-                    //Create a new line in the files table for this upload
-                    $("#fileuploadstable").append('<tr id="upload'+controlVar+'row">'+
-                    '<td></td>'+
-                    '<td>'+fileArr[i].name+'</td>'+
-                    '<td>'+(fileArr[i].size/1048576).toPrecision(2)+'MB</td>'+
-                    '<td colspan="4" id="upload'+controlVar+'statusBlock"></td>'+
-                    '</tr>');
-
-                    if(fileArr[i].type != "application/pdf"){
-                        $("#upload"+controlVar+"statusBlock").html("The selected file is not a PDF");
-                        fileHasErrors = true;
+                acceptFiles(fileArr, "Brochure");
+            });
+            $("#posterUpload").on("change",function(event){
+                //Verify the selected file is a .pdf
+                //We need to loop through the files array
+                var fileArr = event.target.files;
+                acceptFiles(fileArr, "Poster");
+            });
+            //Pull down the current file listing
+            $.ajax({
+                url: '{{ URL::route('project.printSubmission.getfiles',$class->id) }}',
+                type: 'GET',
+                dataType: 'json',
+                processData: false,
+                success: function(data){
+                    if(data.error){
+                        //If the array contains an error we have to show an error.
+                        alert(data.error);
+                        return false;
                     }
-                    //We have a pdf!
-                    if(fileArr[i].size > 150000000){
-                        //Greater than 150mb
-                        $("#upload"+controlVar+"statusBlock").html("The selected file is greater than the 100mb limit");
-                        fileHasErrors = true;
+                    //Let's take the file object returned and do magic with it
+                    for(var i =0; i < data.length; i++){
+                        console.log(data[i]);
+                        addUploadedMaterialLine(data[i].filename, data[i].link, data[i].filesize, data[i].uploaded_by, data[i].upload_time, data[i].dimensions, data[i].thumbnail,data[i].fileid, data[i].needs_override, data[i].textstatus, 0);
                     }
-                    if(!fileHasErrors) {
-                        //File is validated, add it to the file upload array and add a progress bar
-                        $("#upload"+controlVar+"statusBlock").append('<div class="progress">'+
-                        '<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;" id="upload'+controlVar+'progress">'+
-                        '</div>'+
-                        '</div>');
-                        var fileObj = {controlid: controlVar, filename: fileArr[i].name, file: fileArr[i]}
-                        filesArray.push(fileObj);
-                    }
-                    controlVar = controlVar + 1;
+                },
+                error: function(data, textStatus, jqXHR){
+                    console.log(data);
+                    console.log(textStatus);
                 }
-                processUploads();
             });
         });
 
+        function acceptFiles(fileArray, fileType){
+            for(var i=0; i < fileArray.length; i++){
+                var fileHasErrors = false;
+                //Create a new line in the files table for this upload
+                $("#fileuploadstable").append('<tr id="upload'+controlVar+'row">'+
+                '<td>'+fileArray[i].name+'</td>'+
+                '<td>'+(fileArray[i].size/1048576).toPrecision(2)+'MB</td>'+
+                '<td colspan="4" id="upload'+controlVar+'statusBlock"></td>'+
+                '</tr>');
+
+                if(fileArray[i].type != "application/pdf"){
+                    $("#upload"+controlVar+"statusBlock").html("The selected file is not a PDF");
+                    fileHasErrors = true;
+                }
+                //We have a pdf!
+                if(fileArray[i].size > 150000000){
+                    //Greater than 150mb
+                    $("#upload"+controlVar+"statusBlock").html("The selected file is greater than the 100mb limit");
+                    fileHasErrors = true;
+                }
+                if(!fileHasErrors) {
+                    //File is validated, add it to the file upload array and add a progress bar
+                    $("#upload"+controlVar+"statusBlock").append('<div class="progress">'+
+                    '<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;" id="upload'+controlVar+'progress">'+
+                    '</div>'+
+                    '</div>');
+                    var fileObj = {controlid: controlVar, filename: fileArray[i].name, file: fileArray[i], fileType: fileType};
+                    filesArray.push(fileObj);
+                }
+                controlVar = controlVar + 1;
+            }
+            processUploads();
+        }
 
         //When we process uploads we have to take the upload array and process it one by one
         //each time this function runs it will take 1 file from the fileuploads array and upload it
@@ -108,6 +148,7 @@
             var fileObj = filesArray.shift();
             var fd = new FormData();
             fd.append("fileUpload",fileObj.file);
+            fd.append("fileType",fileObj.fileType);
             $.ajax({
                 url: '{{ URL::route('project.printSubmission.files',$class->id) }}',
                 type: 'POST',
@@ -128,7 +169,6 @@
                 },
                 success: function(data, textStatus, jqXHR){
                     completeFileUpload(fileObj.controlid);
-                    console.log(data);
                     //Process the incoming data and make sure we don't have an array with error
                     if(data.error){
                         //If the array contains an error we have to show an error.
@@ -136,9 +176,7 @@
                         return false;
                     }
                     //Let's take the file object returned and do magic with it
-                    console.log("controlvar: "+fileObj.controlid);
-                    addUploadedMaterialLine(data.filename, data.filesize, data.uploaded_by, data.upload_time, data.dimensions, data.thumbnail,data.fileid, data.needs_override, fileObj.controlid);
-
+                    addUploadedMaterialLine(data.filename, data.link, data.filesize, data.uploaded_by, data.upload_time, data.dimensions, data.thumbnail,data.fileid, data.needs_override, data.textstatus, fileObj.controlid);
                 },
                 error: function(data, textStatus, jqXHR){
                     console.log(data);
@@ -173,13 +211,12 @@
             $("#upload"+barid+"progress").html("Complete!");
         }
 
-        function addUploadedMaterialLine(filename, filesize, uploaded_by, uploaded_timestamp, dimensions, thumbnail_url, file_id, show_override, replace_id){
+        function addUploadedMaterialLine(filename, link, filesize, uploaded_by, uploaded_timestamp, dimensions, thumbnail_url, file_id, show_override, textstatus, replace_id){
             replace_id = replace_id || 0;
             if(replace_id != 0){
                 //Need to replace an object
                 $("#upload"+replace_id+"row").replaceWith('<tr id="file'+file_id+'row">' +
-                '<td><img src="'+thumbnail_url+'"></td>' + //Thumbnail
-                '<td>'+filename+'</td>' + //filename
+                '<td><a href="'+link+'">'+filename+'</a></td>' + //filename
                 '<td>'+filesize+'</td>' + // filesize
                 '<td>'+dimensions+'</td>' + //dimensions
                 '<td>'+uploaded_by+'</td>' + //uploader
@@ -188,32 +225,36 @@
                 '</tr>');
             }else{
                 //Adding a new file object from other call
-                console.log("new file?");
+                //Need to replace an object
+                $("#fileuploadstable").append('<tr id="file'+file_id+'row">' +
+                '<td><a href="'+link+'">'+filename+'</a></td>' + //filename
+                '<td>'+filesize+'</td>' + // filesize
+                '<td>'+dimensions+'</td>' + //dimensions
+                '<td>'+uploaded_by+'</td>' + //uploader
+                '<td>'+uploaded_timestamp+'</td>' + //time of upload
+                '<td id="file'+file_id+'status"></td>' + //override or status
+                '</tr>');
             }
             if(show_override){
                 $("#file"+file_id+"status").html('<div style="text-align: center">The file you uploaded does not meet our dimension specifications.'+
                         'If you are certain the file you uploaded has correct dimensions you can override this message and submit the file.'+
                         'If we find that the file dimensions are not correct we will reject your submission and you will have to resubmit the file. '+
-                        '<br>Override? <br><button class="btn btn-danger">No, Delete this submission</button>  <button class="btn btn-success">Yes, override my file</button></div>');
+                        '<br>Override? <br><button class="btn btn-danger" onclick="deleteSubmission('+file_id+')">No, Delete this submission</button>  <button class="btn btn-success" onclick="approveSubmission('+file_id+')">Yes, override my file</button></div>');
             }else{
-                $("#file"+file_id+"status").html('<span class="fa-stack"><i class="fa fa-file-pdf-o fa-2x"></i></span>' +
-                '<span class="fa-stack fa-lg">' +
-                '<i class="fa fa-square-o fa-stack-2x"></i>' +
-                '<i class="fa fa-check fa-stack-1x text-success"></i>' +
-                '</span>');
+                $("#file"+file_id+"status").html(textstatus);
             }
+        }
 
-            /*
-            $("#fileuploadstable").append('<tr>' +
+        function deleteSubmission(fileid){
+            
+        }
 
-            '<td></td>' + //Thumbnail
-            '<td>'+filename+'</td>' + //filename
-            '<td>'+filesize+'</td>' + // filesize
-            '<td>'+dimensions+'</td>' + //dimensions
-            '<td>'+uploaded_by+'</td>' + //uploader
-            '<td></td>' + //override
-            '</tr>');
-             */
+        function approveSubmission(fileid){
+
+        }
+
+        function overrideUpload(fileid, action){
+            //{{ URL::route('project.printSubmission.override',$class->id) }}
         }
     </script>
 @stop

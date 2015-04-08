@@ -52,6 +52,7 @@ class ProjectController extends BaseController{
         //We already verified we are enrolled in the $projectid or we are admin.
         //We can create files with the $projectid easily.
         $fileSubmission = Input::file("fileUpload");
+        $fileType = Input::get("fileType");
         if(!$fileSubmission->isValid()){
             $error_array = array();
             $error_array['error'] = "Error when uploading file. File is invalid";
@@ -76,7 +77,7 @@ class ProjectController extends BaseController{
         $printSubmission->original_filename = $fileSubmission->getClientOriginalName();
         $printSubmission->size = number_format($fileSubmission->getSize() / 1000000, 2)." Mb";
         $printSubmission->count_copies = 1;
-        $printSubmission->file_type = "Poster";
+        $printSubmission->file_type = $fileType;
         $printSubmission->override = true;
         $printSubmission->status = 1;
         $printSubmission->save();
@@ -127,20 +128,66 @@ class ProjectController extends BaseController{
         }
         $printSubmission->save();
         //Send the email or schedule an email to be dispatched
-
+        if(!$printSubmission->override){
+            //We will send an email if the file is ok.
+            //We need to give it a $person object and a $filesubmission object
+            $user = Auth::user();
+            Mail::send('emails.printing.received', array('person'=>$user,'fileSubmission'=>$printSubmission), function($message) use($user, $printSubmission){
+                $message->to($user->Email,$user->FirstName.' '.$user->LastName);
+                $message->subject('Your '.$printSubmission->file_type.':'.$printSubmission->filename.' has been received!');
+            });
+        }
 
         //Take the file and return the filename or rather the file object
         $fileobject = array();
         $fileobject['filename'] = $printSubmission->original_filename;
-        $fileobject['link'] = "http://google.com"; // needs to be finished
+        $fileobject['link'] = URL::route('printing.downloadfile',$printSubmission->id); // needs to be finished
         $fileobject['filesize'] = $printSubmission->size; // Filesize in megabytes, up to two decimal places
         $fileobject['dimensions'] = $printSubmission->dimensions;//file dimensions in inches
         $fileobject['uploaded_by'] = User::getFullNameWithId(Auth::id()); //Full name of person who uploaded the file
         $date_created = date('m/d/Y g:i a',$printSubmission->created_at->timestamp);
         $fileobject['upload_time'] = $date_created;//Timestamp the file was uploaded during
-        $fileobject['needs_override'] = $printSubmission->override;
+        if($printSubmission->status == 1){
+            $fileobject['needs_override'] = true;
+        }else{
+            $fileobject['needs_override'] = false;
+        }
+
         $fileobject['fileid'] = $printSubmission->id;
+        $fileobject['textstatus'] = $printSubmission->getStatus();
         return Response::json($fileobject);
     }
+
+    public function getProjectFiles($projectid){
+        //We already know the student has access to this project via filters
+        $files = PrintSubmission::where("ProjectID","=",$projectid)->get();
+        //We need to return file objects
+        $fileobjectarray = array();
+        foreach($files as $file){
+            $tmpFileObject = array();
+            $tmpFileObject['filename'] = $file->original_filename;
+            $tmpFileObject['link'] = URL::route('printing.downloadfile',$file->id);
+            $tmpFileObject['filesize'] = $file->size;
+            $tmpFileObject['dimensions'] = $file->dimensions;
+            $tmpFileObject['uploaded_by'] = User::getFullNameWithId($file->UserID);
+            $date_created = date('m/d/Y g:i a',$file->created_at->timestamp);
+            $tmpFileObject['upload_time'] = $date_created;//Timestamp the file was uploaded during
+            if($file->status == 1){
+                $tmpFileObject['needs_override'] = true;
+            }else{
+                $tmpFileObject['needs_override'] = false;
+            }
+            $tmpFileObject['fileid'] = $file->id;
+            $tmpFileObject['textstatus'] = $file->getStatus();
+            array_push($fileobjectarray, $tmpFileObject);
+        }
+        return Response::json($fileobjectarray);
+    }
+
+    public function overridePrintSubmission($projectid){
+        //This function will override a print submission and either approve the submission or will delete the file based on user needs.
+    }
+
+
 }
 
