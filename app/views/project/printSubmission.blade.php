@@ -239,14 +239,15 @@
                 $("#file"+file_id+"status").html('<div style="text-align: center">The file you uploaded does not meet our dimension specifications.'+
                         'If you are certain the file you uploaded has correct dimensions you can override this message and submit the file.'+
                         'If we find that the file dimensions are not correct we will reject your submission and you will have to resubmit the file. '+
-                        '<br>Override? <br><button class="btn btn-danger" onclick="deleteSubmission('+file_id+')">No, Delete this submission</button>  <button class="btn btn-success" onclick="approveSubmission('+file_id+')">Yes, override my file</button></div>');
+                        '<br>Override? <br><button class="btn btn-danger" onclick="deleteSubmission('+file_id+')">No, Delete this submission</button> ' +
+                        '<button class="btn btn-success" onclick="approveSubmission('+file_id+')">Yes, override my file</button></div>');
             }else{
                 $("#file"+file_id+"status").html(textstatus);
             }
         }
 
         function deleteSubmission(fileid){
-            
+
         }
 
         function approveSubmission(fileid){
