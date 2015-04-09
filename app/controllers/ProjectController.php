@@ -134,7 +134,7 @@ class ProjectController extends BaseController{
             $user = Auth::user();
             Mail::send('emails.printing.received', array('person'=>$user,'fileSubmission'=>$printSubmission), function($message) use($user, $printSubmission){
                 $message->to($user->Email,$user->FirstName.' '.$user->LastName);
-                $message->subject('Your '.$printSubmission->file_type.':'.$printSubmission->filename.' has been received!');
+                $message->subject('Your '.$printSubmission->file_type.':'.$printSubmission->original_filename.' has been received!');
             });
         }
 
