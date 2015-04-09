@@ -37,8 +37,8 @@ class BudgetStatusTableSeeder extends Seeder {
 class PrintSubmissionStatusTableSeeder extends Seeder {
     public function run()
     {
-        DB::table('printsubmissionstatuses')->delete();
-        DB::table('printsubmissionstatuses')->insert(array(array('id'=>1,'Status'=>'Needs Approval'),
+        DB::table('printSubmissionStatuses')->delete();
+        DB::table('printSubmissionStatuses')->insert(array(array('id'=>1,'Status'=>'Needs Approval'),
             array('id'=>2,'Status'=>'Submitted'),
             array('id'=>3,'Status'=>'Sent to Print Service'),
             array('id'=>4,'Status'=>'Processed by Print Service'),
