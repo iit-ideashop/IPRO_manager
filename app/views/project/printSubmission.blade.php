@@ -145,7 +145,9 @@
             }else{
                 return false;
             }
+
             var fileObj = filesArray.shift();
+            console.log(fileObj);
             var fd = new FormData();
             fd.append("fileUpload",fileObj.file);
             fd.append("fileType",fileObj.fileType);

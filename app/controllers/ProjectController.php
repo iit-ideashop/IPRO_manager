@@ -53,11 +53,7 @@ class ProjectController extends BaseController{
         //We can create files with the $projectid easily.
         $fileSubmission = Input::file("fileUpload");
         $fileType = Input::get("fileType");
-        if(!$fileSubmission->isValid()){
-            $error_array = array();
-            $error_array['error'] = "Error when uploading file. File is invalid";
-            return Response::json($error_array);
-        }
+        
         //Take the file and verify it is a pdf
         if($fileSubmission->getMimeType() != "application/pdf"){
             $error_array = array();
