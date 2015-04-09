@@ -88,7 +88,7 @@
                     }
                     //Let's take the file object returned and do magic with it
                     for(var i =0; i < data.length; i++){
-                        console.log(data[i]);
+
                         addUploadedMaterialLine(data[i].filename, data[i].link, data[i].filesize, data[i].uploaded_by, data[i].upload_time, data[i].dimensions, data[i].thumbnail,data[i].fileid, data[i].needs_override, data[i].textstatus, 0);
                     }
                 },
@@ -147,7 +147,6 @@
             }
 
             var fileObj = filesArray.shift();
-            console.log(fileObj);
             var fd = new FormData();
             fd.append("fileUpload",fileObj.file);
             fd.append("fileType",fileObj.fileType);

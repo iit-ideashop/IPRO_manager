@@ -53,7 +53,7 @@ class ProjectController extends BaseController{
         //We can create files with the $projectid easily.
         $fileSubmission = Input::file("fileUpload");
         $fileType = Input::get("fileType");
-        
+
         if(!$fileSubmission->isValid()){
             $error_array = array();
             $error_array['error'] = "Error when uploading file. File is invalid";
