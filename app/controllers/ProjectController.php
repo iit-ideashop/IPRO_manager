@@ -177,7 +177,7 @@ class ProjectController extends BaseController{
                 $tmpFileObject['needs_override'] = true;
             }else{
                 $tmpFileObject['needs_override'] = false;
-            }
+        }
             $tmpFileObject['fileid'] = $file->id;
             $tmpFileObject['textstatus'] = $file->getStatus();
             array_push($fileobjectarray, $tmpFileObject);
@@ -187,8 +187,31 @@ class ProjectController extends BaseController{
 
     public function overridePrintSubmission($projectid){
         //This function will override a print submission and either approve the submission or will delete the file based on user needs.
+        //Already verified user is enrolled in $projectid
+        $fileid = Input::get("fileid");
+        //Pull the file from the DB
+        $printSubmission = PrintSubmission::where("id","=",intval($fileid))->first();
+        if($printSubmission == null){
+            return Response::json(array("error"=>"Could not locate file in database"));
+        }
+        //File exists, make sure we are waiting for user input
+        if($printSubmission->status != 1){
+            return Response::json(array("error"=>"File already submitted for print"));
+        }
+        $action = Input::get("action");
+        //Depending on the action we will do different things to $fileid
+        if($action == "Approve"){
+            $printSubmission->status = 2;
+            $printSubmission->save();
+            return Response::json(array("success"=>"true","newstatus"=>$printSubmission->getStatus(),"action"=>"Approve"));
+        }elseif($action == "Delete"){
+            unlink(Config::get("app.StorageURLs.printSubmissions").$printSubmission->filename);
+            $printSubmission->delete();
+            return Response::json(array("success"=>"true","action"=>"Delete"));
+        }else{
+            //Not a supported action
+            return Response::json(array("error"=>"Action type not supported"));
+        }
     }
-
-
 }
 

@@ -248,15 +248,55 @@
         }
 
         function deleteSubmission(fileid){
-
+            overrideUpload(fileid, "Delete");
         }
 
         function approveSubmission(fileid){
-
+            overrideUpload(fileid,"Approve");
         }
 
         function overrideUpload(fileid, action){
-            //{{ URL::route('project.printSubmission.override',$class->id) }}
+
+            var fd = new FormData();
+            fd.append("fileid",fileid);
+            fd.append("action",action);
+
+            $.ajax({
+                url: '{{ URL::route('project.printSubmission.override',$class->id) }}',
+                type: 'POST',
+                data: fd,
+                cache: false,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                success: function(data){
+                    //check for success data
+                    console.log(data);
+                    if(data.success == "true"){
+                        //Action has been completed, run different code based on action
+                        if(data.action == "Delete"){
+                            removeFile(fileid);
+                        }else if(data.action == "Approve"){
+                            updateStatus(fileid,data.newstatus);
+                        }
+                    }
+                    else if(data.error){
+                        console.log("Your request could not be processed at this time");
+                    }
+                },
+                error: function(data, textStatus){
+                    console.log(data);
+                    console.log(textStatus);
+                }
+            });
+        }
+
+        function updateStatus(fileid, newstatus){
+            $("#file"+fileid+"status").html(newstatus);
+        }
+
+        function removeFile(fileid){
+            $("#file"+fileid+"row").fadeOut(1000);
         }
     </script>
 @stop
