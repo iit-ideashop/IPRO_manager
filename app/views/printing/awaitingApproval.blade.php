@@ -65,9 +65,7 @@
         //disable the deny file button
         $("#denyFile-"+file_id).attr("disabled","disabled");
         $("#approveFile-"+file_id).html('<i class="fa fa-spin fa-cog"></i> Approving..');
-        setInterval(function(){
-            removeRow(file_id);
-        },1000);
+        callApproveAPI(file_id, "Approve");
     }
 
     function showDenyModal(file_id){
@@ -83,9 +81,39 @@
         $("#denyModal").modal("hide");
         $("#approveFile-"+file_id).attr("disabled","disabled");
         $("#denyFile-"+file_id).html('<i class="fa fa-spin fa-cog"></i> Rejecting..');
-        setTimeout(function(){
-            removeRow(file_id);
-        },1000);
+        callApproveAPI(file_id, "Deny");
+    }
+
+    function callApproveAPI(fileid, action){
+        var fd = new FormData();
+        fd.append("fileid",fileid);
+        fd.append("action",action);
+        if(action == "Deny"){
+            fd.append("rejectComment", $("#reject-reason").val());
+        }
+        $.ajax({
+            url: '{{ URL::route('printing.api.approvePoster') }}',
+            type: 'POST',
+            data: fd,
+            cache: false,
+            dataType: 'json',
+            processData: false,
+            contentType: false,
+            success: function(data){
+                //check for success data
+                if(data.success == "true"){
+                    //Action has been completed, run different code based on action
+                    removeRow(fileid);
+                }
+                else if(data.error){
+                    console.log("Your request could not be processed at this time");
+                }
+            },
+            error: function(data, textStatus){
+                console.log(data);
+                console.log(textStatus);
+            }
+        });
     }
 
 

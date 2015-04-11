@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-xs-6">
             <p>Please enter/scan the ID of the student attempting to pickup a poster</p>
-            {{ Form::open(array('route'=>'printing')) }}
+            {{ Form::open(array('route'=>'printing.pickup.search')) }}
             <div class="form-group">
                 {{ Form::label('idnumber','ID Number') }}
                 {{ Form::text('idnumber',null,array('class'=>'form-control','placeholder'=>'Enter CWID-A#')) }}
@@ -16,7 +16,7 @@
 
         </div>
         <div class="col-xs-6">
-            <p>Search for the user, use % for wildcard searches</p>
+            <p>Search for the user. Search uses wildcards to search.</p>
             <div class="form-group">
                 {{ Form::label('email','Email') }}
                 {{ Form::text('email',null,array('class'=>'form-control','placeholder'=>'Enter Email')) }}
@@ -36,20 +36,19 @@
 
         </div>
     </div>
-
+<h3>Posters awaiting Pickup</h3>
     <table class="table table-striped table-hover">
         <tr>
-            <th> </th>
             <th>Document</th>
             <th>Type</th>
             <th>Size</th>
             <th>Dimensions</th>
             <th>Uploader</th>
             <th>Project</th>
+            <th>Submitted</th>
         </tr>
         @foreach($files as $file)
-            <tr id="file-tr-{{ $file->id }}" onclick="selectCheckbox('{{ $file->id }}');">
-                <td><input type="checkbox" id="file-checkbox-{{ $file->id }}"></td>
+            <tr id="file-tr-{{ $file->id }}">
                 <td><a href="{{URL::route("printing.viewfile", $file->id)}}" target="_blank">{{ $file->original_filename }}</a>
                     @if($file->override)
                         <i class="fa fa-exclamation-circle text-danger" ></i>
@@ -60,6 +59,7 @@
                 <td>{{ $file->dimensions }}</td>
                 <td>{{ User::getFullNameWithId($file->UserID) }}</td>
                 <td>{{ Project::getProjectUID($file->ProjectID) }}</td>
+                <td>{{ date('D F jS Y, g:i a' ,strtotime($file->created_at)) }}</td>
             </tr>
         @endforeach
     </table>
@@ -68,11 +68,9 @@
 
 @section('javascript_bottom')
 <script>
-    function selectCheckbox(fileid){
-        //Make it easier to select rows
-        var checkBox = $("#file-checkbox-"+fileid);
-        checkBox.prop("checked", !checkBox.prop("checked"));
-    }
+    $(document).on("ready",function(){
+        $("#idnumber").focus();
+    });
 </script>
 @stop
 

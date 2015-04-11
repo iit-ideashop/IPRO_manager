@@ -71,6 +71,7 @@ Route::group(array('before'=>'iit_user'),function(){
 
     //**** Special Role Access Routes, Requires IIT login *****//
     Route::group(array('prefix'=>'printing'),function(){
+        //File download and view routes which display or download the file to the user based on if they are printer, admin or group_member
         Route::get("/downloadFile/{fileid}", array("as"=>"printing.downloadfile","uses"=>"PrintingController@downloadFile"))->where(array('fileid' => '[0-9]+'));
         Route::get("/viewFile/{fileid}", array("as"=>"printing.viewfile","uses"=>"PrintingController@viewFile"))->where(array('fileid' => '[0-9]+'));
         Route::group(array('before'=>'role_printer'), function(){
@@ -79,6 +80,9 @@ Route::group(array('before'=>'iit_user'),function(){
             //These routes are for the printer and for admins
             Route::get("/awaitingPrint", array("as"=>"printing.awaitingPrint","uses"=>"PrintingController@awaitingPrint"));
             Route::get("/printed", array("as"=>"printing.printed","uses"=>"PrintingController@printed"));
+            Route::group(array("prefix"=>"api"),function(){
+                Route::post("/markPrinted", array("as"=>"printing.api.markPrinted","uses"=>"PrintingController@markPrinted"));
+            });
         });
 
         Route::group(array('before'=>'auth_admin'), function(){
@@ -87,6 +91,17 @@ Route::group(array('before'=>'iit_user'),function(){
             Route::get("/checkin", array("as"=>"printing.checkin","uses"=>"PrintingController@checkInPosters"));
             Route::get("/posterPickup", array("as"=>"printing.posterpickup","uses"=>"PrintingController@posterPickup"));
             Route::get("/projectReport", array("as"=>"printing.projectReport","uses"=>"PrintingController@projectReport"));
+            Route::get("/printBarcode/{fileid}", array("as"=>"printing.printBarcode","uses"=>"PrintingController@printBarcode"))->where(array("fileid"=>'[0-9]+'));
+            Route::post("/posterPickupSearch", array("as"=>"printing.pickup.search","uses"=>"PrintingController@userSearch"));
+            Route::get("/studentPosterPickup", array("as"=>"printing.pickup","uses"=>"PrintingController@studentPosterPickup"));
+            Route::get("/completePosterPickup", array("as"=>"printing.completePosterPickup","uses"=>"PrintingController@completeStudentPickup"));
+
+            //**** Admin API routes ****//
+            Route::group(array("prefix"=>"api"), function(){
+                Route::post("approvePoster", array("as"=>"printing.api.approvePoster","uses"=>"PrintingController@approvePoster"));
+                Route::post("receivePoster", array("as"=>"printing.api.receivePoster","uses"=>"PrintingController@receivePosterFromPrinter"));
+
+            });
         });
     });
 

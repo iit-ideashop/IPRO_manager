@@ -271,7 +271,6 @@
                 contentType: false,
                 success: function(data){
                     //check for success data
-                    console.log(data);
                     if(data.success == "true"){
                         //Action has been completed, run different code based on action
                         if(data.action == "Delete"){

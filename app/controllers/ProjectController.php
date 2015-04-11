@@ -194,6 +194,9 @@ class ProjectController extends BaseController{
         if($printSubmission == null){
             return Response::json(array("error"=>"Could not locate file in database"));
         }
+        if($printSubmission->ProjectID != $projectid){
+            return Response::json(array("error"=>"You do not own this upload. Access Denied!"));
+        }
         //File exists, make sure we are waiting for user input
         if($printSubmission->status != 1){
             return Response::json(array("error"=>"File already submitted for print"));
