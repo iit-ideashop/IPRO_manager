@@ -54,7 +54,28 @@ class PrintingController extends BaseController{
     }
 
     public function projectReport(){
-
+        //We need to pull down the projects for this semester
+        $semester = Semester::where("Active","=","1")->first();
+        $projects = Project::where("Semester","=",$semester->id)->get();
+        //Convert to projectIDs for a WhereIn query
+        $projectids = array();
+        foreach($projects as $project){
+            $projectids[] = $project->id;
+        }
+        //Now we pull print submissions that only belong to this semesters projects
+        $printSubmissions = PrintSubmission::WhereIn("ProjectID",$projectids)->get();
+        //ok we have print submissions, now for some hardcore looping
+        foreach($projects as $project){
+            //Loop each project and add some extra info to it for the purposes of the view
+            $project->postersSubmitted = 0;
+            foreach($printSubmissions as $printSubmission){
+                if($printSubmission->ProjectID == $project->id){
+                    $project->postersSubmitted += 1;
+                }
+            }
+        }
+        View::share("projects",$projects);
+        return View::make("printing.projectReport");
     }
 
     public function downloadFile($fileid){

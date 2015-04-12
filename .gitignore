@@ -14,3 +14,4 @@ app/storage/printSubmissions/*
 CONTRIBUTING.md
 IPRO_API.iml
 nbproject/*
+app/storage/views/*
