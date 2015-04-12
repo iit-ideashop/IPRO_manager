@@ -5,7 +5,7 @@
 @section('content')
 
     <h3>Hey there {{$person->FirstName}}!</h3>
-    <p>Our printed has printed your file and it is ready for pickup at the IdeaShop.</p>
+    <p>Our printer has printed your file and it is ready for pickup at the IdeaShop.</p>
     <p>Please be sure to bring an ID to pickup your poster.</p>
     <p>Please find a reference to the file below.</p>
     <table class="tableBlue" width="100%" cellpadding="3px" cellspacing="3px">
