@@ -212,7 +212,23 @@ return array(
         'vandercook.edu',
         'shimer.edu'
     ),
-    
-    
 
+    'StorageURLs' => array(
+        'printSubmissions' => storage_path().'/printSubmissions/',
+		'printSubmissions_thumbs' => public_path().'/printThumbs/'
+    ),
+
+    'approved_poster_sizes' => array(
+        //Example: array('width'=>0, 'height'=>0), dimensions are in points
+        //72 points per inch
+        array('width'=>1728, 'height'=>2592), // 24 x 36
+        array('width'=>2592, 'height'=>1728), // 36 x 24
+        array('width'=>2592, 'height'=>3456), // 36 x 48
+        array('width'=>3456, 'height'=>2592), // 48 x 36
+        ),
+    'approved_brochure_sizes' => array(
+        //Example: array('width'=>0, 'height'=>0),
+        array('width'=>792, 'height'=>612), // 11 x 8.5
+        array('width'=>612, 'height'=>792), // 8.5 x 11
+    ),
 );

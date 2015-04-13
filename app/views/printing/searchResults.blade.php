@@ -13,7 +13,7 @@
             <td>{{$student->FirstName}}</td>
             <td>{{$student->LastName}}</td>
             <td>{{$student->Email}}</td>
-            <td><a class="btn btn-default" href="{{URL::action('AdminPickupController@viewItems',array('userid' => $student->id)) }}">Select</a></td>
+            <td><a class="btn btn-default" href="{{URL::action('PrintingController@studentPosterPickup',array('userid' => $student->id)) }}">Select</a></td>
         </tr>
         @endforeach
     </table>

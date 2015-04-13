@@ -16,7 +16,10 @@ App::before(function($request)
     //In the before we have to run the functions required to generate the navigation bar and the
     //sidebar data
         if(Auth::check()){
-        	//This returns a listing of projects 
+        	//Pull the active Semester
+            $activeSemester = Semester::where("Active","=","1")->first();
+            View::share("activeSemester", $activeSemester);
+        	//This returns a listing of projects
             $projects = PeopleProject::where('UserID','=',Auth::id())->lists('ClassID');
             //Setup the returns 
             $returnArray = array();
@@ -30,18 +33,26 @@ App::before(function($request)
             }
             if(Auth::user()->isAdmin){
                 $returnArray['admin'] = array(
-                    array('link'=>'/admin/budgets','text'=>'Budget Requests'),
-                    array('link'=>'/admin/orders','text'=>'Orders'),
-                    array('link'=>'/admin/user','text'=>'User Management'),
-                    array('link'=>'/admin/projects','text'=>'Project Management'),
-                    array('link'=>'/admin/iproday', 'text'=>'IPRO Day Management'),
+                    array('route'=>'admin_budgets','text'=>'Budget Requests'),
+                    array('route'=>'admin.orders','text'=>'Orders'),
+                    array('route'=>'admin.projects','text'=>'Project Management'),
+                    array('route'=>'admin.iproday', 'text'=>'IPRO Day Management'),
                 );
             }
+            //Check for printshop link
+            if((Auth::user()->checkRole("ROLE_PRINTING")) || (Auth::user()->isAdmin)){
+                if(array_key_exists("admin", $returnArray)){
+                    array_push($returnArray["admin"], array('route'=>'printing','text'=>'Printing Management'));
+                }else{
+                    $returnArray['admin'] = array(
+                        array('route'=>'printing','text'=>'Printing Management')
+                    );
+                }
+            }
+
+
             View::share('navigation',$returnArray);
         }else{
-            
-               
-           
         }
 });
 
@@ -127,14 +138,36 @@ Route::filter('auth_admin', function(){
             return Redirect::to('/dashboard');
         }
     }else{
-    //User isn't even logged in, send to admin login page
-        return Redirect::to('/authenticate');
+        //User isn't even logged in, send to admin login page
+        //Save the route we are trying to access
+        Session::put('routing.intended.parameters',Route::getCurrentRoute()->parameters());
+        Session::put('routing.intended.route',Route::getCurrentRoute()->getName());
+        return Redirect::route('authenticate');
+    }
+});
+
+Route::filter('role_printer', function(){
+    if(Auth::check()){
+        //User is logged in
+        //If user is an admin or has the ROLE_PRINTING then we allow access
+        if((!Auth::user()->isAdmin) && (!User::checkRole("ROLE_PRINTING"))){
+            return Redirect::to("dashboard");
+        }
+    }else{
+        //User isn't even logged in, send to admin login page
+        //Save the route we are trying to access
+        Session::put('routing.intended.parameters',Route::getCurrentRoute()->parameters());
+        Session::put('routing.intended.route',Route::getCurrentRoute()->getName());
+        return Redirect::route('authenticate');
     }
 });
 
 Route::filter('iit_user', function(){
     if(!Auth::check()){
-        return Redirect::to('/authenticate');
+        //Save the route we are trying to access
+        Session::put('routing.intended.parameters',Route::getCurrentRoute()->parameters());
+        Session::put('routing.intended.route',Route::getCurrentRoute()->getName());
+        return Redirect::route('authenticate');
     }
 });
 
@@ -150,6 +183,18 @@ Route::filter("project_enrolled", function($route){
             return Redirect::route('dashboard')->with("error", array("You are not enrolled in that project"));
         }
     }
+    //Share details about the project with the view
+    View::share('class',$project);
+    $account = $project->Account()->get();
+    if($account->isEmpty()){
+        $account = new Account;
+        $account->ClassID = $project->id;
+        $account->save();
+    }else{
+        //Once we have the class we need to pull the budgets for the class
+        $account = $account[0];//Grab only 1 account
+    }
+    View::share('account',$account);
 });
 
 Route::filter("project_instructor", function($route){

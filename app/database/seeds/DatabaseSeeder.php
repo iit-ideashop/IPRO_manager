@@ -5,10 +5,12 @@ class DatabaseSeeder extends Seeder {
     public function run()
     {
         Eloquent::unguard();
+        $this->call('PrintSubmissionStatusTableSeeder');
         $this->call('BudgetStatusTableSeeder');
         $this->call('OrderStatusTableSeeder');
         $this->call('ItemStatusTableSeeder');
         $this->call('classAccessTypesTableSeeder');
+
         /*
         $this->call('UserTableSeeder');
         $this->call('SemesterTableSeeder');
@@ -32,6 +34,20 @@ class BudgetStatusTableSeeder extends Seeder {
         DB::table('budgetStatus')->insert(array(array('id'=>1,'Status'=>'Requested'),array('id'=>2,'Status'=>'Approved'),array('id'=>3,'Status'=>'Rejected')));
     }
 }
+class PrintSubmissionStatusTableSeeder extends Seeder {
+    public function run()
+    {
+        DB::table('printSubmissionStatuses')->delete();
+        DB::table('printSubmissionStatuses')->insert(array(array('id'=>1,'Status'=>'Needs Approval'),
+            array('id'=>2,'Status'=>'Submitted'),
+            array('id'=>3,'Status'=>'Sent to Print Service'),
+            array('id'=>4,'Status'=>'Processed by Print Service'),
+            array('id'=>5,'Status'=>'Ready for Student Pickup'),
+            array('id'=>6,'Status'=>'Picked up by Student'),
+            array('id'=>7,'Status'=>'Rejected')));
+    }
+}
+
 class OrderStatusTableSeeder extends Seeder {
     public function run()
     {

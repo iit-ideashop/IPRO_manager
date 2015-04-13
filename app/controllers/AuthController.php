@@ -37,10 +37,15 @@ class AuthController extends BaseController {
                 }
                 $loggedUser = User::where('Email','=',$result['email'])->lists('id');
                 Auth::loginUsingId($loggedUser[0]);
-                return Redirect::intended('dashboard');
+                if((Session::has('routing.intended.route')) && ((Session::has('routing.intended.parameters')))){
+                    //We have an intended route and parameters. Redirect to route and clear params with Session::pull
+                    return Redirect::route(Session::pull('routing.intended.route'), Session::pull('routing.intended.parameters'));
+                }else{
+                    return Redirect::route('dashboard');
+                }
             }else{
                 echo 'Not authorized';
-                return Redirect::to("notAuthorized");
+                return Redirect::route("unauthorized");
             }
         }
         // if not ask for permission first

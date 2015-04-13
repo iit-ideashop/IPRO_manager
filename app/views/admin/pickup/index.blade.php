@@ -37,3 +37,12 @@
         </div>
     </div>
 @stop
+
+@section('javascript_bottom')
+    <script>
+        $(document).on("ready",function(){
+            $("#idnumber").focus();
+        });
+    </script>
+@stop
+
