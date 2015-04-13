@@ -206,6 +206,11 @@ class ProjectController extends BaseController{
         if($action == "Approve"){
             $printSubmission->status = 2;
             $printSubmission->save();
+            $user = User::where("id","=",$printSubmission->UserID);
+            Mail::send('emails.printing.received', array('person'=>$user,'fileSubmission'=>$printSubmission), function($message) use($user, $printSubmission){
+                $message->to($user->Email,$user->FirstName.' '.$user->LastName);
+                $message->subject('Your '.$printSubmission->file_type.':'.$printSubmission->original_filename.' has been received!');
+            });
             return Response::json(array("success"=>"true","newstatus"=>$printSubmission->getStatus(),"action"=>"Approve"));
         }elseif($action == "Delete"){
             unlink(Config::get("app.StorageURLs.printSubmissions").$printSubmission->filename);

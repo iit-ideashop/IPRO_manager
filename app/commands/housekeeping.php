@@ -37,6 +37,11 @@ class housekeeping extends Command {
 	 */
 	public function fire()
 	{
+        //This script will fire every hour on the hour and we have to control what gets emailed out.
+        //Get the current time
+        $hour = date("G",time());
+        //Based on the hour we will run certain code
+        $this->info('the current hour is: '.$hour);
 		//The booleans this app looks for
 		$checks['open_orders'] = false;
 		$checks['open_budget_request'] = false;

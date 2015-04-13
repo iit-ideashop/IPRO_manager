@@ -12,7 +12,7 @@
         </tr>
         @foreach($files as $file)
             <tr id="printed-td-{{ $file->id }}">
-                <td><a href="{{URL::route("printing.downloadfile", $file->id)}}">Job-{{ $file->id }}.pdf</a>
+                <td><a href="{{URL::route("printing.downloadfile",array("fileid"=>$file->id, "naming"=>"job")) }}">Job-{{ $file->id }}.pdf</a>
                     @if($file->override)
                         <i class="fa fa-exclamation-circle text-danger" ></i>
                     @endif
