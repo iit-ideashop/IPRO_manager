@@ -115,6 +115,14 @@ class PrintingController extends BaseController{
     public function downloadFile($fileid){
         //Check for auth of admin or printadmin or see if user is enrolled in the project to be allowed to download the file
         //Pull the file we are trying to download
+        $fileName = Input::get("naming");
+        if($fileName == null){
+            $fileName = "default";
+        }elseif($fileName == ""){
+            $fileName = "default";
+        }elseif($fileName != "job"){
+            $fileName = "default";
+        }
         $printSubmission = PrintSubmission::where("id","=",intval($fileid))->first();
         if($printSubmission == null){
             return Response::make("The requested file does not exist or has been deleted");
@@ -132,7 +140,11 @@ class PrintingController extends BaseController{
             $authValidated = true;
         }
         if($authValidated){
-            return Response::download(Config::get("app.StorageURLs.printSubmissions").$printSubmission->filename,$printSubmission->original_filename);
+            if($fileName == "default"){
+                return Response::download(Config::get("app.StorageURLs.printSubmissions").$printSubmission->filename,$printSubmission->original_filename);
+            }elseif($fileName == "job"){
+                return Response::download(Config::get("app.StorageURLs.printSubmissions").$printSubmission->filename,"Job-".$printSubmission->id.".pdf");
+            }
         }else{
             return Response::make("You do not have access to download this file");
         }
@@ -395,6 +407,13 @@ class PrintingController extends BaseController{
         }
         return Redirect::route("printing.posterpickup")->with("success",array("Posters Successfully checked out!"));
 
+    }
+
+    public function projectReportIndividual($projectid){
+        //Take the project and show all printing related to the project
+        $printSubmissions = PrintSubmission::where("ProjectID","=",intval($projectid))->get();
+
+        exit;
     }
 
 }

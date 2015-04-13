@@ -91,6 +91,7 @@ Route::group(array('before'=>'iit_user'),function(){
             Route::get("/checkin", array("as"=>"printing.checkin","uses"=>"PrintingController@checkInPosters"));
             Route::get("/posterPickup", array("as"=>"printing.posterpickup","uses"=>"PrintingController@posterPickup"));
             Route::get("/projectReport", array("as"=>"printing.projectReport","uses"=>"PrintingController@projectReport"));
+            Route::get("/projectReport/{projectid}", array("as"=>"printing.projectReport.individual","uses"=>"PrintingController@projectReportIndividual"));
             Route::get("/printBarcode/{fileid}", array("as"=>"printing.printBarcode","uses"=>"PrintingController@printBarcode"))->where(array("fileid"=>'[0-9]+'));
             Route::post("/posterPickupSearch", array("as"=>"printing.pickup.search","uses"=>"PrintingController@userSearch"));
             Route::get("/studentPosterPickup", array("as"=>"printing.pickup","uses"=>"PrintingController@studentPosterPickup"));
