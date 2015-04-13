@@ -24,7 +24,7 @@
         @foreach($printSubmissions as $file)
         <tr>
             <td><input type="checkbox" value="{{$file->id}}" id="file-{{$file->barcode}}"> {{$file->barcode}}</td>
-            <td>{{$file->original_filename}}</td>
+            <td><a href="{{ URL::route("printing.viewfile", $file->id) }}" target="_blank">{{$file->original_filename}}</a></td>
         </tr>
         @endforeach
     </table>
@@ -77,10 +77,10 @@ $( document ).ready(function() {
     function submitIDs(){
         //Read the barcodes
         var printIDs = [];
-        $('#itemListing input:checked').each(function() {
+        $('#printListing input:checked').each(function() {
             printIDs.push($(this).attr('value'));
         });
-        $('#HiddenIDs').attr('value',JSON.stringify(itemIDs));
+        $('#HiddenIDs').attr('value',JSON.stringify(printIDs));
         $("#hiddenIDform").submit();
     }
 

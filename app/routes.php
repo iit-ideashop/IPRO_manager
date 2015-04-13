@@ -94,7 +94,7 @@ Route::group(array('before'=>'iit_user'),function(){
             Route::get("/printBarcode/{fileid}", array("as"=>"printing.printBarcode","uses"=>"PrintingController@printBarcode"))->where(array("fileid"=>'[0-9]+'));
             Route::post("/posterPickupSearch", array("as"=>"printing.pickup.search","uses"=>"PrintingController@userSearch"));
             Route::get("/studentPosterPickup", array("as"=>"printing.pickup","uses"=>"PrintingController@studentPosterPickup"));
-            Route::get("/completePosterPickup", array("as"=>"printing.completePosterPickup","uses"=>"PrintingController@completeStudentPickup"));
+            Route::post("/completePosterPickup", array("as"=>"printing.completePosterPickup","uses"=>"PrintingController@completeStudentPickup"));
 
             //**** Admin API routes ****//
             Route::group(array("prefix"=>"api"), function(){

@@ -67,10 +67,44 @@ class PrintingController extends BaseController{
         //ok we have print submissions, now for some hardcore looping
         foreach($projects as $project){
             //Loop each project and add some extra info to it for the purposes of the view
-            $project->postersSubmitted = 0;
+            $project->totalPosters = 0;
+            $project->awaitUserPosterApproval = 0;
+            $project->awaitAdminPosterApproval = 0;
+            $project->awaitPrint = 0;
+            $project->printed = 0;
+            $project->awaitingPickup = 0;
+            $project->pickedUp = 0;
+            $project->postersRejected = 0;
             foreach($printSubmissions as $printSubmission){
                 if($printSubmission->ProjectID == $project->id){
-                    $project->postersSubmitted += 1;
+                    switch($printSubmission->status){
+                        case 1:
+                            $project->awaitUserPosterApproval += 1;
+                            break;
+                        case 2:
+                            $project->totalPosters += 1;
+                            $project->awaitAdminPosterApproval += 1;
+                            break;
+                        case 3:
+                            $project->awaitPrint +=1;
+                            $project->totalPosters += 1;
+                            break;
+                        case 4:
+                            $project->printed += 1;
+                            $project->totalPosters += 1;
+                            break;
+                        case 5:
+                            $project->awaitingPickup += 1;
+                            $project->totalPosters += 1;
+                            break;
+                        case 6:
+                            $project->pickedUp += 1;
+                            $project->totalPosters += 1;
+                            break;
+                        case 7:
+                            $project->postersRejected += 1;
+                            break;
+                    }
                 }
             }
         }
@@ -80,21 +114,58 @@ class PrintingController extends BaseController{
 
     public function downloadFile($fileid){
         //Check for auth of admin or printadmin or see if user is enrolled in the project to be allowed to download the file
-        return Response::download(Config::get("app.StorageURLs.printSubmissions")."2_Poster.pdf","My_Little_Pony.pdf");
+        //Pull the file we are trying to download
+        $printSubmission = PrintSubmission::where("id","=",intval($fileid))->first();
+        if($printSubmission == null){
+            return Response::make("The requested file does not exist or has been deleted");
+        }
+        //Ok file exists, lets check for auth printer, admin or project member
+        $project = Project::where("id","=",$printSubmission->ProjectID)->first();
+        $authValidated = false;
+        if(Auth::user()->isAdmin){
+            $authValidated = true;
+        }
+        if(Auth::user()->checkRole("ROLE_PRINTING")){
+            $authValidated = true;
+        }
+        if($project->isEnrolled()){
+            $authValidated = true;
+        }
+        if($authValidated){
+            return Response::download(Config::get("app.StorageURLs.printSubmissions").$printSubmission->filename,$printSubmission->original_filename);
+        }else{
+            return Response::make("You do not have access to download this file");
+        }
     }
 
     public function viewFile($fileid){
-        $file = Config::get("app.StorageURLs.printSubmissions")."2_Poster.pdf";  // <- Replace with the path to your .pdf file
-        // check if the file exists
-        echo $file;
-        if (file_exists($file)) {
-            // read the file into a string
-            $content = file_get_contents($file);
-            // create a Laravel Response using the content string, an http response code of 200(OK),
-            //  and an array of html headers including the pdf content type
-            return Response::make($content, 200, array('content-type' => 'application/pdf'));
-        }else{
-            return Response::make("File does not exist or is not available");
+        $printSubmission = PrintSubmission::where("id","=",intval($fileid))->first();
+        if($printSubmission == null){
+            return Response::make("The requested file does not exist or has been deleted");
+        }
+        //Ok file exists, lets check for auth printer, admin or project member
+        $project = Project::where("id","=",$printSubmission->ProjectID)->first();
+        $authValidated = false;
+        if(Auth::user()->isAdmin){
+            $authValidated = true;
+        }
+        if(Auth::user()->checkRole("ROLE_PRINTING")){
+            $authValidated = true;
+        }
+        if($project->isEnrolled()){
+            $authValidated = true;
+        }
+        if($authValidated) {
+            $file = Config::get("app.StorageURLs.printSubmissions") . $printSubmission->filename;  // <- Replace with the path to your .pdf file
+            if (file_exists($file)) {
+                // read the file into a string
+                $content = file_get_contents($file);
+                // create a Laravel Response using the content string, an http response code of 200(OK),
+                //  and an array of html headers including the pdf content type
+                return Response::make($content, 200, array('content-type' => 'application/pdf'));
+            } else {
+                return Response::make("You do not have access to view this file");
+            }
         }
     }
 
@@ -240,12 +311,30 @@ class PrintingController extends BaseController{
         $userid = Input::get("userid");
         $student = User::find(intval($userid));
         if($student == null){
-            return Redirect::route('admin.order.pickup')->with('error',array('The specified user does not exist, please try again'));
+            return Redirect::route('printing.posterpickup')->with('error',array('The specified user does not exist, please try again'));
         }
         View::share('student',$student);
         //Student object passed
         //Find the user's prints, for now
-        $printSubmissions = PrintSubmission::where("UserID","=",$student->id)->where("status","=","5")->where("barcode","!=","Null")->get();
+        $activeSemester = Semester::where("Active","=","1")->first();
+        $curTermProjects = Project::where("semester","=",$activeSemester->id)->lists("id");
+        $projectsEnrolled = PeopleProject::where("UserID","=",$student->id)->lists("ClassID");
+        //Find the intersection of projects that the user is enrolled in and this semesters projects
+        $pickupProjects = array_intersect($projectsEnrolled,$curTermProjects);
+
+        //$printSubmissions = PrintSubmission::where("UserID","=",$student->id)->orWhereIn("ProjectID",$pickupProjects)->where("status","=","5")->where("barcode","!=","Null")->get();
+        $printSubmissions = PrintSubmission::where(function ($query) use ($student) {
+            $query->where('UserID', '=', $student->id)
+                ->where('status', '=', 5)
+                ->where("barcode","!=","Null");
+        })->orWhere(function ($query) use ($pickupProjects){
+            $query->whereIn('ProjectID',$pickupProjects)
+                ->where('status', '=', 5)
+                ->where("barcode","!=","Null");
+        })->get();
+        if($printSubmissions->isEmpty()){
+            return Redirect::route('printing.posterpickup')->with('error',array('The specified user does not have anything to pickup'));
+        }
         View::share("printSubmissions",$printSubmissions);
         return View::make("printing.viewPrints");
     }
@@ -258,13 +347,53 @@ class PrintingController extends BaseController{
             //We have 0 items in the array
             return Redirect::route('printing.pickup', array('userid' => $studentid))->with('error', array('No prints were marked for pickup. Try again'));
         }
-        //Loop through each of the files and mark them as picked up by student.
+        //Get the prints the student can pickup
+        $activeSemester = Semester::where("Active","=","1")->first();
+        $curTermProjects = Project::where("semester","=",$activeSemester->id)->lists("id");
+        $projectsEnrolled = PeopleProject::where("UserID","=",$studentid)->lists("ClassID");
+        //Find the intersection of projects that the user is enrolled in and this semesters projects
+        $pickupProjects = array_intersect($projectsEnrolled,$curTermProjects);
+
+        //$printSubmissions = PrintSubmission::where("UserID","=",$student->id)->orWhereIn("ProjectID",$pickupProjects)->where("status","=","5")->where("barcode","!=","Null")->get();
+        $printSubmissions = PrintSubmission::where(function ($query) use ($studentid) {
+            $query->where('UserID', '=', $studentid)
+                ->where('status', '=', 5)
+                ->where("barcode","!=","Null");
+        })->orWhere(function ($query) use ($pickupProjects){
+            $query->whereIn('ProjectID',$pickupProjects)
+                ->where('status', '=', 5)
+                ->where("barcode","!=","Null");
+        })->lists("id");
+
+        //Loop through each of the files and mark them as picked up by student if the student has access.
         //Pull all of the prints
+        $alternate_user_pickup = array();
         $prints = PrintSubmission::whereIn("id",$PrintIDs)->get();
         foreach($prints as $print){
-            $print->status = 6;
-            $print->pickup_UserID = $studentid;
+            //Check the pickup array
+            foreach($printSubmissions as $printSubmission){
+                if($print->id == $printSubmission){
+                    $print->status = 6;
+                    $print->pickup_UserID = $studentid;
+                    if($print->UserID != $print->pickup_UserID){
+                        array_push($alternate_user_pickup,$print);
+                    }
+                    $print->save();
+                }
+            }
         }
+        //check for alternate pickups so we can send emails
+        if(count($alternate_user_pickup) != 0){
+            //We need to send some emails
+            foreach($alternate_user_pickup as $alternatePosterPickup){
+                $user = User::where("id","=",$alternatePosterPickup->UserID)->first();
+                Mail::send('emails.printing.alternatePickup', array('person'=>$user,'fileSubmission'=>$alternatePosterPickup), function($message) use($user, $alternatePosterPickup){
+                    $message->to($user->Email,$user->FirstName.' '.$user->LastName);
+                    $message->subject($alternatePosterPickup->file_type.' : '.$alternatePosterPickup->original_filename.' has been picked up!');
+                });
+            }
+        }
+        return Redirect::route("printing.posterpickup")->with("success",array("Posters Successfully checked out!"));
 
     }
 

@@ -16,7 +16,10 @@ App::before(function($request)
     //In the before we have to run the functions required to generate the navigation bar and the
     //sidebar data
         if(Auth::check()){
-        	//This returns a listing of projects 
+        	//Pull the active Semester
+            $activeSemester = Semester::where("Active","=","1")->first();
+            View::share("activeSemester", $activeSemester);
+        	//This returns a listing of projects
             $projects = PeopleProject::where('UserID','=',Auth::id())->lists('ClassID');
             //Setup the returns 
             $returnArray = array();
@@ -42,7 +45,7 @@ App::before(function($request)
                     array_push($returnArray["admin"], array('route'=>'printing','text'=>'Printing Management'));
                 }else{
                     $returnArray['admin'] = array(
-                        array('route'=>'role.printing','text'=>'Printing Management')
+                        array('route'=>'printing','text'=>'Printing Management')
                     );
                 }
             }

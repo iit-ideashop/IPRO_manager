@@ -46,6 +46,7 @@
             <th>Uploader</th>
             <th>Project</th>
             <th>Submitted</th>
+            <th> </th>
         </tr>
         @foreach($files as $file)
             <tr id="file-tr-{{ $file->id }}">
@@ -60,6 +61,11 @@
                 <td>{{ User::getFullNameWithId($file->UserID) }}</td>
                 <td>{{ Project::getProjectUID($file->ProjectID) }}</td>
                 <td>{{ date('D F jS Y, g:i a' ,strtotime($file->created_at)) }}</td>
+                @if($file->barcode != NULL)
+                    <td><a href="{{ URL::route("printing.printBarcode", $file->id) }}" target="_blank" class="btn btn-primary"><i class="glyphicon glyphicon-barcode"></i> Reprint Label</a></td>
+                @else
+                    <td><a href="{{ URL::route("printing.printBarcode", $file->id) }}" target="_blank" class="btn btn-primary"><i class="glyphicon glyphicon-barcode"></i> Print Label</a></td>
+                @endif
             </tr>
         @endforeach
     </table>

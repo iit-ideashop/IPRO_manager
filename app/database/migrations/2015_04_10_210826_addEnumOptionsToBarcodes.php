@@ -15,7 +15,7 @@ class AddEnumOptionsToBarcodes extends Migration {
 		Schema::table('barcodes', function(Blueprint $table)
 		{
 			//
-			$table->string("other_description")->after("reference");
+			$table->string("other_description")->nullable()->after("reference");
 		});
 		DB::statement("ALTER TABLE barcodes CHANGE COLUMN type type ENUM('ITEM', 'PRINT', 'OTHER')");
 	}
