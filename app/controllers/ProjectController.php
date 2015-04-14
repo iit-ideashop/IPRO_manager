@@ -206,7 +206,7 @@ class ProjectController extends BaseController{
         if($action == "Approve"){
             $printSubmission->status = 2;
             $printSubmission->save();
-            $user = User::where("id","=",$printSubmission->UserID);
+            $user = User::where("id","=",$printSubmission->UserID)->first();
             Mail::send('emails.printing.received', array('person'=>$user,'fileSubmission'=>$printSubmission), function($message) use($user, $printSubmission){
                 $message->to($user->Email,$user->FirstName.' '.$user->LastName);
                 $message->subject('Your '.$printSubmission->file_type.':'.$printSubmission->original_filename.' has been received!');
