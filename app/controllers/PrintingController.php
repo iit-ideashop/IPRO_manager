@@ -53,7 +53,20 @@ class PrintingController extends BaseController{
         return View::make('printing.posterPickup');
     }
 
-    public function projectReport(){
+    public function projectReport($projectid = null){
+        //Check for the projectID if there was one submitted
+        if(isset($projectid)){
+            //Pull only data for a single project
+            $project = Project::find($projectid);
+            if($project == NULL){
+                return Redirect::route("printing.projectReport")->with("error",array("The specified project does not exist"));
+            }
+            //Next we have to pull the print submissions for the project and display the project out
+            $printSubmissions = PrintSubmission::where("ProjectID","=",$project->id)->get();
+            View::share("project",$project);
+            View::share("printSubmissions",$printSubmissions);
+            return View::make("printing.projectReportIndividual");
+        }
         //We need to pull down the projects for this semester
         $semester = Semester::where("Active","=","1")->first();
         $projects = Project::where("Semester","=",$semester->id)->get();

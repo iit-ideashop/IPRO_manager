@@ -13,7 +13,7 @@
         </tr>
         @foreach($files as $file)
             <tr id="file-tr-{{ $file->id }}" filename="{{ $file->original_filename }}">
-                <td><a href="{{URL::route("printing.viewfile",array("fileid"=>$file->id,"viewmode"=>"file"))}}" target="_blank">{{ $file->original_filename }}</a>
+                <td><a href="{{URL::route("printing.viewfile",array("fileid"=>$file->id))}}" target="_blank">{{ $file->original_filename }}</a>
                     @if($file->override)
                         <i class="fa fa-exclamation-circle text-danger" ></i>
                     @endif
