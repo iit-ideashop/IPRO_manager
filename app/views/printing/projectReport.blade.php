@@ -17,7 +17,7 @@
         </tr>
         @foreach($projects as $project)
         <tr>
-            <td>{{ $project->UID }}</td>
+            <td><a href="{{ URL::route("printing.projectReport",$project->id) }}">{{ $project->UID }}</td>
             <td>{{ $project->awaitUserPosterApproval }}</td>
             <td>{{ $project->awaitAdminPosterApproval }}</td>
             <td>{{ $project->awaitPrint }}</td>

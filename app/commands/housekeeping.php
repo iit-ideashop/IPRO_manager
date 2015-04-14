@@ -42,64 +42,49 @@ class housekeeping extends Command {
         $hour = date("G",time());
         //Based on the hour we will run certain code
         $this->info('the current hour is: '.$hour);
-		//The booleans this app looks for
-		$checks['open_orders'] = false;
-		$checks['open_budget_request'] = false;
-		$checks['LabTagItems'] = false;
-		$checks['sendEmail'] = false;
-		//Let's pull the orders from the DB and make sure that there are no open orders
-		//Start by pulling semester
+        //Start by pulling semester
 		$semester = Semester::where('active','=',true)->first();//Pull the last active semester
 		//Pull the projects so we are only looking at orders for those projects
 		$project_ids = $semester->Projects()->lists('id');
 		//$projects is an array of projects with ID in the current semester
-		//Take this and now filter orders to find open orders for this semester
-		$orders = Order::whereIn('ClassID', $project_ids)->where('status','=','1')->get();
-		if(!$orders->isEmpty()){
-			$checks['open_orders'] = true;
-		}
 
-		//Next we look for any budget requests made by projects in the active semester
-		$account_ids = Account::whereIn('ClassID',$project_ids)->lists('id');
-		$budgetRequests = BudgetRequest::whereIn('AccountID',$account_ids)->where('Status','=','1')->get();
-		if(!$budgetRequests->isEmpty()){
-			$checks['open_budget_request'] = true;
-		}
+        //This will only run at hour 8,16
+        if (($hour == 8)||($hour == 16)){
+            $this->info('Processing Prototyping lab orders');
+            //Check for items that belong to Proto lab tag
+            $order_ids = Order::whereIn('ClassID', $project_ids)->lists('id');
+            $items = Item::whereIn('OrderID', $order_ids)->where('status', '=', '7')->get();
+            if (!$items->isEmpty()) {
+                //We need to notify the protolab_requires_order distribution list of an open order
+                //Grab people we need to notify
+                $protolab_users = DistributionList::where("distributionList", "=", "protolab_requires_order")->lists("UserID");
+                $protolab_users_obj = User::whereIn("id", $protolab_users)->get(); //User objects of anyone on the protolab distribution list
+                Mail::send('emails.prototypingLab.protolab_requires_order', array('items' => $items), function ($message) use ($protolab_users_obj) {
+                    foreach ($protolab_users_obj as $protolab_user) {
+                        $message->to($protolab_user->Email, $protolab_user->FirstName . ' ' . $protolab_user->LastName);
+                    }
+                    $message->subject('[IPRO Manager] Prototyping Lab Action Required');
+                });
+            }
+        }
 
-		//Check for items that belong to Proto lab tag
-		$order_ids = Order::whereIn('ClassID',$project_ids)->lists('id');
-		$items = Item::whereIn('OrderID',$order_ids)->where('status','=','7')->get();
-		if(!$items->isEmpty()){
-			$checks['LabTagItems'] = true;
-			//We need to notify the protolab_requires_order distribution list of an open order
-			//Grab people we need to notify
-			$protolab_users = DistributionList::where("distributionList","=","protolab_requires_order")->lists("UserID");
-			$protolab_users_obj = User::whereIn("id",$protolab_users)->get(); //User objects of anyone on the protolab distribution list
-			Mail::send('emails.prototypingLab.protolab_requires_order', array('items' => $items), function ($message) use ($protolab_users_obj) {
-				foreach ($protolab_users_obj as $protolab_user) {
-					$message->to($protolab_user->Email, $protolab_user->FirstName . ' ' . $protolab_user->LastName);
-				}
-				$message->subject('[IPRO Manager] Prototyping Lab Action Required');
-			});
-		}
+        if(($hour == 9)||($hour == 13)||($hour == 16)){
+            $this->info('Processing Print shop queue');
+            //Send the email to print admins that there are prints in the queue awaiting print and are from this semester
+            $printSubmissions = PrintSubmission::where("status","=",3)->whereIn("ProjectID",$project_ids)->get();
+            if(!$printSubmissions->isEmpty()){
+                //We have print submissions waiting for print
+                $printAdmins = DistributionList::where("distributionList", "=", "printing_awaitingPrintQueue")->lists("UserID");
+                $printAdminsObj =  User::whereIn("id", $printAdmins)->get();
+                Mail::send('emails.printing.printingAwaitingPrintQueue', array('files' => $printSubmissions), function ($message) use ($printAdminsObj) {
+                    foreach ($printAdminsObj as $printAdminObj) {
+                        $message->to($printAdminObj->Email, $printAdminObj->FirstName . ' ' . $printAdminObj->LastName);
+                    }
+                    $message->subject('[IPRO Manager] Files awaiting print!');
+                });
+            }
+        }
 
-
-		//Send that admin email thing if there are any tasks needing work
-		/*foreach($checks as $key=>$val){
-			if($val){
-				$checks['sendEmail'] = true;
-			}
-		}
-		if($checks['sendEmail']) {
-			$admins = User::Where("isAdmin", "=", true)->get();
-			Mail::send('emails.housekeeping', array('checks' => $checks), function ($message) use ($admins) {
-				foreach ($admins as $admin) {
-					$message->to($admin->Email, $admin->FirstName . ' ' . $admin->LastName);
-				}
-				$message->subject('IPRO Manager action required!');
-			});
-			$this->info('sending admin email');
-		}*/
 		$this->info('successfully completed housekeeping script');
 		return true;
 	}
