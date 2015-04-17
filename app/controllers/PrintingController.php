@@ -77,6 +77,15 @@ class PrintingController extends BaseController{
         }
         //Now we pull print submissions that only belong to this semesters projects
         $printSubmissions = PrintSubmission::WhereIn("ProjectID",$projectids)->get();
+        $printReportTotals = array();
+        $printReportTotals["totalPosters"] = 0;
+        $printReportTotals["awaitUserPosterApproval"] = 0;
+        $printReportTotals["awaitAdminPosterApproval"] = 0;
+        $printReportTotals["awaitPrint"] = 0;
+        $printReportTotals["printed"] = 0;
+        $printReportTotals["awaitingPickup"] = 0;
+        $printReportTotals["pickedUp"] = 0;
+        $printReportTotals["postersRejected"] = 0;
         //ok we have print submissions, now for some hardcore looping
         foreach($projects as $project){
             //Loop each project and add some extra info to it for the purposes of the view
@@ -93,35 +102,48 @@ class PrintingController extends BaseController{
                     switch($printSubmission->status){
                         case 1:
                             $project->awaitUserPosterApproval += 1;
+                            $printReportTotals["awaitUserPosterApproval"] += 1;
                             break;
                         case 2:
                             $project->totalPosters += 1;
+                            $printReportTotals["totalPosters"] += 1;
                             $project->awaitAdminPosterApproval += 1;
+                            $printReportTotals["awaitAdminPosterApproval"] += 1;
                             break;
                         case 3:
                             $project->awaitPrint +=1;
+                            $printReportTotals["awaitPrint"] += 1;
                             $project->totalPosters += 1;
+                            $printReportTotals["totalPosters"] += 1;
                             break;
                         case 4:
                             $project->printed += 1;
+                            $printReportTotals["printed"] += 1;
                             $project->totalPosters += 1;
+                            $printReportTotals["totalPosters"] += 1;
                             break;
                         case 5:
                             $project->awaitingPickup += 1;
+                            $printReportTotals["awaitingPickup"] += 1;
                             $project->totalPosters += 1;
+                            $printReportTotals["totalPosters"] += 1;
                             break;
                         case 6:
                             $project->pickedUp += 1;
+                            $printReportTotals["pickedUp"] += 1;
                             $project->totalPosters += 1;
+                            $printReportTotals["totalPosters"] += 1;
                             break;
                         case 7:
                             $project->postersRejected += 1;
+                            $printReportTotals["postersRejected"] += 1;
                             break;
                     }
                 }
             }
         }
         View::share("projects",$projects);
+        View::share("printReportTotals",$printReportTotals);
         return View::make("printing.projectReport");
     }
 

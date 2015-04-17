@@ -11,6 +11,7 @@
             <th>File Size</th>
             <th>File Dimensions</th>
             <th>Uploader</th>
+            <th>Upload Time</th>
             <th>Barcode #</th>
             <th>Status</th>
         </tr>
@@ -22,6 +23,7 @@
             <td>{{ $printSubmission->size }}</td>
             <td>{{ $printSubmission->dimensions }}</td>
             <td>{{ User::getFullNameWithId($printSubmission->UserID) }}</td>
+            <td>{{ date('D F jS Y, g:i a' ,strtotime($printSubmission->created_at)) }}</td>
             <td>
                 @if($printSubmission->barcode != NULL)
                     {{ $printSubmission->barcode }}

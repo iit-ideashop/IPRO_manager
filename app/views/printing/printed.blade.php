@@ -5,9 +5,9 @@
     <table class="table table-striped table-hover">
         <tr>
             <th>Job</th>
+            <th>Type</th>
             <th>Size</th>
             <th>Dimensions</th>
-            <th>Type</th>
             <th> </th>
         </tr>
         @foreach($files as $file)
@@ -17,9 +17,9 @@
                         <i class="fa fa-exclamation-circle text-danger" ></i>
                     @endif
                 </td>
+                <td>{{ $file->file_type }}</td>
                 <td>{{ $file->size }}</td>
                 <td>{{ $file->dimensions }}</td>
-                <td>{{ $file->file_type }}</td>
                 <td>
                     <button class="btn btn-primary" id="printed-button-{{ $file->id }}" onclick="undoPrint('{{ $file->id }}')"><i class="fa fa-print"></i> Undo</button>
                 </td>

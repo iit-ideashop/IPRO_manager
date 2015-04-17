@@ -104,14 +104,6 @@ Route::group(array('before'=>'iit_user'),function(){
             });
         });
     });
-
-
-
-
-
-
-
-
 });
 
 

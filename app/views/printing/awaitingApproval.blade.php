@@ -9,19 +9,25 @@
             <th>Uploader</th>
             <th>Project</th>
             <th>Dimensions</th>
+            <th>Size</th>
+            <th>Upload Time</th>
             <th>Approve/Deny</th>
         </tr>
         @foreach($files as $file)
             <tr id="file-tr-{{ $file->id }}" filename="{{ $file->original_filename }}">
                 <td><a href="{{URL::route("printing.viewfile",array("fileid"=>$file->id))}}" target="_blank">{{ $file->original_filename }}</a>
+
                     @if($file->override)
                         <i class="fa fa-exclamation-circle text-danger" ></i>
                     @endif
+                    [ <a href="{{URL::route("printing.downloadfile",array("fileid"=>$file->id))}}">Download</a> ]
                 </td>
                 <td>{{ $file->file_type }}</td>
                 <td>{{ User::getFullNameWithId($file->UserID) }}</td>
-                <td>{{ Project::getProjectUID($file->ProjectID) }}</td>
+                <td><a href="{{ URL::route("printing.projectReport", $file->ProjectID) }}">{{ Project::getProjectUID($file->ProjectID) }}</a></td>
                 <td>{{ $file->dimensions }}</td>
+                <td>{{ $file->size }}</td>
+                <td>{{ date('D F jS Y, g:i a',strtotime($file->created_at)) }}</td>
                 <td id="file-td-actions-{{ $file->id }}">
                     <button class="btn btn-danger" id="denyFile-{{$file->id}}" onclick="showDenyModal({{ $file->id }});">Deny</button>
                     <button onclick="approveFile('{{ $file->id }}');" id="approveFile-{{$file->id}}" class="btn btn-success">Approve</button>

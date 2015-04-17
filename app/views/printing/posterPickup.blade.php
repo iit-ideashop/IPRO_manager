@@ -54,12 +54,13 @@
                     @if($file->override)
                         <i class="fa fa-exclamation-circle text-danger" ></i>
                     @endif
+                    [ <a href="{{URL::route("printing.downloadfile",array("fileid"=>$file->id))}}">Download</a> ]
                 </td>
                 <td>{{ $file->file_type }}</td>
                 <td>{{ $file->size }}</td>
                 <td>{{ $file->dimensions }}</td>
                 <td>{{ User::getFullNameWithId($file->UserID) }}</td>
-                <td>{{ Project::getProjectUID($file->ProjectID) }}</td>
+                <td><a href="{{ URL::route("printing.projectReport", $file->ProjectID) }}">{{ Project::getProjectUID($file->ProjectID) }}</a></td>
                 <td>{{ date('D F jS Y, g:i a' ,strtotime($file->created_at)) }}</td>
                 @if($file->barcode != NULL)
                     <td><a href="{{ URL::route("printing.printBarcode", $file->id) }}" target="_blank" class="btn btn-primary"><i class="glyphicon glyphicon-barcode"></i> Reprint Label</a></td>
