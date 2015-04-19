@@ -2,6 +2,7 @@
 @include('layouts.handsontable')
 @include('layouts.dataTables')
 @section('content')
+    @include('admin.iproday.iprodayNavigation')
 <select name="iprodays">
     @foreach($iprodays as $iprod)
     <option>{{ $iprod->eventDate}}</option>

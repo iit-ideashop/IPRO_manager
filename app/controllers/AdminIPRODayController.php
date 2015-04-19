@@ -48,4 +48,11 @@ class AdminIPRODayController extends BaseController{
         //Custom report configurations, if any
         return View::make('admin.reports.'.$report);
     }
+
+    function peoplesChoice(){
+        return View::make("admin.iproday.peoplesChoice");
+    }
+    function peoplesChoiceTerminal(){
+        return View::make("admin.iproday.peoplesChoiceTerminal");
+    }
 }
