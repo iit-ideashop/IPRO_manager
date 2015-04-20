@@ -173,6 +173,13 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
         Route::get('/',array('as'=>'admin.iproday','uses'=>'AdminIPRODayController@index'));
         Route::get('peoplesChoice',array('as'=>'admin.iproday.peopleschoice','uses'=>'AdminIPRODayController@peoplesChoice'));
         Route::get('peoplesChoice/terminal',array('as'=>'admin.iproday.peopleschoice.terminal','uses'=>'AdminIPRODayController@peoplesChoiceTerminal'));
+<<<<<<< Updated upstream
+=======
+
+        Route::group(array("prefix"=>"api"),function(){
+            Route::post("/validateUser", array("as"=>"admin.iproday.api.validateUser", "uses"=>"AdminIPRODayController@api_validateUser"));
+        });
+>>>>>>> Stashed changes
         Route::group(array('prefix'=>'{id}','where'=>array('id' => '[0-9]+')),function(){
             //Reporting route
             Route::get('/report/{report}',array('as'=>'admin.iproday.report','uses'=>'AdminIPRODayController@reporting'));
