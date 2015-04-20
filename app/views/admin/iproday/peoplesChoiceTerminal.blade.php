@@ -130,7 +130,6 @@
                         alert("there was an error processing your request");
                     }
                 });
-                alert("Name"+firstName+" Last:"+lastName+" ID:"+idnumber);
             }
         });
         $("#firstName").on("blur",function(event){
