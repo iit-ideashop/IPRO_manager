@@ -55,8 +55,7 @@ class AdminIPRODayController extends BaseController{
     function peoplesChoiceTerminal(){
         return View::make("admin.iproday.peoplesChoiceTerminal");
     }
-<<<<<<< Updated upstream
-=======
+
 
     //In this controller we will be taking input of FirstName, LastName and ID number
     public function api_validateUser(){
@@ -118,5 +117,5 @@ class AdminIPRODayController extends BaseController{
         //Build the response with all the projects
         return Response::json(array_merge($inputdata, array("tracks"=>$trackListingReturn)));
     }
->>>>>>> Stashed changes
+
 }

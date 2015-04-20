@@ -2,11 +2,7 @@
 @include('layouts.fontawesome')
 @section('content')
     @include("admin.iproday.iprodaynavigation")
-<<<<<<< Updated upstream
-    <h3>Enter Peoples Choice vote <div class="pull-right"><a class="btn btn-default" href="{{ URL::route("admin.iproday.peopleschoice.terminal") }}">Open Peoples Choice Terminal</a></div></h3>
-=======
     <h3>Enter Peoples Choice vote <div class="pull-right"><a class="btn btn-default" href="{{ URL::route("admin.iproday.peopleschoice.terminal") }}" target="_blank">Open Peoples Choice Terminal</a></div></h3>
->>>>>>> Stashed changes
     <div class="row">
         <div class="col-xs-6">
             {{ Form::open(array('route'=>'printing.pickup.search')) }}
