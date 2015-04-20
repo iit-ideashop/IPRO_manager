@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @include('layouts.fontawesome')
 @section('content')
-    @include("admin.iproday.iprodaynavigation")
+    @include("admin.iproday.iprodayNavigation")
     <h3>Enter Peoples Choice vote <div class="pull-right"><a class="btn btn-default" href="{{ URL::route("admin.iproday.peopleschoice.terminal") }}" target="_blank">Open Peoples Choice Terminal</a></div></h3>
     <div class="row">
         <div class="col-xs-6">
