@@ -27,6 +27,7 @@
     @show
 </head>
 <body>
+
 <div class="container">
     <div class="row vertical-center-row">
         <div class="col-lg-12">
@@ -159,7 +160,7 @@
         $.each(tracks, function(key,value){
             $("#trackListingDiv").append('<div class="col-xs-3"><button class="btn btn-default btn-lg btn-block" onClick="showProjectListing('+key+')"><h2>Track '+key+'</h2></button></div>');
         });
-        $("#trackListingDiv").append('<div class="col-xs-3"><button class="btn btn-default btn-lg btn-block" onClick="show_error(\'Canceling Voting <i class=&quot;fa fa-cog fa-2x fa-spin &quot;></i>\');"><h2>Cancel Voting</h2></button></div>');
+        $("#trackListingDiv").append('<div class="col-xs-3"><button class="btn btn-default btn-lg btn-block" onClick="show_error(\'Cancelling Voting <i class=&quot;fa fa-cog fa-2x fa-spin &quot;></i>\');"><h2>Cancel Voting</h2></button></div>');
         $("#loadingPage").slideUp(400);
         $("#projectListing").slideUp(400);
         $("#confirmVotePage").slideUp(400);
@@ -202,9 +203,35 @@
         $("#confirmVotePage").slideUp(400);
         $("#voteSubmittingPage").slideDown(400)
         //Make an ajax call to cast the vote
-        window.setTimeout(function(){
-            show_error("Thanks for Voting!");
-        },1500);
+        var fd = new FormData();
+        fd.append("firstName",firstname);
+        fd.append("lastName",lastname);
+        fd.append("idnumber",idnumber);
+        fd.append("projectid",projectid);
+        $.ajax({
+            url: '{{ URL::route('admin.iproday.api.castVote') }}',
+            type: 'POST',
+            data: fd,
+            cache: false,
+            dataType: 'json',
+            processData: false,
+            contentType: false,
+            success: function(data){
+                //We need to process this data and customize the page to fit the needs of a single voter
+                if(data.app_error) {
+                    //There was an error with the request, display the error and redirect away to the home page again
+                    show_error(data.app_error);
+                }else if(data.app_success == true){
+                    show_error("Thanks for Voting!");
+                }else{
+                    show_error("There was an error with voting. Please try again.");
+                }
+            },
+            error: function(data, textStatus){
+
+                show_error("There was an internal error("+data.code+") processing your vote. Please try again.");
+            }
+        });
     }
 </script>
 

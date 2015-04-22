@@ -50,9 +50,57 @@ class AdminIPRODayController extends BaseController{
     }
 
     function peoplesChoice(){
+        //Pull the most recent votes for this semester
+        $activeSemester = Semester::where("Active","=",true)->first();
+        $votes = PeoplesChoice::where("Semester","=",$activeSemester->id)->latest()->limit(20)->get();
+        View::share("votes",$votes);
+        //Get all the projects and return them to the page as data for the autocomplete
+        $projectIDs = PeoplesChoiceTracks::where("Semester","=",$activeSemester->id)->lists("ProjectID");
+        $projects = Project::whereIn("id",$projectIDs)->get();
+        //Return the projects to the page
+        View::share("projects",$projects);
         return View::make("admin.iproday.peoplesChoice");
     }
+
+    public function addPeoplesChoiceVote(){
+        //In this function we will try to add a new Peoples choice vote. If this user has never voted we can auto add a new entry
+        //We will perform a search, if the user's name is already in the DB then we show a "search results page"
+        //Get posted data
+        $firstName = Input::get("firstName");
+        $lastName = Input::get("lastName");
+        $idType = Input::get("idtype");
+        $idnumber = Input::get("idnumber");
+        $projectid = Input::get("projectid");
+        //Validate the idType is valid
+        if(($idType != "stateid") && ($idType != "driverslicense")){
+            return Redirect::route("admin.iproday.peopleschoice")->with("error",array("Invalid Identification type"));
+        }
+        //Valid ID type. Let's validate that the project was submitted
+        if($projectid == null){
+            return Redirect::route("admin.iproday.peopleschoice")->with("error",array("Please select a project"));
+        }
+        $project = Project::where("id","=",$projectid)->first();
+        if($project == null){
+            return Redirect::route("admin.iproday.peopleschoice")->with("error",array("Invalid project selected"));
+        }
+        //Ok so we have a project and all this input, let's do some validation
+        //Look for a resubmit
+        $users = PeoplesChoice::where("id","=",$idnumber)->orWhere("FirstName","LIKE","%".$firstName."%")->orWhere("LastName","LIKE","%".$lastName."%")->get();
+        View::share("userDuplicateCheck",$users);
+        //Next let's also pull down the roster for the class
+        $rosterIDs = PeopleProject::where("ClassID","=",$projectid)->lists("UserID");
+        $enrolled = User::whereIn("id",$rosterIDs)->get();
+        View::share("enrollment",$enrolled);
+
+        return View::make("admin.iproday.peoplesChoiceConfirm");
+    }
+
+    public function processPeoplesChoiceVote(){
+        
+    }
+
     function peoplesChoiceTerminal(){
+        //Load up the terminal page. no data needed for the actual page its all ajax + javascript stuff
         return View::make("admin.iproday.peoplesChoiceTerminal");
     }
 
@@ -61,7 +109,7 @@ class AdminIPRODayController extends BaseController{
     public function api_validateUser(){
         $firstName = Input::get("firstName");
         $lastName = Input::get("lastName");
-        $idnumber = Input::get("idnumber");
+        $idnumber = strtoupper(Input::get("idnumber"));
         $inputdata = array("firstName" => $firstName, "lastName"=>$lastName,"idnumber"=>$idnumber);
         //Some data for us
         $activeSemester = Semester::where("Active","=",true)->first();
@@ -72,7 +120,7 @@ class AdminIPRODayController extends BaseController{
             return Response::json(array_merge($inputdata, array("app_error"=>"You have already voted. Everyone is allowed to vote only once")));
         }
         //Now it gets a bit more complicated. We have to see if the person has already voted with us by not using the terminal
-        $vote = PeoplesChoice::where("FirstName","LIKE","%".$firstName."%")->orWhere("LastName","LIKE","%".$lastName."%")->where("Semester","=",$activeSemester->id)->first();
+        $vote = PeoplesChoice::where("FirstName","LIKE","%".$firstName."%")->where("LastName","LIKE","%".$lastName."%")->where("Semester","=",$activeSemester->id)->first();
         if($vote != null){
             return Response::json(array_merge($inputdata, array("app_error"=>"There was an error with your entry. Please see the registration desk.")));
         }
@@ -83,15 +131,16 @@ class AdminIPRODayController extends BaseController{
         if($person != null){
             //IPRO STUDENT!! Let's see if they are enrolled in anything this semester
             $enrollment = PeopleProject::where("UserID","=",$person->id)->lists("ClassID");
-            $blacklistedProjectIDs = array_merge($enrollment,$blacklistedProjectIDs);
+            $blacklistedProjectIDs = $enrollment;
         }
+
 
         //Pull all the projects from this semester
         $projects = Project::where("Semester","=",$activeSemester->id)->get();
         //Create an easier to access array of projects
         $projectArray = array();
         foreach($projects as $project){
-            $projectArray[$project->id] = $project;
+                $projectArray[$project->id] = $project;
         }
 
         //Let's now find the relation between project and track by pulling all the relationships for this semester
@@ -101,21 +150,77 @@ class AdminIPRODayController extends BaseController{
         //Now we should loop through each track listing and create the appropriate track listing array to pass to the page
         $trackListingReturn = array();
         foreach($trackListing as $track){
-
+            $blacklisted = false;
             $tmpProj = $projectArray[$track["ProjectID"]];
-
+            foreach ($blacklistedProjectIDs as $blProject) {
+                if($tmpProj->id == $blProject){
+                    $blacklisted = true;
+                }
+            }
             $data_arr = array("id"=>$track["ProjectID"], "UID"=>$tmpProj->UID, "Name"=>$tmpProj->Name,);
-
-            if(array_key_exists($track["TrackNumber"], $trackListingReturn)){
-                //Key exists, add to the array
-                array_push($trackListingReturn[$track["TrackNumber"]]["classes"], $data_arr);
-            }else{
-                //Create the key
-                $trackListingReturn[$track["TrackNumber"]] = array("trackNumber" => $track["TrackNumber"], "classes" => array($data_arr));
+            if(!$blacklisted){
+                if(array_key_exists($track["TrackNumber"], $trackListingReturn)){
+                    //Key exists, add to the array
+                    array_push($trackListingReturn[$track["TrackNumber"]]["classes"], $data_arr);
+                }else{
+                    //Create the key
+                    $trackListingReturn[$track["TrackNumber"]] = array("trackNumber" => $track["TrackNumber"], "classes" => array($data_arr));
+                }
             }
         }
         //Build the response with all the projects
         return Response::json(array_merge($inputdata, array("tracks"=>$trackListingReturn)));
+    }
+
+    public function api_castVote(){
+        //We need to grab the stuff we are submitting for
+        $firstName = Input::get("firstName");
+        $lastName = Input::get("lastName");
+        $idnumber = Input::get("idnumber");
+        $projectid = Input::get("projectid");
+
+        //Let's validate the user has not voted yet
+        //Some data for us
+        $activeSemester = Semester::where("Active","=",true)->first();
+        //We have to take the input and see if this user has already voted
+        //We need to validate this user hasn't voted yet. Check the ID first
+        $vote = PeoplesChoice::where("idnumber","=",$idnumber)->where("Semester","=",$activeSemester->id)->first();
+        if($vote != null){
+            return Response::json(array("app_error"=>"You have already voted. Everyone is allowed to vote only once"));
+        }
+        //Now it gets a bit more complicated. We have to see if the person has already voted with us by not using the terminal
+        $vote = PeoplesChoice::where("FirstName","LIKE","%".$firstName."%")->Where("LastName","LIKE","%".$lastName."%")->where("Semester","=",$activeSemester->id)->first();
+        if($vote != null){
+            return Response::json(array("app_error"=>"There was an error with your entry. Please see the registration desk."));
+        }
+        //Make sure the project exists in the database
+        $project = Project::where("id","=",$projectid)->first();
+        if($project == NULL){
+            return Response::json(array("app_error"=>"The project you are voting for does not exist."));
+        }
+
+        //Make sure the user isnt voting for his own project
+        $person = User::where("CWIDHash","=",md5($idnumber))->first();
+        if($person != null){
+            //IPRO STUDENT!! Let's see if they are enrolled in anything this semester
+            $enrollment = PeopleProject::where("UserID","=",$person->id)->lists("ClassID");
+            foreach($enrollment as $enrolledProject){
+                if($projectid == $enrolledProject){
+                    return Response::json(array("app_error"=>"You are not allowed to vote for your own project. Please vote again."));
+                }
+            }
+        }
+        //We have validated the vote. The user has only one vote in the database
+        //Let's add the vote to the database and return an OK
+        $vote = new PeoplesChoice;
+        $vote->FirstName = $firstName;
+        $vote->LastName = $lastName;
+        $vote->idnumber = $idnumber;
+        $vote->IDType = "IIT";
+        $vote->ProjectID = $projectid;
+        $vote->Semester = $activeSemester->id;
+        $vote->save();
+        return Response::json(array("app_success" => true));
     }
 
 }
