@@ -55,7 +55,7 @@
             </div>
             <div class="row jumbotron" id="trackListingPage" style="display: none;">
                 <div class="col-xs-12" style="text-align: center">
-                    <h2>Please select your vote for Peoples Choice <span id="trackListingFirstName"></span></h2><br><br>
+                    <h2>Please select your vote for Peoples Choice, <span id="trackListingFirstName"></span></h2><br><br>
                     <div class="row" id="trackListingDiv"></div>
                 </div>
             </div>
@@ -127,9 +127,10 @@
                         }
                     },
                     error: function(data, textStatus){
-                        console.log(data);
-                        console.log(textStatus);
-                        alert("there was an error processing your request");
+                        //console.log(data);
+                        //console.log(textStatus);
+                        //alert("there was an error processing your request");
+                        show_error("There was an internal error("+data.code+") processing your vote. Please try again.");
                     }
                 });
             }
@@ -208,7 +209,6 @@
         fd.append("firstName",firstname);
         fd.append("lastName",lastname);
         fd.append("idnumber",idnumber);
-        alert("submitting"+global_idnumber);
         fd.append("projectid",projectid);
         $.ajax({
             url: '{{ URL::route('admin.iproday.api.castVote') }}',
