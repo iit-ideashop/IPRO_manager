@@ -174,6 +174,8 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
         Route::get('peoplesChoice',array('as'=>'admin.iproday.peopleschoice','uses'=>'AdminIPRODayController@peoplesChoice'));
         Route::get('peoplesChoice/terminal',array('as'=>'admin.iproday.peopleschoice.terminal','uses'=>'AdminIPRODayController@peoplesChoiceTerminal'));
         Route::post('peoplesChoice/add',array('as'=>'admin.iproday.peopleschoice.add','uses'=>'AdminIPRODayController@addPeoplesChoiceVote'));
+        Route::post("peoplesChoice/confirmAdd", array("as"=>"admin.iproday.peoplesChoice.confirmAdd", "uses"=>"AdminIPRODayController@confirmAddPeoplesChoiceVote"));
+        Route::get("peopleChoice/results",array("as"=>"admin.iproday.peoplesChoice.results","uses"=>"AdminIPRODayController@viewResults"));
         Route::group(array("prefix"=>"api"),function(){
             Route::post("/validateUser", array("as"=>"admin.iproday.api.validateUser", "uses"=>"AdminIPRODayController@api_validateUser"));
             Route::post("/castVote", array("as"=>"admin.iproday.api.castVote", "uses"=>"AdminIPRODayController@api_castVote"));

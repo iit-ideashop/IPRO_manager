@@ -9,7 +9,7 @@
             {{ Form::open(array('route'=>'admin.iproday.peopleschoice.add')) }}
             <div class="form-group">
                 {{ Form::label('firstName','First Name') }}
-                {{ Form::text('firstName',null,array('class'=>'form-control','placeholder'=>'John',"tabindex"=>"1")) }}
+                {{ Form::text('firstName',null,array('class'=>'form-control','placeholder'=>'John',"tabindex"=>"1","id"=>"firstName")) }}
             </div>
             <div class="row">
                 <div class="col-xs-6">
@@ -92,7 +92,7 @@
         @endforeach
         ];
     $(document).on("ready",function(){
-
+        $("#firstName").focus();
         //setup the autocompelte
         $("#project-listing").autocomplete({
             lookup: projectListing,

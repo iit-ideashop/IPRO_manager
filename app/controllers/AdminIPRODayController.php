@@ -91,17 +91,57 @@ class AdminIPRODayController extends BaseController{
         $rosterIDs = PeopleProject::where("ClassID","=",$projectid)->lists("UserID");
         $enrolled = User::whereIn("id",$rosterIDs)->get();
         View::share("enrollment",$enrolled);
-
+        View::share("firstName",$firstName);
+        View::share("lastName", $lastName);
+        View::share("idnumber",$idnumber);
+        View::share("projectid",$projectid);
+        View::share("idtype",$idType);
         return View::make("admin.iproday.peoplesChoiceConfirm");
     }
 
-    public function processPeoplesChoiceVote(){
-        
+    public function confirmAddPeoplesChoiceVote(){
+        $firstname = Input::get("firstName");
+        $lastname = Input::get("lastName");
+        $idnumber = Input::get("idnumber");
+        $idtype = Input::get("idtype");
+        $projectid = Input::get("projectid");
+        //Since we already validated we have to make a new entry in the DB for this one
+        $activeSemester = Semester::where("Active","=",true)->first();
+        $vote = new PeoplesChoice;
+        $vote->FirstName = $firstname;
+        $vote->LastName = $lastname;
+        $vote->idnumber = $idnumber;
+        $vote->IDType = $idtype;
+        $vote->ProjectID = $projectid;
+        $vote->Semester = $activeSemester->id;
+        $vote->save();
+        return Redirect::route("admin.iproday.peopleschoice")->with("success",array("Successfully added vote"));
+
     }
 
     function peoplesChoiceTerminal(){
         //Load up the terminal page. no data needed for the actual page its all ajax + javascript stuff
         return View::make("admin.iproday.peoplesChoiceTerminal");
+    }
+
+    function viewResults(){
+        $activeSemester = Semester::where("Active","=",true)->first();
+        //Pull all the votes
+        $allVotes = PeoplesChoice::where("Semester","=",$activeSemester->id)->get();
+        $results_array = array();
+        foreach($allVotes as $vote){
+            if(array_key_exists($vote->ProjectID, $results_array)){
+                $results_array[$vote->ProjectID]["votes"] += 1;
+
+            }else{
+                $results_array[$vote->ProjectID] = array();
+                $results_array[$vote->ProjectID]["ProjectID"] = $vote->ProjectID;
+                $results_array[$vote->ProjectID]["votes"] = 1;
+            }
+        }
+        View::share("resultArray",$results_array);
+        return View::make("admin.iproday.peoplesChoiceResults");
+
     }
 
 

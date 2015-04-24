@@ -37,7 +37,18 @@
             </tr>
         @endforeach
     </table>
-    <div class="pull-right"><button class="btn-danger btn">Reject Vote</button> <button class="btn btn-primary">Accept Vote</button></div>
+    {{ Form::open(array("route"=>"admin.iproday.peoplesChoice.confirmAdd")) }}
+    {{ Form::hidden("firstName", $firstName) }}
+    {{ Form::hidden("lastName",$lastName) }}
+    {{ Form::hidden("idnumber", $idnumber) }}
+    {{ Form::hidden("idtype",$idtype) }}
+    {{ Form::hidden("projectid",$projectid) }}
+
+    <div class="pull-right">
+        <a href="{{ URL::route("admin.iproday.peopleschoice") }}" class="btn btn-danger">Reject Vote</a>
+        {{ Form::submit("Accept Vote",array("class"=>"btn btn-primary")) }}
+    </div>
+    {{ Form::close() }}
 @stop
 
 @section('javascript_bottom')

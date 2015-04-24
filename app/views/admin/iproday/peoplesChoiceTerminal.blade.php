@@ -38,9 +38,9 @@
                     <i class="fa fa-caret-down fa-4x"></i><br>
                     <h2>Please scan your ID to continue</h2><br>
                         {{ Form::open() }}
-                        {{ Form::text("firstName",null,array("id"=>"firstName","autocomplete"=>"off","style"=>"opacity:100","tabindex"=>"1")) }}
-                        {{ Form::text("lastName",null,array("id"=>"lastName","autocomplete"=>"off","style"=>"opacity:100","tabindex"=>"2")) }}
-                        {{ Form::text("idNumber",null,array("id"=>"idnumber","autocomplete"=>"off","style"=>"opacity:100","tabindex"=>"3")) }}
+                        {{ Form::text("firstName",null,array("id"=>"firstName","autocomplete"=>"off","style"=>"opacity:0","tabindex"=>"1")) }}
+                        {{ Form::text("lastName",null,array("id"=>"lastName","autocomplete"=>"off","style"=>"opacity:0","tabindex"=>"2")) }}
+                        {{ Form::text("idnumber",null,array("id"=>"idnumber","autocomplete"=>"off","style"=>"opacity:0","tabindex"=>"3")) }}
                         {{ Form::close() }}
                 </div>
             </div>
@@ -84,7 +84,7 @@
 </div>
 
 <script>
-    var firstname, lastname, idnumber, tracks, vote_projectid;
+    var firstname, lastname, global_idnumber, tracks, vote_projectid;
     var id_scanned = false;
     $(document).on("ready",function(){
         $("#firstName").focus();
@@ -94,9 +94,10 @@
                 $("#indexPage").slideUp();
                 $("#loadingPage").slideDown().delay(400);
                 //Submit the data for testing
-                var firstName = $("#firstName").val();
-                var lastName = $("#lastName").val();
-                var idnumber = $("#idnumber").val();
+                firstName = $("#firstName").val();
+                lastName = $("#lastName").val();
+                idnumber = $("#idnumber").val();
+                global_idnumber = idnumber;
                 //We have to take this data and perform an ajax request to get the ipro listing and validate the ID.
                 var fd = new FormData();
                 fd.append("firstName",firstName);
@@ -207,6 +208,7 @@
         fd.append("firstName",firstname);
         fd.append("lastName",lastname);
         fd.append("idnumber",idnumber);
+        alert("submitting"+global_idnumber);
         fd.append("projectid",projectid);
         $.ajax({
             url: '{{ URL::route('admin.iproday.api.castVote') }}',

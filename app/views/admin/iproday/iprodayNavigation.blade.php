@@ -23,9 +23,11 @@
                         class="active"
                             @endif
                             ><a href="{{ URL::route("admin.iproday.peopleschoice") }}">Peoples Choice</a></li>
-                    <li>
-                    <a href="#">Peoples Choice Results</a></li>
-
+                    <li
+                        @if(Route::currentRouteName() == 'admin.iproday.peoplesChoice.results')
+                            class="active"
+                        @endif
+                        ><a href="{{ URL::route("admin.iproday.peoplesChoice.results") }}">Peoples Choice Results</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
