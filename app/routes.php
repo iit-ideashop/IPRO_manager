@@ -157,6 +157,10 @@ Route::group(array('prefix' => 'admin', 'before'=>'auth_admin'), function(){
         Route::get('/enroll_users/{id}',array('as'=>'admin.projects.enrollUsers','uses'=>'AdminProjectController@enrollUsers'))->where(array('id' => '[0-9]+'));
         Route::get('/uploadCognos/{sem_id}', array('as'=>'admin.projects.uploadCognos', 'uses'=>'AdminProjectController@uploadCognos'))->where(array('sem_id' => '[0-9]+'));
         Route::post('/uploadCognos/{sem_id}',array('as'=>'admin.projects.uploadCognosProcess', 'uses'=>'AdminProjectController@uploadCognosProcess'))->where(array('sem_id' => '[0-9]+'));
+        Route::group(array("prefix"=>"reports"),function(){
+            Route::get('{sem_id}', array('as'=>'admin.projects.reports', 'uses'=>'AdminProjectReportController@showReports'))->where(array('sem_id' => '[0-9]+'));
+            Route::get("budgetReport/{sem_id}", array('as'=>'admin.projects.reports.budget', 'uses'=>'AdminProjectReportController@budgetReport'))->where(array('sem_id' => '[0-9]+'));
+        });
     });
     Route::group(array('prefix'=>'semesters'), function(){
         Route::get('/',array('as'=>'admin.semesters','uses'=>'AdminSemesterController@index'));
