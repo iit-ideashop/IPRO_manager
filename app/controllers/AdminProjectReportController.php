@@ -61,7 +61,7 @@ class AdminProjectReportController extends BaseController{
                     $recurse = false; // Turn off recursion, the only way we continue is if we find a child relationship
                     foreach($projects as $class){
                         if(array_key_exists($class->ParentClass,$subClasses)){
-                            $recurse = true;
+                           
                             array_push($subClasses, $class->id);
                         }
                     }
