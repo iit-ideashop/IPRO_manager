@@ -21,8 +21,8 @@
             @if($project->ParentClass != NULL)
                 data-tt-parent-id="{{ $project->ParentClass }}"
                     @endif>
-                <td>{{ $project->UID }}</td>
-                <td>{{ $project->Name }}</td>
+                <td>{{ htmlentities($project->UID) }}</td>
+                <td>{{ htmlentities($project->Name) }}</td>
                 <td>{{ $project->enrollment }}</td>
                 <td>
                     @if($project->ParentClass == NULL)
@@ -45,8 +45,8 @@
         @foreach($projects as $project)
             @if($project->ParentClass != NULL)
                 $("#project-"+{{ $project->ParentClass }}).after('<tr data-tt-id="{{ $project->id }}" data-tt-parent-id="{{$project->ParentClass}}" id="project-{{ $project->id }}">'+
-                '<td>{{ $project->UID }}</td>' +
-                '<td>{{ $project->Name }}</td>' +
+                '<td>{{ htmlentities($project->UID) }}</td>' +
+                '<td>{{ htmlentities($project->Name) }}</td>' +
                 '<td>{{ $project->enrollment }}</td>' +
                 '<td> - </td>' +
                 '<td>${{ $project->moneyAllocated }}</td>' +
