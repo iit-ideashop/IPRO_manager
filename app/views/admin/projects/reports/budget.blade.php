@@ -45,8 +45,8 @@
         @foreach($projects as $project)
             @if($project->ParentClass != NULL)
                 $("#project-"+{{ $project->ParentClass }}).after('<tr data-tt-id="{{ $project->id }}" data-tt-parent-id="{{$project->ParentClass}}" id="project-{{ $project->id }}">'+
-                '<td>{{ htmlentities($project->UID) }}</td>' +
-                '<td>{{ htmlentities($project->Name) }}</td>' +
+                '<td>{{ addslashes(htmlentities($project->UID)) }}</td>' +
+                '<td>{{ addslashes(htmlentities($project->Name)) }}</td>' +
                 '<td>{{ $project->enrollment }}</td>' +
                 '<td> - </td>' +
                 '<td>${{ $project->moneyAllocated }}</td>' +
