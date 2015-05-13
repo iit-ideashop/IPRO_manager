@@ -102,8 +102,11 @@ class AdminProjectReportController extends BaseController{
             $objPHPExcel->getActiveSheet()->SetCellValue('C2', 'Name');
             $objPHPExcel->getActiveSheet()->SetCellValue('D2', 'Students Enrolled');
             $objPHPExcel->getActiveSheet()->SetCellValue('E2', 'Teambuilding Budget');
-            $objPHPExcel->getActiveSheet()->SetCellValue('F2', 'Money Allocated');
-            $objPHPExcel->getActiveSheet()->SetCellValue('G2', 'Money Spent');
+            $objPHPExcel->getActiveSheet()->SetCellValue('F2', 'Total Money Allocated');
+            $objPHPExcel->getActiveSheet()->SetCellValue('G2', 'Total Money Spent');
+            $objPHPExcel->getActiveSheet()->SetCellValue('H2', 'Money Allocated');
+            $objPHPExcel->getActiveSheet()->SetCellValue('I2', 'Money Spent');
+
             $objPHPExcel->getActiveSheet()->setTitle('Budget Report');
             $cell_counter = 3;
             //Here we start to loop through all the data
@@ -131,16 +134,26 @@ class AdminProjectReportController extends BaseController{
                             $objPHPExcel->getActiveSheet()->SetCellValue('D'.$cell_counter, $childClass->enrollment);
                             $objPHPExcel->getActiveSheet()->SetCellValue('E'.$cell_counter, "-");
                             $objPHPExcel->getActiveSheet()->getStyle('E'.$cell_counter)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
-                            $objPHPExcel->getActiveSheet()->SetCellValue('F'.$cell_counter, $childClass->moneyAllocated);
-                            $objPHPExcel->getActiveSheet()->SetCellValue('G'.$cell_counter, $childClass->moneySpent);
+                            $objPHPExcel->getActiveSheet()->SetCellValue('H'.$cell_counter, $childClass->moneyAllocated);
+                            $objPHPExcel->getActiveSheet()->SetCellValue('I'.$cell_counter, $childClass->moneySpent);
                             $objPHPExcel->getActiveSheet()->getStyle('E'.$cell_counter)->getNumberFormat()->setFormatCode('$#,##0.00');
-                            $objPHPExcel->getActiveSheet()->getStyle('F'.$cell_counter)->getNumberFormat()->setFormatCode('$#,##0.00');
-                            $objPHPExcel->getActiveSheet()->getStyle('G'.$cell_counter)->getNumberFormat()->setFormatCode('$#,##0.00');
+                            $objPHPExcel->getActiveSheet()->getStyle('H'.$cell_counter)->getNumberFormat()->setFormatCode('$#,##0.00');
+                            $objPHPExcel->getActiveSheet()->getStyle('I'.$cell_counter)->getNumberFormat()->setFormatCode('$#,##0.00');
                             $cell_counter++;
                         }
                     }
                 }
             }
+            //Write final lines
+
+            $objPHPExcel->getActiveSheet()->SetCellValue('C'.$cell_counter, "Grand Totals");
+            $objPHPExcel->getActiveSheet()->SetCellValue('E'.$cell_counter, "=SUM(E3:E".($cell_counter-1).")");
+            $objPHPExcel->getActiveSheet()->SetCellValue('F'.$cell_counter, "=SUM(F3:F".($cell_counter-1).")");
+            $objPHPExcel->getActiveSheet()->SetCellValue('G'.$cell_counter, "=SUM(G3:G".($cell_counter-1).")");
+            $objPHPExcel->getActiveSheet()->getStyle('E'.$cell_counter)->getNumberFormat()->setFormatCode('$#,##0.00');
+            $objPHPExcel->getActiveSheet()->getStyle('F'.$cell_counter)->getNumberFormat()->setFormatCode('$#,##0.00');
+            $objPHPExcel->getActiveSheet()->getStyle('G'.$cell_counter)->getNumberFormat()->setFormatCode('$#,##0.00');
+            $cell_counter++;
             $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
@@ -148,6 +161,8 @@ class AdminProjectReportController extends BaseController{
             $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
             $excel_filename = 'IPRO_BUDGET_REPORT_'.date('_m-d-Y',time()).'.xlsx';
             $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
