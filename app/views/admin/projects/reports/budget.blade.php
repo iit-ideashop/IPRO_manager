@@ -17,23 +17,15 @@
         <tbody>
         @foreach($projects as $project)
             @if($project->ParentClass == NULL)
-            <tr data-tt-id="{{ $project->id }}" id="project-{{ $project->id }}"
-            @if($project->ParentClass != NULL)
-                data-tt-parent-id="{{ $project->ParentClass }}"
-                    @endif>
+            <tr data-tt-id="{{ $project->id }}" id="project-{{ $project->id }}">
                 <td>{{ htmlentities($project->UID) }}</td>
                 <td>{{ htmlentities($project->Name) }}</td>
                 <td>{{ $project->enrollment }}</td>
-                <td>
-                    @if($project->ParentClass == NULL)
-                        ${{$project->teambuilding}}
-                    @else
-                        -
-                    @endif
-                </td>
+                <td>${{$project->teambuilding}}</td>
                 <td>${{ $project->moneyAllocated }}</td>
                 <td>${{ $project->moneySpent }}</td>
             </tr>
+                <tr id="project-{{ $project->id }}-subclasses"></tr>
             @endif
         @endforeach
         </tbody>
@@ -44,7 +36,7 @@
 
         @foreach($projects as $project)
             @if($project->ParentClass != NULL)
-                $("#project-"+{{ $project->ParentClass }}).after('<tr data-tt-id="{{ $project->id }}" data-tt-parent-id="{{$project->ParentClass}}" id="project-{{ $project->id }}">'+
+                $("#project-"+{{ $project->ParentClass }}+"-subclasses").before('<tr data-tt-id="{{ $project->id }}" data-tt-parent-id="{{$project->ParentClass}}" id="project-{{ $project->id }}">'+
                 '<td>{{ addslashes(htmlentities($project->UID)) }}</td>' +
                 '<td>{{ addslashes(htmlentities($project->Name)) }}</td>' +
                 '<td>{{ $project->enrollment }}</td>' +

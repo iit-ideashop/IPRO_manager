@@ -60,8 +60,7 @@ class AdminProjectReportController extends BaseController{
                 while($recurse){
                     $recurse = false; // Turn off recursion, the only way we continue is if we find a child relationship
                     foreach($projects as $class){
-                        if(array_key_exists($class->ParentClass,$subClasses)){
-                           
+                        if(in_array($class->ParentClass,$subClasses)){
                             array_push($subClasses, $class->id);
                         }
                     }
@@ -69,7 +68,7 @@ class AdminProjectReportController extends BaseController{
             }
             //Now we know all of the subclasses for this project, lets recalculate it's monies
             foreach($projects as $class){
-                if(array_key_exists($class->id, $subClasses)){
+                if(in_array($class->id, $subClasses)){
                     //Hit, this is a sub class
                     //Add data from the sub class into the parent class
                     $project->moneySpent += $class->moneySpent;
