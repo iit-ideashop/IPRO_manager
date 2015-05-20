@@ -19,6 +19,7 @@ Route::group(array(),function(){
     Route::get('/kiosk', array('as'=> 'kiosk.showKiosk', 'uses'=>'KioskController@showKiosk'));
     Route::post('/kiosk',array('as'=>'kiosk.pickupPackage', 'before'=>'csrf','uses'=>'KioskController@showPackagePickup'));
     Route::post('/completePacakgePickup',array('as'=>'kiosk.completePackagePickup', 'before'=>'csrf','uses'=>'KioskController@completePackagePickup'));
+    Route::get("/proposals", array("as"=>"proposals", "uses"=>"ProposalController@index"));
 });
 
 //***** IPRO DAY ROUTES *****///
@@ -100,9 +101,14 @@ Route::group(array('before'=>'iit_user'),function(){
             Route::group(array("prefix"=>"api"), function(){
                 Route::post("approvePoster", array("as"=>"printing.api.approvePoster","uses"=>"PrintingController@approvePoster"));
                 Route::post("receivePoster", array("as"=>"printing.api.receivePoster","uses"=>"PrintingController@receivePosterFromPrinter"));
-
             });
         });
+    });
+
+    Route::group(array("before"=>"role_proposals","prefix"=>"proposals"),function(){
+        Route::get("/dashboard",array("as"=>"proposals","uses"=>"ProposalController@index"));
+
+
     });
 });
 

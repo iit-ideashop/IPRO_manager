@@ -49,6 +49,16 @@ App::before(function($request)
                     );
                 }
             }
+            //Check for proposals link
+            if((Auth::user()->checkRole("ROLE_PROPOSALS")) || (Auth::user()->isAdmin)){
+                if(array_key_exists("admin", $returnArray)){
+                    array_push($returnArray["admin"], array('route'=>'proposals','text'=>'Proposal Management'));
+                }else{
+                    $returnArray['admin'] = array(
+                        array('route'=>'proposals','text'=>'Proposal Management')
+                    );
+                }
+            }
 
 
             View::share('navigation',$returnArray);
@@ -151,6 +161,22 @@ Route::filter('role_printer', function(){
         //User is logged in
         //If user is an admin or has the ROLE_PRINTING then we allow access
         if((!Auth::user()->isAdmin) && (!User::checkRole("ROLE_PRINTING"))){
+            return Redirect::to("dashboard");
+        }
+    }else{
+        //User isn't even logged in, send to admin login page
+        //Save the route we are trying to access
+        Session::put('routing.intended.parameters',Route::getCurrentRoute()->parameters());
+        Session::put('routing.intended.route',Route::getCurrentRoute()->getName());
+        return Redirect::route('authenticate');
+    }
+});
+
+Route::filter('role_proposals', function(){
+    if(Auth::check()){
+        //User is logged in
+        //If user is an admin or has the ROLE_PRINTING then we allow access
+        if((!Auth::user()->isAdmin) && (!User::checkRole("ROLE_PROPOSALS"))){
             return Redirect::to("dashboard");
         }
     }else{
