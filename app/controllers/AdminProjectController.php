@@ -259,14 +259,14 @@ class AdminProjectController extends BaseController{
                 $course->Semester = $semester->id;
                 $course->save();
                 array_push($log_array, "Created ".$course->UID);
-                //Let's check if we need to grant initial budgets
-                if($initialBudget != 0){
-                    //Grant some sort of initial budget
                     $account = new Account;
                     $account->ClassID = $course->id;
                     $account->Balance = 0;
                     $account->save();
                     array_push($log_array, "Created Account for ".$course->UID);
+                //Let's check if we need to grant initial budgets
+                if($initialBudget != 0){
+                    //Grant some sort of initial budget
                     $budget = new Budget;
                     $budget->AccountID = $account->id;
                     $budget->Amount = $initialBudget;
