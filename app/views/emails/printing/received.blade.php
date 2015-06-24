@@ -1,12 +1,12 @@
 @extends('emails.layout')
 @section('TopSentence')
-    IPRO Poster Submission
+    Armour R&D - Poster Submission
 @stop
 @section('content')
 
     <h3>Hey {{$person->FirstName}}!</h3>
     <p>We have received your poster submission and it is now in our Approval Queue. Once your poster is approved it will be sent to the the Print Shop. </p>
-    <p>You will receive an email to come pick up the print from the IdeaShop once your poster has been printed. We will supply you with foam core and spray glue to mount your poster. </p>
+    <p>You will receive an email to come pick up the print once it has been printed. We will supply you with foam core and spray glue to mount your poster. </p>
     <p>The details of your submission can be found below. Email us if you have any questions.</p>
     <table class="tableBlue" width="100%" cellpadding="3px" cellspacing="3px">
         <tr>
@@ -24,7 +24,6 @@
             </td>
         </tr>
     </table>
-
     <p>Thanks!</p>
     <p>-The IPRO Manager Robot</p>
 @stop

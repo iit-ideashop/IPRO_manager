@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
     <head>
-        <title>IPRO Manager</title>
+        <title>Armour R&D - IPRO Manager</title>
         <link rel="stylesheet" href="{{ URL::asset('packages/bootstrap/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ URL::asset('packages/bootstrap/css/dashboard.css') }}">
         @section('stylesheets') 
