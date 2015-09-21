@@ -572,20 +572,12 @@ class Request extends SymfonyRequest {
 	{
 		if ($request instanceof static) return $request;
 
-		$content = $request->content;
-
-		$request = (new static)->duplicate(
+		return (new static)->duplicate(
 
 			$request->query->all(), $request->request->all(), $request->attributes->all(),
 
 			$request->cookies->all(), $request->files->all(), $request->server->all()
 		);
-
-		$request->content = $content;
-
-		$request->request = $request->getInputSource();
-
-		return $request;
 	}
 
 	/**

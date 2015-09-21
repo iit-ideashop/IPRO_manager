@@ -109,14 +109,14 @@
 <div class="center-block">...</div>
 {% endhighlight %}
 {% highlight scss %}
-// Class
+// Classes
 .center-block {
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
 
-// Usage as a mixin
+// Usage as mixins
 .element {
   .center-block();
 }
@@ -142,7 +142,7 @@
   }
 }
 
-// Usage as a mixin
+// Usage as a Mixin
 .element {
   .clearfix();
 }
@@ -164,6 +164,7 @@
 }
 .hidden {
   display: none !important;
+  visibility: hidden !important;
 }
 .invisible {
   visibility: hidden;
@@ -185,7 +186,7 @@
 <a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
 {% endhighlight %}
 {% highlight scss %}
-// Usage as a mixin
+// Usage as a Mixin
 .skip-navigation {
   .sr-only();
   .sr-only-focusable();
@@ -198,8 +199,8 @@
 {% highlight html %}
 <h1 class="text-hide">Custom heading</h1>
 {% endhighlight %}
-{% highlight scss %}
-// Usage as a mixin
+  {% highlight scss %}
+// Usage as a Mixin
 .heading {
   .text-hide();
 }

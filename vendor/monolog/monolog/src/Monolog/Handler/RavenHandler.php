@@ -127,7 +127,6 @@ class RavenHandler extends AbstractProcessingHandler
      */
     protected function write(array $record)
     {
-        $previousUserContext = false;
         $options = array();
         $options['level'] = $this->logLevels[$record['level']];
         $options['tags'] = array();
@@ -147,11 +146,6 @@ class RavenHandler extends AbstractProcessingHandler
         }
         if (!empty($record['context'])) {
             $options['extra']['context'] = $record['context'];
-            if (!empty($record['context']['user'])) {
-                $previousUserContext = $this->ravenClient->context->user;
-                $this->ravenClient->user_context($record['context']['user']);
-                unset($options['extra']['context']['user']);
-            }
         }
         if (!empty($record['extra'])) {
             $options['extra']['extra'] = $record['extra'];
@@ -160,14 +154,11 @@ class RavenHandler extends AbstractProcessingHandler
         if (isset($record['context']['exception']) && $record['context']['exception'] instanceof \Exception) {
             $options['extra']['message'] = $record['formatted'];
             $this->ravenClient->captureException($record['context']['exception'], $options);
-        } else {
-            $this->ravenClient->captureMessage($record['formatted'], array(), $options);
+
+            return;
         }
 
-        if ($previousUserContext !== false) {
-            $this->ravenClient->user_context($previousUserContext);
-        }
-
+        $this->ravenClient->captureMessage($record['formatted'], array(), $options);
     }
 
     /**

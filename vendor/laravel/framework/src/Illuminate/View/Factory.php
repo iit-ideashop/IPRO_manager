@@ -402,7 +402,7 @@ class Factory {
 	 *
 	 * @param  string   $name
 	 * @param  \Closure $callback
-	 * @param  int      $priority
+	 * @param  integer  $priority
 	 * @return void
 	 */
 	protected function addEventListener($name, $callback, $priority = null)

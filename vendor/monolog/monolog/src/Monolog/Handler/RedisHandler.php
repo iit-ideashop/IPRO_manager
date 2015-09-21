@@ -11,8 +11,8 @@
 
 namespace Monolog\Handler;
 
-use Monolog\Formatter\LineFormatter;
 use Monolog\Logger;
+use Monolog\Formatter\LineFormatter;
 
 /**
  * Logs to a Redis key using rpush
@@ -30,12 +30,7 @@ class RedisHandler extends AbstractProcessingHandler
     private $redisClient;
     private $redisKey;
 
-    /**
-     * @param \Predis\Client|\Redis $redis  The redis instance
-     * @param string                $key    The key name to push records to
-     * @param integer               $level  The minimum logging level at which this handler will be triggered
-     * @param boolean               $bubble Whether the messages that are handled can bubble up the stack or not
-     */
+    # redis instance, key to use
     public function __construct($redis, $key, $level = Logger::DEBUG, $bubble = true)
     {
         if (!(($redis instanceof \Predis\Client) || ($redis instanceof \Redis))) {

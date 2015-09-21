@@ -215,9 +215,7 @@ return array(
 
     'StorageURLs' => array(
         'printSubmissions' => storage_path().'/printSubmissions/',
-		'printSubmissions_thumbs' => public_path().'/printThumbs/',
-        'profile_images_path' => public_path().'/packages/profile_images/',
-        'profile_images_url' => 'packages/profile_images/'
+		'printSubmissions_thumbs' => public_path().'/printThumbs/'
     ),
 
     'approved_poster_sizes' => array(

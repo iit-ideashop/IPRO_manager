@@ -189,23 +189,9 @@
 		var builder = new BlobBuilder();
 		if (blobParts) {
 			for (var i = 0, len = blobParts.length; i < len; i++) {
-				if (Uint8Array && blobParts[i] instanceof Uint8Array) {
-					builder.append(blobParts[i].buffer);
-				}
-				else {
-					builder.append(blobParts[i]);
-				}
+				builder.append(blobParts[i]);
 			}
 		}
-		var blob = builder.getBlob(type);
-		if (!blob.slice && blob.webkitSlice) {
-			blob.slice = blob.webkitSlice;
-		}
-		return blob;
+		return builder.getBlob(type);
 	};
-
-	var getPrototypeOf = Object.getPrototypeOf || function(object) {
-		return object.__proto__;
-	};
-	view.Blob.prototype = getPrototypeOf(new view.Blob());
 }(typeof self !== "undefined" && self || typeof window !== "undefined" && window || this.content || this));

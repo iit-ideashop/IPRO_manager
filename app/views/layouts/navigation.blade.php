@@ -14,7 +14,7 @@
                 {{-- Navbar menu if the user is logged in --}}                
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-              <li><a>{{ $user->displayProfileImage(25,25) }} Welcome {{ $user->FirstName }}</a></li>
+              <li><a>Welcome {{ $user->FirstName }}</a></li>
             <li><a href="{{ URL::route('dashboard') }}">Dashboard</a></li>
             <li><a href="{{ URL::route('help') }}">Help</a></li>
             <li><a href="{{ URL::route('logout') }}">Logout</a></li>
