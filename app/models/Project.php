@@ -2,7 +2,7 @@
 use LaravelBook\Ardent\Ardent;
 class Project extends Ardent {
     public static $rules = array(
-        'UID' => 'required',
+        'UID' => 'required|unique:projects,UID',
         'Name'=> 'required',
         'Description' => 'required',
         'Semester' => 'required',
