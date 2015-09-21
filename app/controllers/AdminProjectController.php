@@ -251,7 +251,6 @@ class AdminProjectController extends BaseController{
             $course = null;
             if(!array_key_exists($courseCRN, $database_data)){
                 //Oh no, this course is not in the database yet! We can add the course to the DB
-
                 $course = new Project;
                 $course->UID = $spreadsheetLine[0];
                 $course->Name = $spreadsheetLine[0];
