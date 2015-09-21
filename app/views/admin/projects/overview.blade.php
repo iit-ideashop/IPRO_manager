@@ -17,6 +17,7 @@
     <li><a href="{{URL::route("admin.orders",array('ipro'=>$project->id, 'status'=>'', 'semester'=>'', 'filters'=>'1'))}}">View Orders</a></li>
     <li><a href="{{URL::route("admin.accounts.editor",$project->id)}}">Account Editor</a></li>
       <li><a href="{{URL::route("project.groupmanager",$project->id)}}">Group Manager</a></li>
+      <li><a href="{{URL::route("project.printSubmission",$project->id)}}">View Poster uploads</a></li>
   </ul>
 </div>
         <div class="pull-right">Account Balance: ${{ number_format($account->Balance,2) }}</div>

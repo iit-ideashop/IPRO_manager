@@ -49,14 +49,13 @@ App::before(function($request)
                     );
                 }
             }
-            //Check for proposals link
+            //Check for proposals link, removed since proposal management has not been coded yet.
             if((Auth::user()->checkRole("ROLE_PROPOSALS")) || (Auth::user()->isAdmin)){
                 if(array_key_exists("admin", $returnArray)){
-                    array_push($returnArray["admin"], array('route'=>'proposals','text'=>'Proposal Management'));
+                    //array_push($returnArray["admin"], array('route'=>'proposals','text'=>'Proposal Management'));
                 }else{
-                    $returnArray['admin'] = array(
-                        array('route'=>'proposals','text'=>'Proposal Management')
-                    );
+                    //$returnArray['admin'] = array(
+                        //array('route'=>'proposals','text'=>'Proposal Management'));
                 }
             }
 

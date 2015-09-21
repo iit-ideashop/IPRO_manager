@@ -226,9 +226,15 @@
                 '</tr>');
             }else{
                 //Adding a new file object from other call
-                //Need to replace an object
+                var filelink = "";
+                if(textstatus == "Rejected"){
+                    filelink = '<td><i class="fa fa-trash text-danger" title="File deleted due to rejection"></i> '+filename+'</td>';
+                }else{
+                    filelink = '<td><a href="'+link+'">'+filename+'</a></td>';
+                }
+
                 $("#fileuploadstable").append('<tr id="file'+file_id+'row">' +
-                '<td><a href="'+link+'">'+filename+'</a></td>' + //filename
+                filelink + //filename
                 '<td>'+filesize+'</td>' + // filesize
                 '<td>'+dimensions+'</td>' + //dimensions
                 '<td>'+uploaded_by+'</td>' + //uploader
