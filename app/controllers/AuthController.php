@@ -4,7 +4,19 @@ use Illuminate\Support\Facades\Config;
 class AuthController extends BaseController {
 
     public function authenticate() {
-        
+        if(Config::get("app.debug") == true) {
+            Session::forget("dev_overrides");
+            if(is_array(Session::get("dev_overrides"))) {
+                Session::push("dev_override", "AUTH_OVERRIDE");
+            }else{
+                //Session array not started
+                Session::push("dev_overrides", "AUTH_OVERRIDE");
+            }
+            Auth::loginUsingId(1);
+            return Redirect::route("dashboard");
+        }
+
+
         // get data from input
         $code = Input::get('code');
 
@@ -27,16 +39,28 @@ class AuthController extends BaseController {
 
                 $user_count = User::where('Email','=',$result['email'])->count();
                 if($user_count >= 1){
+                    //User is already in our database
                 }else{
+                    //Create a new user acct
                     $user = new User;
                     $user->FirstName = $result['given_name'];
                     $user->LastName = $result['family_name'];
                     $user->Email = $result['email'];
+                    $user->google_profile_img = $result['picture'];
                     $user->modifiedBy = "SYSTEM";
                     $user->save();
                 }
                 $loggedUser = User::where('Email','=',$result['email'])->lists('id');
                 Auth::loginUsingId($loggedUser[0]);
+                //Pull the user acct
+                $user = Auth::user();
+                //Check if profile picture has changed
+                if($user->google_profile_img != $result['picture']){
+                    //Trigger an update
+                    $user->google_profile_img = $result['picture'];
+                    $user->save();
+                }
+
                 if((Session::has('routing.intended.route')) && ((Session::has('routing.intended.parameters')))){
                     //We have an intended route and parameters. Redirect to route and clear params with Session::pull
                     return Redirect::route(Session::pull('routing.intended.route'), Session::pull('routing.intended.parameters'));

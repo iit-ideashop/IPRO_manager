@@ -221,5 +221,62 @@ class ProjectController extends BaseController{
             return Response::json(array("error"=>"Action type not supported"));
         }
     }
+
+
+    //Show a digital table tent to the end user
+    public function digitalTableTent($projectID){
+        //We need to show a digital table tent for this project.
+        $project = Project::find($projectID);
+        //Grab the user objects for all the team members
+        $teamMembers = $project->Users()->get();
+        View::share("teamMembers",$teamMembers);
+
+
+        return View::make("project.digitalTableTent");
+    }
+
+    //new scrum report for digital table tent
+    public function newScrumReport($projectID){
+        //We need to show the new scrum report view for a user to be able to create a new scrum
+
+
+        return View::make("project.newScrum");
+
+    }
+
+    public function saveScrumReport($projectID){
+        //Take the newly created scrum report and save it as an object in our DB.
+        $previous  = Input::get("previously");
+        $planned = Input::get("planned");
+        $barriers = Input::get("barriers");
+
+        //Create a new scrum report
+        $scrumReport = new ProjectScrum;
+        $scrumReport->ClassID = $projectID;
+        $scrumReport->previously = $previous;
+        $scrumReport->planned = $planned;
+        $scrumReport->barriers = $barriers;
+        $scrumReport->save();
+        return Redirect::route("project.tableTent",$projectID)->with("success",array("Scrum Report Created Successfully"));
+    }
+
+    public function allScrumReports($projectID){
+        //View all the scrum reports for a given project
+        $project = Project::find($projectID);
+        $scrums = $project->ProjectScrums()->get();
+        View::share("scrums",$scrums);
+        return View::make("project.allScrumReports");
+    }
+
+    public function viewScrumReport($projectID){
+        //Grab the list of scrum reports we want to see and display them in a nice row comparison view
+        $scrumReportIDs = json_decode(Input::get("scrumIDs"));
+        //Take these scrum Ids and lets run a report to make sure that we are only displaying owned scrums
+        $scrums = ProjectScrum::WhereIn("id",$scrumReportIDs)->where("ClassID",'=',$projectID)->get();
+        View::share("scrums",$scrums);
+        return View::make('project.viewScrumReport');
+
+    }
+
 }
 

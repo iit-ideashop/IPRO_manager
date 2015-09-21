@@ -2,7 +2,7 @@
 use LaravelBook\Ardent\Ardent;
 class Project extends Ardent {
     public static $rules = array(
-        'UID' => 'required',
+        'UID' => 'required|unique:projects,UID',
         'Name'=> 'required',
         'Description' => 'required',
         'Semester' => 'required',
@@ -24,6 +24,9 @@ class Project extends Ardent {
     }
     public function Orders(){
         return $this->hasMany('Order','ClassID');
+    }
+    public function ProjectScrums(){
+        return $this->hasMany('ProjectScrum','ClassID');
     }
     public function Items(){
         return $this->hasManyThrough('Item','Order','ClassID','OrderID');
