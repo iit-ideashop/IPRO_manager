@@ -221,18 +221,5 @@ class ProjectController extends BaseController{
             return Response::json(array("error"=>"Action type not supported"));
         }
     }
-
-
-    //Show a digital table tent to the end user
-    public function digitalTableTent($projectID){
-        //We need to show a digital table tent for this project.
-        $project = Project::find($projectID);
-        //Grab the user objects for all the team members
-        $teamMembers = $project->Users()->get();
-        View::share("teamMembers",$teamMembers);
-
-
-        return View::make("project.digitalTableTent");
-    }
 }
 
