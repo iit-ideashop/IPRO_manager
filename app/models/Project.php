@@ -25,9 +25,6 @@ class Project extends Ardent {
     public function Orders(){
         return $this->hasMany('Order','ClassID');
     }
-    public function ProjectScrums(){
-        return $this->hasMany('ProjectScrum','ClassID');
-    }
     public function Items(){
         return $this->hasManyThrough('Item','Order','ClassID','OrderID');
     }

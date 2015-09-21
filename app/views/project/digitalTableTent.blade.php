@@ -1,13 +1,9 @@
 @extends('layouts.master')
 @include('layouts.dataTables')
-@include('layouts.fontawesome')
+
 @section('content')
     @include('project.projectNavigation')
-    <h1>{{ $class->Name }}
-        <div class="pull-right">
-            <button class="btn btn-primary">Raise hand</button>
-        </div>
-    </h1>
+    <h1>{{ $class->Name }}<div class="pull-right"><button class="btn btn-primary">Raise hand</button></div></h1>
     <hr>
     <div class="row">
         @foreach($teamMembers as $teamMember)

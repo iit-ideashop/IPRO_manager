@@ -21,14 +21,6 @@
                 @section('override_content_div')
                         <div class=" col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                     @show
-                    @if(Session::has('dev_overrides'))
-                        @foreach(Session::get('dev_overrides') as $oneError)
-                            <div class="alert alert-danger" role="alert">
-                                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                {{ $oneError }}</div>
-                        @endforeach
-                    @endif
-
                     @if(Session::has('error'))
                     @foreach(Session::get('error') as $oneError)
                     <div class="alert alert-danger" role="alert">
@@ -36,7 +28,6 @@
                         {{ $oneError }}</div>
                     @endforeach
                     @endif
-
                     @if(Session::has('success'))
                     @foreach(Session::get('success') as $oneSuccess)
                     <div class="alert alert-success" role="alert">
