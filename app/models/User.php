@@ -53,4 +53,19 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
                 return false;
             }
         }
+    //Create an image tag and display the profile picture
+    static public function displayProfileImage($width = 100, $height = 100){
+        $user = Auth::user();
+        $image_src = "";
+        $width = intval($width);
+        $height = intval($height);
+        if($user->profile_img == "use_google"){
+            //We use the google image
+            $image_src = $user->google_profile_img;
+        }else{
+            //We use the image in the assets folder
+            $image_src = URL::asset(Config::get("app.StorageURLs.profile_images_url").$user->profile_img);
+        }
+        return '<img src="'.$image_src.'" width="'.$width.'" height="'.$height.'">';
+    }
 }
