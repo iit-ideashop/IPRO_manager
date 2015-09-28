@@ -28,17 +28,27 @@
                                 class="active"
                             @endif
                             ><a href="{{ URL::route('project.roster',$class->id) }}">Roster</a></li>
+                    <li
+                    @if(Route::currentRouteName() == 'project.tableTent')
+                        class="active"
+                            @endif
+                            ><a href="{{ URL::route('project.tableTent',$class->id) }}">Digital Table Tent</a></li>
+
                     @if($class->Semester == $activeSemester->id)
                     <li
                     @if(Route::currentRouteName() == 'project.printSubmission')
                         class="active"
                             @endif
                             ><a href="{{ URL::route('project.printSubmission',$class->id) }}">Submit PDFs</a></li>
+
                     @endif
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{URL::route("project.order.new",$class->id)}}">New Order</a></li>
+                            <li><a href="{{URL::route("project.order.new",$class->id)}}"><i class="fa fa-plus"></i> New Order</a></li>
+                            <li><a href="{{ URL::route("project.newScrumReport",$class->id) }}"><i class="fa fa-plus"></i> New Scrum Report</a></li>
+                            <li><a  href="{{ URL::route("project.allScrumReports",$class->id) }}"><i class="fa fa-search"></i> View Scrum Reports</a></li>
+
                             <!-- <li><a href="#">New Budget Request</a></li> -->
                             @if(($class->getAccessLevel() > 1) || (Auth::user()->isAdmin))
                                 <li class="dropdown-header">Instructor Actions</li>

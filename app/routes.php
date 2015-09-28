@@ -49,6 +49,16 @@ Route::group(array('before'=>'iit_user'),function(){
         Route::post('{projectid}/printSubmission/files',array("as"=>"project.printSubmission.files","uses"=>"ProjectController@printSubmissionUpload"))->where(array('projectid' => '[0-9]+'));
         Route::get('{projectid}/printSubmission/getfiles',array("as"=>"project.printSubmission.getfiles","uses"=>"ProjectController@getProjectFiles"))->where(array('projectid' => '[0-9]+'));
         Route::post('{projectid}/printSubmission/override',array("as"=>"project.printSubmission.override","uses"=>"ProjectController@overridePrintSubmission"))->where(array('projectid' => '[0-9]+'));
+<<<<<<< HEAD
+=======
+        //Route for DigitalTableTent
+        Route::get('{projectid}/tableTent',array("as"=>"project.tableTent","uses"=>"ProjectController@digitalTableTent"))->where(array('projectid' => '[0-9]+'));
+        Route::get('{projectid}/newScrumReport', array("as"=>"project.newScrumReport", "uses"=>"ProjectController@newScrumReport"))->where(array('projectid'=> '[0-9]+'));
+        Route::post('{projectid}/newScrumReport',array("as"=>"project.newScrumReport", "uses"=>"ProjectController@saveScrumReport"))->where(array('projectid'=> '[0-9]+'));
+        Route::get('{projectid}/allScrumReports',array("as"=>"project.allScrumReports", "uses"=>"ProjectController@allScrumReports"))->where(array('projectid'=> '[0-9]+'));
+        Route::post('{projectid}/viewScrumReport',array("as"=>"project.viewScrumReport", "uses"=>"ProjectController@viewScrumReport"))->where(array('projectid'=> '[0-9]+'));
+
+>>>>>>> parent of 58a7373... Revert "Created scrum reports and all associated views for v1.0 of scrums in ipromanager"
         //Group manager routes
         Route::get('{projectid}/groupmanager', array('as'=>'project.groupmanager','before'=>'project_instructor','uses'=>'ProjectController@groupManager'))->where(array('projectid' => '[0-9]+'));
         //Protected with project_instructor

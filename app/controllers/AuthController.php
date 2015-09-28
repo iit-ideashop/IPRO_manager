@@ -4,7 +4,19 @@ use Illuminate\Support\Facades\Config;
 class AuthController extends BaseController {
 
     public function authenticate() {
-        
+        if(Config::get("app.debug") == true) {
+            Session::forget("dev_overrides");
+            if(is_array(Session::get("dev_overrides"))) {
+                Session::push("dev_override", "AUTH_OVERRIDE");
+            }else{
+                //Session array not started
+                Session::push("dev_overrides", "AUTH_OVERRIDE");
+            }
+            Auth::loginUsingId(1);
+            return Redirect::route("dashboard");
+        }
+
+
         // get data from input
         $code = Input::get('code');
 
