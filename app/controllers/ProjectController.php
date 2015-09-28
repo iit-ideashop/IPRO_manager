@@ -1,72 +1,79 @@
 <?php
 
-class ProjectController extends BaseController{
-    
-    public function Index($id){
+class ProjectController extends BaseController
+{
+
+    public function Index($id)
+    {
         $class = Project::find($id);
         //Let's get this projects account
         $account = $class->Account()->first();
-        $orders = Order::where('ClassID','=',$class->id)->get();
-        $budgets = Budget::where('AccountID','=',$account->id)->get();
+        $orders = Order::where('ClassID', '=', $class->id)->get();
+        $budgets = Budget::where('AccountID', '=', $account->id)->get();
         //Next it's budget requests
-        $budget_requests = BudgetRequest::where('AccountID','=',$account->id)->get();
-        
+        $budget_requests = BudgetRequest::where('AccountID', '=', $account->id)->get();
+
         //Pack the data
-        View::share("orders",$orders);
-        View::share("budgets",$budgets);
-        View::share("budgetRequests",$budget_requests);
+        View::share("orders", $orders);
+        View::share("budgets", $budgets);
+        View::share("budgetRequests", $budget_requests);
         return View::make('project.index');
     }
 
     //Show a page containing ipro orders
-    public function showOrders($id){
+    public function showOrders($id)
+    {
         $class = Project::find($id);
-        $orders = Order::where('ClassID','=',$class->id)->get();
-        View::share('orders',$orders);
+        $orders = Order::where('ClassID', '=', $class->id)->get();
+        View::share('orders', $orders);
         return View::make('project.orders');
 
     }
 
     //Show a page with the class roster
-    public function showRoster($id){
+    public function showRoster($id)
+    {
         $class = Project::find($id);
         $students = $class->Users()->get();
-        View::share('students',$students);
+        View::share('students', $students);
         return View::make('project.roster');
     }
 
     //Show the faculty group manager to create smaller groups for the class
-    public function groupManager($projectid){
+    public function groupManager($projectid)
+    {
         //The group manager page contains all the code required to show groups and make modifications via a simple api and ajax calls. Let's load the page and let
         //javascript handle things from this point on
         return View::make('project.groupManager');
     }
 
     //Show the print submission page for users
-    public function printSubmission($projectid){
+    public function printSubmission($projectid)
+    {
 
         return View::make("project.printSubmission");
     }
 
-    public function printSubmissionUpload($projectid){
+    public function printSubmissionUpload($projectid)
+    {
         //We already verified we are enrolled in the $projectid or we are admin.
         //We can create files with the $projectid easily.
         $fileSubmission = Input::file("fileUpload");
         $fileType = Input::get("fileType");
 
-        if(!$fileSubmission->isValid()){
+        if (!$fileSubmission->isValid()) {
             $error_array = array();
             $error_array['error'] = "Error when uploading file. File is invalid";
             return Response::json($error_array);
         }
         //Take the file and verify it is a pdf
-        if($fileSubmission->getMimeType() != "application/pdf"){
+        if ($fileSubmission->getMimeType() != "application/pdf") {
             $error_array = array();
             $error_array['error'] = "Error when uploading file. File must be a PDF";
             return Response::json($error_array);
         }
         //Next take the file and verify that it is less than 150mb
-        if ($fileSubmission->getSize() > 150000000){
+        if ($fileSubmission->getSize() > 150000000) {
             $error_array = array();
             $error_array['error'] = "Error when uploading file. File is too large";
             return Response::json($error_array);
@@ -76,25 +83,25 @@ class ProjectController extends BaseController{
         $printSubmission->UserID = Auth::id();
         $printSubmission->ProjectID = $projectid;
         $printSubmission->original_filename = $fileSubmission->getClientOriginalName();
-        $printSubmission->size = number_format($fileSubmission->getSize() / 1000000, 2)." Mb";
+        $printSubmission->size = number_format($fileSubmission->getSize() / 1000000, 2) . " Mb";
         $printSubmission->count_copies = 1;
         $printSubmission->file_type = $fileType;
         $printSubmission->override = true;
         $printSubmission->status = 1;
         $printSubmission->save();
-        $printSubmission->filename = $printSubmission->id."_".$printSubmission->file_type.".pdf";
+        $printSubmission->filename = $printSubmission->id . "_" . $printSubmission->file_type . ".pdf";
         $printSubmission->save();
         //File is ok, lets save it so we can work with it
         //Take the file and move it to our secured location (Allows only downloads by owners, admins and people in the same ipro and print admins)
-        $fileSubmission->move(Config::get("app.StorageURLs.printSubmissions"),$printSubmission->filename);
+        $fileSubmission->move(Config::get("app.StorageURLs.printSubmissions"), $printSubmission->filename);
         //Next we need to verify the pdf dimensions are the correct dimensions
-        $pdfinfo_output = shell_exec("pdfinfo ".Config::get("app.StorageURLs.printSubmissions").$printSubmission->filename);
+        $pdfinfo_output = shell_exec("pdfinfo " . Config::get("app.StorageURLs.printSubmissions") . $printSubmission->filename);
         $pdfdata = explode("\n", $pdfinfo_output); //puts it into an array
         //Take pdfinfo output and figure out the dimensions in point
         $pdfdimensions_width = 0;
         $pdfdimensions_height = 0;
-        for($c=0; $c < count($pdfdata); $c++) {
-            if(stristr($pdfdata[$c],"Page size") == true) {
+        for ($c = 0; $c < count($pdfdata); $c++) {
+            if (stristr($pdfdata[$c], "Page size") == true) {
                 $pdfdimensions = trim(substr($pdfdata[$c], strpos($pdfdata[$c], ":") + 1, strlen($pdfdata[$c])));
                 $pdfdimensions = trim(substr($pdfdimensions, 0, strpos($pdfdimensions, "p"))); // width x height
                 $pdfdimensions_width = trim(substr($pdfdimensions, 0, strpos($pdfdimensions, "x")));
@@ -103,11 +110,11 @@ class ProjectController extends BaseController{
             }
         }
         //Save the file if dimensions are ok and send student an email
-        if($printSubmission->file_type == "Poster"){
+        if ($printSubmission->file_type == "Poster") {
             //Verify poster sizes
             $posterSizeArray = Config::get("app.approved_poster_sizes");
-            for($i = 0; $i < count($posterSizeArray); $i++){
-                if(($pdfdimensions_width == $posterSizeArray[$i]["width"]) && ($pdfdimensions_height == $posterSizeArray[$i]["height"])){
+            for ($i = 0; $i < count($posterSizeArray); $i++) {
+                if (($pdfdimensions_width == $posterSizeArray[$i]["width"]) && ($pdfdimensions_height == $posterSizeArray[$i]["height"])) {
                     //We have a poster match
                     //Poster size approved!
                     $printSubmission->override = false;
@@ -115,11 +122,11 @@ class ProjectController extends BaseController{
                     $i = count($posterSizeArray);
                 }
             }
-        }elseif($printSubmission->file_type == "Brochure"){
+        } elseif ($printSubmission->file_type == "Brochure") {
             //Verify brochure sizes
             $brochureSizeArray = Config::get("app.approved_brochure_sizes");
-            for($i = 0; $i < count($brochureSizeArray); $i++){
-                if(($pdfdimensions_width == $brochureSizeArray[$i]["width"]) && ($pdfdimensions_height == $brochureSizeArray[$i]["height"])){
+            for ($i = 0; $i < count($brochureSizeArray); $i++) {
+                if (($pdfdimensions_width == $brochureSizeArray[$i]["width"]) && ($pdfdimensions_height == $brochureSizeArray[$i]["height"])) {
                     //Approved size
                     $printSubmission->override = false;
                     $printSubmission->status = 2;
@@ -129,28 +136,28 @@ class ProjectController extends BaseController{
         }
         $printSubmission->save();
         //Send the email or schedule an email to be dispatched
-        if(!$printSubmission->override){
+        if (!$printSubmission->override) {
             //We will send an email if the file is ok.
             //We need to give it a $person object and a $filesubmission object
             $user = Auth::user();
-            Mail::send('emails.printing.received', array('person'=>$user,'fileSubmission'=>$printSubmission), function($message) use($user, $printSubmission){
-                $message->to($user->Email,$user->FirstName.' '.$user->LastName);
-                $message->subject('Your '.$printSubmission->file_type.':'.$printSubmission->original_filename.' has been received!');
+            Mail::send('emails.printing.received', array('person' => $user, 'fileSubmission' => $printSubmission), function ($message) use ($user, $printSubmission) {
+                $message->to($user->Email, $user->FirstName . ' ' . $user->LastName);
+                $message->subject('Your ' . $printSubmission->file_type . ':' . $printSubmission->original_filename . ' has been received!');
             });
         }
 
         //Take the file and return the filename or rather the file object
         $fileobject = array();
         $fileobject['filename'] = $printSubmission->original_filename;
-        $fileobject['link'] = URL::route('printing.downloadfile',$printSubmission->id); // needs to be finished
+        $fileobject['link'] = URL::route('printing.downloadfile', $printSubmission->id); // needs to be finished
         $fileobject['filesize'] = $printSubmission->size; // Filesize in megabytes, up to two decimal places
         $fileobject['dimensions'] = $printSubmission->dimensions;//file dimensions in inches
         $fileobject['uploaded_by'] = User::getFullNameWithId(Auth::id()); //Full name of person who uploaded the file
-        $date_created = date('m/d/Y g:i a',$printSubmission->created_at->timestamp);
+        $date_created = date('m/d/Y g:i a', $printSubmission->created_at->timestamp);
         $fileobject['upload_time'] = $date_created;//Timestamp the file was uploaded during
-        if($printSubmission->status == 1){
+        if ($printSubmission->status == 1) {
             $fileobject['needs_override'] = true;
-        }else{
+        } else {
             $fileobject['needs_override'] = false;
         }
 
@@ -159,25 +166,26 @@ class ProjectController extends BaseController{
         return Response::json($fileobject);
     }
 
-    public function getProjectFiles($projectid){
+    public function getProjectFiles($projectid)
+    {
         //We already know the student has access to this project via filters
-        $files = PrintSubmission::where("ProjectID","=",$projectid)->get();
+        $files = PrintSubmission::where("ProjectID", "=", $projectid)->get();
         //We need to return file objects
         $fileobjectarray = array();
-        foreach($files as $file){
+        foreach ($files as $file) {
             $tmpFileObject = array();
             $tmpFileObject['filename'] = $file->original_filename;
-            $tmpFileObject['link'] = URL::route('printing.downloadfile',$file->id);
+            $tmpFileObject['link'] = URL::route('printing.downloadfile', $file->id);
             $tmpFileObject['filesize'] = $file->size;
             $tmpFileObject['dimensions'] = $file->dimensions;
             $tmpFileObject['uploaded_by'] = User::getFullNameWithId($file->UserID);
-            $date_created = date('m/d/Y g:i a',$file->created_at->timestamp);
+            $date_created = date('m/d/Y g:i a', $file->created_at->timestamp);
             $tmpFileObject['upload_time'] = $date_created;//Timestamp the file was uploaded during
-            if($file->status == 1){
+            if ($file->status == 1) {
                 $tmpFileObject['needs_override'] = true;
-            }else{
+            } else {
                 $tmpFileObject['needs_override'] = false;
-        }
+            }
             $tmpFileObject['fileid'] = $file->id;
             $tmpFileObject['textstatus'] = $file->getStatus();
             array_push($fileobjectarray, $tmpFileObject);
@@ -185,64 +193,62 @@ class ProjectController extends BaseController{
         return Response::json($fileobjectarray);
     }
 
-    public function overridePrintSubmission($projectid){
+    public function overridePrintSubmission($projectid)
+    {
         //This function will override a print submission and either approve the submission or will delete the file based on user needs.
         //Already verified user is enrolled in $projectid
         $fileid = Input::get("fileid");
         //Pull the file from the DB
-        $printSubmission = PrintSubmission::where("id","=",intval($fileid))->first();
-        if($printSubmission == null){
-            return Response::json(array("error"=>"Could not locate file in database"));
+        $printSubmission = PrintSubmission::where("id", "=", intval($fileid))->first();
+        if ($printSubmission == null) {
+            return Response::json(array("error" => "Could not locate file in database"));
         }
-        if($printSubmission->ProjectID != $projectid){
-            return Response::json(array("error"=>"You do not own this upload. Access Denied!"));
+        if ($printSubmission->ProjectID != $projectid) {
+            return Response::json(array("error" => "You do not own this upload. Access Denied!"));
         }
         //File exists, make sure we are waiting for user input
-        if($printSubmission->status != 1){
-            return Response::json(array("error"=>"File already submitted for print"));
+        if ($printSubmission->status != 1) {
+            return Response::json(array("error" => "File already submitted for print"));
         }
         $action = Input::get("action");
         //Depending on the action we will do different things to $fileid
-        if($action == "Approve"){
+        if ($action == "Approve") {
             $printSubmission->status = 2;
             $printSubmission->save();
-            $user = User::where("id","=",$printSubmission->UserID)->first();
-            Mail::send('emails.printing.received', array('person'=>$user,'fileSubmission'=>$printSubmission), function($message) use($user, $printSubmission){
-                $message->to($user->Email,$user->FirstName.' '.$user->LastName);
-                $message->subject('Your '.$printSubmission->file_type.':'.$printSubmission->original_filename.' has been received!');
+            $user = User::where("id", "=", $printSubmission->UserID)->first();
+            Mail::send('emails.printing.received', array('person' => $user, 'fileSubmission' => $printSubmission), function ($message) use ($user, $printSubmission) {
+                $message->to($user->Email, $user->FirstName . ' ' . $user->LastName);
+                $message->subject('Your ' . $printSubmission->file_type . ':' . $printSubmission->original_filename . ' has been received!');
             });
-            return Response::json(array("success"=>"true","newstatus"=>$printSubmission->getStatus(),"action"=>"Approve"));
-        }elseif($action == "Delete"){
-            unlink(Config::get("app.StorageURLs.printSubmissions").$printSubmission->filename);
+            return Response::json(array("success" => "true", "newstatus" => $printSubmission->getStatus(), "action" => "Approve"));
+        } elseif ($action == "Delete") {
+            unlink(Config::get("app.StorageURLs.printSubmissions") . $printSubmission->filename);
             $printSubmission->delete();
-            return Response::json(array("success"=>"true","action"=>"Delete"));
-        }else{
+            return Response::json(array("success" => "true", "action" => "Delete"));
+        } else {
             //Not a supported action
-            return Response::json(array("error"=>"Action type not supported"));
+            return Response::json(array("error" => "Action type not supported"));
         }
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> parent of 3cf0555... Revert "Added code for digital table tent into routes and views. Code is not yet live in nav."
 
 
     //Show a digital table tent to the end user
-    public function digitalTableTent($projectID){
+    public function digitalTableTent($projectID)
+    {
         //We need to show a digital table tent for this project.
         $project = Project::find($projectID);
         //Grab the user objects for all the team members
         $teamMembers = $project->Users()->get();
-        View::share("teamMembers",$teamMembers);
+        View::share("teamMembers", $teamMembers);
 
 
         return View::make("project.digitalTableTent");
     }
-<<<<<<< HEAD
+
 
     //new scrum report for digital table tent
-    public function newScrumReport($projectID){
+    public function newScrumReport($projectID)
+    {
         //We need to show the new scrum report view for a user to be able to create a new scrum
 
 
@@ -250,9 +256,10 @@ class ProjectController extends BaseController{
 
     }
 
-    public function saveScrumReport($projectID){
+    public function saveScrumReport($projectID)
+    {
         //Take the newly created scrum report and save it as an object in our DB.
-        $previous  = Input::get("previously");
+        $previous = Input::get("previously");
         $planned = Input::get("planned");
         $barriers = Input::get("barriers");
 
@@ -263,29 +270,28 @@ class ProjectController extends BaseController{
         $scrumReport->planned = $planned;
         $scrumReport->barriers = $barriers;
         $scrumReport->save();
-        return Redirect::route("project.tableTent",$projectID)->with("success",array("Scrum Report Created Successfully"));
+        return Redirect::route("project.tableTent", $projectID)->with("success", array("Scrum Report Created Successfully"));
     }
 
-    public function allScrumReports($projectID){
+    public function allScrumReports($projectID)
+    {
         //View all the scrum reports for a given project
         $project = Project::find($projectID);
         $scrums = $project->ProjectScrums()->get();
-        View::share("scrums",$scrums);
+        View::share("scrums", $scrums);
         return View::make("project.allScrumReports");
     }
 
-    public function viewScrumReport($projectID){
+    public function viewScrumReport($projectID)
+    {
         //Grab the list of scrum reports we want to see and display them in a nice row comparison view
         $scrumReportIDs = json_decode(Input::get("scrumIDs"));
         //Take these scrum Ids and lets run a report to make sure that we are only displaying owned scrums
-        $scrums = ProjectScrum::WhereIn("id",$scrumReportIDs)->where("ClassID",'=',$projectID)->get();
-        View::share("scrums",$scrums);
+        $scrums = ProjectScrum::WhereIn("id", $scrumReportIDs)->where("ClassID", '=', $projectID)->get();
+        View::share("scrums", $scrums);
         return View::make('project.viewScrumReport');
 
     }
-
->>>>>>> parent of 58a7373... Revert "Created scrum reports and all associated views for v1.0 of scrums in ipromanager"
-=======
->>>>>>> parent of 3cf0555... Revert "Added code for digital table tent into routes and views. Code is not yet live in nav."
 }
+
 
