@@ -222,7 +222,10 @@ class ProjectController extends BaseController{
         }
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 3cf0555... Revert "Added code for digital table tent into routes and views. Code is not yet live in nav."
 
 
     //Show a digital table tent to the end user
@@ -236,6 +239,7 @@ class ProjectController extends BaseController{
 
         return View::make("project.digitalTableTent");
     }
+<<<<<<< HEAD
 
     //new scrum report for digital table tent
     public function newScrumReport($projectID){
@@ -281,5 +285,7 @@ class ProjectController extends BaseController{
     }
 
 >>>>>>> parent of 58a7373... Revert "Created scrum reports and all associated views for v1.0 of scrums in ipromanager"
+=======
+>>>>>>> parent of 3cf0555... Revert "Added code for digital table tent into routes and views. Code is not yet live in nav."
 }
 
