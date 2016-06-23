@@ -6,10 +6,10 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    $vendorDir . '/ircmaxell/password-compat/lib/password.php',
-    $vendorDir . '/guzzlehttp/streams/src/functions.php',
-    $vendorDir . '/phpseclib/phpseclib/phpseclib/Crypt/Random.php',
-    $vendorDir . '/swiftmailer/swiftmailer/lib/swift_required.php',
-    $vendorDir . '/guzzlehttp/guzzle/src/functions.php',
-    $vendorDir . '/laravel/framework/src/Illuminate/Support/helpers.php',
+    'e40631d46120a9c38ea139981f8dab26' => $vendorDir . '/ircmaxell/password-compat/lib/password.php',
+    '2c102faa651ef8ea5874edb585946bce' => $vendorDir . '/swiftmailer/swiftmailer/lib/swift_required.php',
+    'fad373d645dd668e85d44ccf3c38fbd6' => $vendorDir . '/guzzlehttp/streams/src/functions.php',
+    '3919eeb97e98d4648304477f8ef734ba' => $vendorDir . '/phpseclib/phpseclib/phpseclib/Crypt/Random.php',
+    '154e0d165f5fe76e8e9695179d0a7345' => $vendorDir . '/guzzlehttp/guzzle/src/functions.php',
+    '58571171fd5812e6e447dce228f52f4d' => $vendorDir . '/laravel/framework/src/Illuminate/Support/helpers.php',
 );

@@ -62,12 +62,11 @@ return array(
 	|--------------------------------------------------------------------------
 	|
 	| Here you may specify the encryption protocol that should be used when
-	| the application send e-mail messages. A sensible default using the
-	| transport layer security protocol should provide great security.
+	| the application send e-mail messages.
 	|
 	*/
 
-	'encryption' => 'tls',
+	'encryption' => $_ENV['MAIL_ENCRYPTION'],
 
 	/*
 	|--------------------------------------------------------------------------
