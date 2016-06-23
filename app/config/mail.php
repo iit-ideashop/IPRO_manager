@@ -67,7 +67,7 @@ return array(
 	|
 	*/
 
-	'encryption' => 'tls',
+	'encryption' => $_ENV['MAIL_ENCRYPTION'],
 
 	/*
 	|--------------------------------------------------------------------------

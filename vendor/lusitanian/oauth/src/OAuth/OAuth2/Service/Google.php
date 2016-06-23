@@ -2,6 +2,10 @@
 
 namespace OAuth\OAuth2\Service;
 
+use OAuth\Common\Consumer\CredentialsInterface;
+use OAuth\Common\Http\Client\ClientInterface;
+use OAuth\Common\Http\Uri\UriInterface;
+use OAuth\Common\Storage\TokenStorageInterface;
 use OAuth\OAuth2\Token\StdOAuth2Token;
 use OAuth\Common\Http\Exception\TokenResponseException;
 use OAuth\OAuth2\Service\Exception\InvalidAccessTypeException;
@@ -45,7 +49,7 @@ class Google extends AbstractService
 
     // Adwords
     const SCOPE_ADSENSE                     = 'https://www.googleapis.com/auth/adsense';
-    const SCOPE_ADWORDS                     = 'https://adwords.google.com/api/adwords/';
+    const SCOPE_ADWORDS                     = 'https://www.googleapis.com/auth/adwords/';
     const SCOPE_GAN                         = 'https://www.googleapis.com/auth/gan'; // google affiliate network...?
 
     // Google Analytics
@@ -53,6 +57,15 @@ class Google extends AbstractService
     const SCOPE_ANALYTICS_EDIT              = 'https://www.googleapis.com/auth/analytics.edit';
     const SCOPE_ANALYTICS_MANAGE_USERS      = 'https://www.googleapis.com/auth/analytics.manage.users';
     const SCOPE_ANALYTICS_READ_ONLY         = 'https://www.googleapis.com/auth/analytics.readonly';
+
+    //Gmail
+    const SCOPE_GMAIL_MODIFY                = 'https://www.googleapis.com/auth/gmail.modify';
+    const SCOPE_GMAIL_READONLY              = 'https://www.googleapis.com/auth/gmail.readonly';
+    const SCOPE_GMAIL_COMPOSE               = 'https://www.googleapis.com/auth/gmail.compose';
+    const SCOPE_GMAIL_SEND                  = 'https://www.googleapis.com/auth/gmail.send';
+    const SCOPE_GMAIL_INSERT                = 'https://www.googleapis.com/auth/gmail.insert';
+    const SCOPE_GMAIL_LABELS                = 'https://www.googleapis.com/auth/gmail.labels';
+    const SCOPE_GMAIL_FULL                  = 'https://mail.google.com/';
 
     // Other services
     const SCOPE_BOOKS                       = 'https://www.googleapis.com/auth/books';
@@ -101,6 +114,19 @@ class Google extends AbstractService
 
     protected $accessType = 'online';
 
+    public function __construct(
+        CredentialsInterface $credentials,
+        ClientInterface $httpClient,
+        TokenStorageInterface $storage,
+        $scopes = array(),
+        UriInterface $baseApiUri = null
+    ) {
+        parent::__construct($credentials, $httpClient, $storage, $scopes, $baseApiUri, true);
+
+        if (null === $baseApiUri) {
+            $this->baseApiUri = new Uri('https://www.googleapis.com/oauth2/v1/');
+        }
+    }
 
     public function setAccessType($accessType)
     {
