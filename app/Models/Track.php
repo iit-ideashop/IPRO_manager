@@ -1,5 +1,5 @@
 <?php
-use LaravelBook\Ardent\Ardent;
+use LaravelArdent\Ardent\Ardent;
 class Track extends Ardent {
     
     public function IPRODay(){

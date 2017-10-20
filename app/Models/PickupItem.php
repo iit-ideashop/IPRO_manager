@@ -1,5 +1,5 @@
 <?php
-use LaravelBook\Ardent\Ardent;
+use LaravelArdent\Ardent\Ardent;
 class PickupItem extends Ardent {
     protected $table = 'pickupItems';
     public function Pickup(){

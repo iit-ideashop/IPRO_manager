@@ -1,5 +1,5 @@
 <?php
-use LaravelBook\Ardent\Ardent;
+use LaravelArdent\Ardent\Ardent;
 class OrderNote extends Ardent {
     protected $table = 'orderNotes';
     public function Order(){

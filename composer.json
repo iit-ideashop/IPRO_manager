@@ -6,12 +6,12 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
-        "artdarek/oauth-4-laravel": "dev-master",
+        "oriceon/oauth-5-laravel": "dev-master",
         "fideloper/proxy": "~3.3",
         "guzzlehttp/guzzle": "~4.0",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
-        "laravelbook/ardent": "^3.4",
+        "laravelbook/ardent": "3.*",
         "lusitanian/oauth": "dev-master",
         "phpoffice/phpexcel": "1.8.0",
         "twitter/bootstrap": "dev-master"

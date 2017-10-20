@@ -1,5 +1,5 @@
 <?php
-use LaravelBook\Ardent\Ardent;
+use LaravelArdent\Ardent\Ardent;
 class Project extends Ardent {
     public static $rules = array(
         'UID' => 'required',

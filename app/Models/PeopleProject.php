@@ -1,5 +1,5 @@
 <?php
-use LaravelBook\Ardent\Ardent;
+use LaravelArdent\Ardent\Ardent;
 class PeopleProject extends Ardent {
     protected $table = "PeopleProjects";
 

@@ -1,5 +1,5 @@
 <?php
-use LaravelBook\Ardent\Ardent;
+use LaravelArdent\Ardent\Ardent;
 class Registration extends Ardent {
     protected $table = 'registration';
     public static $rules = array(

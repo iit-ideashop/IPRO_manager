@@ -1,5 +1,5 @@
 <?php
-use LaravelBook\Ardent\Ardent;
+use LaravelArdent\Ardent\Ardent;
 class DistributionList extends Ardent {
     protected $table = 'distribution_lists';
     public static $rules = array(

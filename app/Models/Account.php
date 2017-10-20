@@ -1,5 +1,5 @@
 <?php
-use LaravelBook\Ardent\Ardent;
+use LaravelArdent\Ardent\Ardent;
 class Account extends Ardent {
     public static $rules = array(
         'ClassID' => 'required'

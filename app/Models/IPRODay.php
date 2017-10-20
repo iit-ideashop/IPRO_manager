@@ -1,5 +1,5 @@
 <?php
-use LaravelBook\Ardent\Ardent;
+use LaravelArdent\Ardent\Ardent;
 class IPRODay extends Ardent {
     protected $table = 'iproday';
     public function Registrations(){

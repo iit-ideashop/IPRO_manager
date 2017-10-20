@@ -1,12 +1,13 @@
 <?php
 use Illuminate\Support\Facades\Config;
+use Illuminate\Http\Request;
 
 class AuthController extends BaseController {
 
-    public function authenticate() {
+    public function authenticate(Request $request) {
         
         // get data from input
-        $code = Input::get('code');
+        $code = $request->input('code');
 
         // get google service
         $googleService = OAuth::consumer('Google');
@@ -35,7 +36,7 @@ class AuthController extends BaseController {
                     $user->modifiedBy = "SYSTEM";
                     $user->save();
                 }
-                $loggedUser = User::where('Email','=',$result['email'])->lists('id');
+                $loggedUser = User::where('Email','=',$result['email'])->pluck('id');
                 Auth::loginUsingId($loggedUser[0]);
                 if((Session::has('routing.intended.route')) && ((Session::has('routing.intended.parameters')))){
                     //We have an intended route and parameters. Redirect to route and clear params with Session::pull

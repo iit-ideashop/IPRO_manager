@@ -34,7 +34,7 @@ class RouteServiceProvider extends ServiceProvider
 	| application. Here you may also register your custom route filters.
 	|
 	*/
-
+/*
 	App::before(function($request)
 	{
 	    //In the before we have to run the functions required to generate the navigation bar and the
@@ -88,7 +88,6 @@ class RouteServiceProvider extends ServiceProvider
 		}else{
 		}
 	});
-
 	Route::filter('auth_admin', function(){
 	    if(Auth::check()){
 		//User is logged in
@@ -186,6 +185,7 @@ class RouteServiceProvider extends ServiceProvider
 		}
 	    }
 	});
+*/
         parent::boot();
     }
 

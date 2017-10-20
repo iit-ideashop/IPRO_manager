@@ -1,5 +1,5 @@
 <?php
-use LaravelBook\Ardent\Ardent;
+use LaravelArdent\Ardent\Ardent;
 class Item extends Ardent {
     public static $rules = array(
         'Name' => array('required'),

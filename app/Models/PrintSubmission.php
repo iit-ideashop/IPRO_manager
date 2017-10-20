@@ -1,5 +1,5 @@
 <?php
-use LaravelBook\Ardent\Ardent;
+use LaravelArdent\Ardent\Ardent;
 class PrintSubmission extends Ardent {
     protected $table = 'printSubmissions';
     public function getStatus()

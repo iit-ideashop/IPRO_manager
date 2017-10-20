@@ -1,5 +1,5 @@
 <?php
-use LaravelBook\Ardent\Ardent;
+use LaravelArdent\Ardent\Ardent;
 class Pickup extends Ardent {
     public function User(){
         return $this->belongsTo("User","PersonID");

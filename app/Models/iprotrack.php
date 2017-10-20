@@ -1,5 +1,5 @@
 <?php
-use LaravelBook\Ardent\Ardent;
+use LaravelArdent\Ardent\Ardent;
 class iprotrack extends Ardent {
     protected $table = 'iprotracks';
     
