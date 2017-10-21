@@ -34,60 +34,7 @@ class RouteServiceProvider extends ServiceProvider
 	| application. Here you may also register your custom route filters.
 	|
 	*/
-/*
-	App::before(function($request)
-	{
-	    //In the before we have to run the functions required to generate the navigation bar and the
-	    //sidebar data
-		if(Auth::check()){
-			//Pull the active Semester
-		    $activeSemester = Semester::where("Active","=","1")->first();
-		    View::share("activeSemester", $activeSemester);
-			//This returns a listing of projects
-		    $projects = PeopleProject::where('UserID','=',Auth::id())->lists('ClassID');
-		    //Setup the returns 
-		    $returnArray = array();
-		    $user = Auth::user();
-		    View::share('user', $user);
-		    $returnArray['classes'] = array();
-		    if(sizeof($projects) > 0){
-			//Get the classes the user is enrolled in
-			$classes = Project::whereIn('id',$projects)->get();
-			$returnArray['classes'] = $classes;
-		    }
-		    if(Auth::user()->isAdmin){
-			$returnArray['admin'] = array(
-			    array('route'=>'admin_budgets','text'=>'Budget Requests'),
-			    array('route'=>'admin.orders','text'=>'Orders'),
-			    array('route'=>'admin.projects','text'=>'Project Management'),
-			    array('route'=>'admin.iproday', 'text'=>'IPRO Day Management'),
-			);
-		    }
-		    //Check for printshop link
-		    if((Auth::user()->checkRole("ROLE_PRINTING")) || (Auth::user()->isAdmin)){
-			if(array_key_exists("admin", $returnArray)){
-			    array_push($returnArray["admin"], array('route'=>'printing','text'=>'Printing Management'));
-			}else{
-			    $returnArray['admin'] = array(
-				array('route'=>'printing','text'=>'Printing Management')
-			    );
-			}
-		    }
-		    //Check for proposals link, removed since proposal management has not been coded yet.
-		    if((Auth::user()->checkRole("ROLE_PROPOSALS")) || (Auth::user()->isAdmin)){
-			if(array_key_exists("admin", $returnArray)){
-			    //array_push($returnArray["admin"], array('route'=>'proposals','text'=>'Proposal Management'));
-			}else{
-			    //$returnArray['admin'] = array(
-				//array('route'=>'proposals','text'=>'Proposal Management'));
-			}
-		    }
-
-
-		    View::share('navigation',$returnArray);
-		}else{
-		}
-	});
+    /*
 	Route::filter('auth_admin', function(){
 	    if(Auth::check()){
 		//User is logged in
