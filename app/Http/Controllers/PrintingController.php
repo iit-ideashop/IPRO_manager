@@ -203,13 +203,11 @@ class PrintingController extends BaseController{
             $authValidated = true;
         }
         if($authValidated) {
-            $file = Config::get("app.StorageURLs.printSubmissions") . $printSubmission->filename;  // <- Replace with the path to your .pdf file
-            if (file_exists($file)) {
-                // read the file into a string
-                $content = file_get_contents($file);
-                // create a Laravel Response using the content string, an http response code of 200(OK),
+            $filename = Config::get("app.StorageURLs.printSubmissions") . $printSubmission->filename;  // <- Replace with the path to your .pdf file
+            if (file_exists($filename)) {
+                // create a Laravel Response with the file and the correct mimetype,
                 //  and an array of html headers including the pdf content type
-                return Response::make($content, 200, array('content-type' => 'application/pdf'));
+                return Response::file($filename, array('content-type' => 'application/pdf'));
             } else {
                 return Response::make("You do not have access to view this file");
             }
