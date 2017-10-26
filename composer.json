@@ -14,7 +14,8 @@
         "laravelbook/ardent": "3.*",
         "lusitanian/oauth": "dev-master",
         "phpoffice/phpexcel": "1.8.0",
-        "twitter/bootstrap": "dev-master"
+        "twitter/bootstrap": "dev-master",
+        "laravelcollective/html": "5.*"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

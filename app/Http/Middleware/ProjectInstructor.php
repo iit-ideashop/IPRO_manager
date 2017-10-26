@@ -18,7 +18,7 @@ class ProjectInstructor
          */
         public function handle($request, Closure $next)
         {
-                $project_id = $request->route()->getParameter("projectid");
+                $project_id = $request->route("projectid");
                 $project = Project::find($project_id);
                 if($project == null){
                         return Redirect::route('dashboard')->with("error",array("The specified project does not exist"));

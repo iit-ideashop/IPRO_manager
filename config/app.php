@@ -208,6 +208,7 @@ return [
         'File' => Illuminate\Support\Facades\File::class,
         'Gate' => Illuminate\Support\Facades\Gate::class,
         'Hash' => Illuminate\Support\Facades\Hash::class,
+        'Input' => Illuminate\Support\Facades\Input::class,
         'Lang' => Illuminate\Support\Facades\Lang::class,
         'Log' => Illuminate\Support\Facades\Log::class,
         'Mail' => Illuminate\Support\Facades\Mail::class,
@@ -228,8 +229,8 @@ return [
 	
         /* Begin 3rd party package deps */
         'OAuth'     => Artdarek\OAuth\Facade\OAuth::class,
-        'DNS1D' => 'Dinesh\Barcode\Facades\DNS1DFacade',
-        'DNS2D' => 'Dinesh\Barcode\Facades\DNS2DFacade',
+        'DNS1D' => Dinesh\Barcode\Facades\DNS1DFacade::class,
+        'DNS2D' => Dinesh\Barcode\Facades\DNS2DFacade::class,
 
     ],
 /*
@@ -247,7 +248,8 @@ return [
         'kentlaw.iit.edu',
         'stuart.iit.edu',
         'vandercook.edu',
-        'shimer.edu'
+        'shimer.edu',
+        'ideashop.iit.edu'
     ),
 
     'StorageURLs' => array(
