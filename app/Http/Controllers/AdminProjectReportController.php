@@ -28,7 +28,7 @@ class AdminProjectReportController extends BaseController{
             //find project enrollment
             $project->enrollment = PeopleProject::where("ClassID","=",$project->id)->where("AccessType","=",1)->count();
             //Accounting data
-            $accountid = Account::where("ClassID","=",$project->id)->lists("id");
+            $accountid = Account::where("ClassID","=",$project->id)->pluck("id");
             $accountid = $accountid[0];
             //Pull budgets allocated for money allocated data
             $budgets = Budget::where("AccountID","=",$accountid)->get();

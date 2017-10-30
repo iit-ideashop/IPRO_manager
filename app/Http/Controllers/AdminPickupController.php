@@ -40,12 +40,12 @@ class AdminPickupController extends BaseController{
         View::share('student',$student);
         //Ok we have a user object, now to find the user's orders
         //Start by pulling the ID's of the orders the user owns
-        $ownedorders = Order::where('PeopleID','=',$student->id)->lists('id');
+        $ownedorders = Order::where('PeopleID','=',$student->id)->pluck('id');
         //Next we have to pull the orders which the user is a 3rd party pickup for
-        $allowedPickup = ApprovedPickup::where('PersonID','=',$student->id)->lists('OrderID');
+        $allowedPickup = ApprovedPickup::where('PersonID','=',$student->id)->pluck('OrderID');
         $allpickupIDs = array_unique(array_merge($ownedorders,$allowedPickup), SORT_REGULAR);
         //Pull only orders that are in status 3 "Ready for pickup", get their id's so we can find items
-        $orderIDs = Order::whereIn('id',$allpickupIDs)->where('Status','=','3')->lists('id');
+        $orderIDs = Order::whereIn('id',$allpickupIDs)->where('Status','=','3')->pluck('id');
         //Pull items avaliable for pickup
         $items = Item::whereIn('OrderID',$orderIDs)->where('Status','=','4')->where('barcode','!=','null')->get();
         View::share('items',$items);
@@ -63,14 +63,14 @@ class AdminPickupController extends BaseController{
         }
         $student = User::find($studentid);
         //take the items we just received and pull the items the user can get from the database and verify the intersections.
-        $ownedorders = Order::where('PeopleID', '=', $student->id)->lists('id');
+        $ownedorders = Order::where('PeopleID', '=', $student->id)->pluck('id');
         //Next we have to pull the orders which the user is a 3rd party pickup for
-        $allowedPickup = ApprovedPickup::where('PersonID', '=', $student->id)->lists('OrderID');
+        $allowedPickup = ApprovedPickup::where('PersonID', '=', $student->id)->pluck('OrderID');
         $allpickupIDs = array_unique(array_merge($ownedorders, $allowedPickup), SORT_REGULAR);
         //Pull only orders that are in status 3 "Ready for pickup", get their id's so we can find items
-        $orderIDs = Order::whereIn('id', $allpickupIDs)->where('Status', '=', '3')->lists('id');
+        $orderIDs = Order::whereIn('id', $allpickupIDs)->where('Status', '=', '3')->pluck('id');
         //Pull items avaliable for pickup
-        $items = Item::whereIn('OrderID', $orderIDs)->where('Status', '=', '4')->where('barcode', '!=', 'null')->lists('id');
+        $items = Item::whereIn('OrderID', $orderIDs)->where('Status', '=', '4')->where('barcode', '!=', 'null')->pluck('id');
         foreach ($itemIDs as $itemid) {
             //Check for an intersection
             if (!in_array($itemid, $items)) {
@@ -132,7 +132,7 @@ class AdminPickupController extends BaseController{
             return Redirect::route('admin.order.pickup')->with('error', array('The Specified pickup could not be found'));
         }
         //Lets take the pickup and find the pickup's items.
-        $pickupItems = $pickup->PickupItems()->lists("ItemID");
+        $pickupItems = $pickup->PickupItems()->pluck("ItemID");
         //Grab the items for each pickupItem
         $items = Item::WhereIn("id",$pickupItems)->get();
         //Now let's share this data with the page and show the 4 digit code so we can proceed with the pickup
@@ -154,7 +154,7 @@ class AdminPickupController extends BaseController{
         }
         //If this is confirmed then we have a sig and we can show the confirm pickup page. Lets grab all the data we need
         $student = $pickup->User()->first();
-        $pickupitems = $pickup->PickupItems()->lists("ItemID");
+        $pickupitems = $pickup->PickupItems()->pluck("ItemID");
         $items = Item::WhereIn("id",$pickupitems)->get();
         View::share("pickup",$pickup);
         View::share("student",$student);
@@ -174,7 +174,7 @@ class AdminPickupController extends BaseController{
         $pickup->OverrideReason = $overrideReason;
         $pickup->save();
         $student = $pickup->User()->first();
-        $pickupitems = $pickup->PickupItems()->lists("ItemID");
+        $pickupitems = $pickup->PickupItems()->pluck("ItemID");
         $items = Item::WhereIn("id",$pickupitems)->get();
         View::share("pickup",$pickup);
         View::share("student",$student);
@@ -207,7 +207,7 @@ class AdminPickupController extends BaseController{
         //save pickup
         $pickup->save();
         //Get pickup items
-        $pickupitems = $pickup->PickupItems()->lists("ItemID");
+        $pickupitems = $pickup->PickupItems()->pluck("ItemID");
         //Get the real items.
         $student = $pickup->User()->first();
         $items = Item::WhereIn("id",$pickupitems)->get();

@@ -45,19 +45,19 @@ class housekeeping extends Command {
         //Start by pulling semester
 		$semester = Semester::where('active','=',true)->first();//Pull the last active semester
 		//Pull the projects so we are only looking at orders for those projects
-		$project_ids = $semester->Projects()->lists('id');
+		$project_ids = $semester->Projects()->pluck('id');
 		//$projects is an array of projects with ID in the current semester
 
         //This will only run at hour 8,16
         if (($hour == 8)||($hour == 16)){
             $this->info('Processing Prototyping lab orders');
             //Check for items that belong to Proto lab tag
-            $order_ids = Order::whereIn('ClassID', $project_ids)->lists('id');
+            $order_ids = Order::whereIn('ClassID', $project_ids)->pluck('id');
             $items = Item::whereIn('OrderID', $order_ids)->where('status', '=', '7')->get();
             if (!$items->isEmpty()) {
                 //We need to notify the protolab_requires_order distribution list of an open order
                 //Grab people we need to notify
-                $protolab_users = DistributionList::where("distributionList", "=", "protolab_requires_order")->lists("UserID");
+                $protolab_users = DistributionList::where("distributionList", "=", "protolab_requires_order")->pluck("UserID");
                 $protolab_users_obj = User::whereIn("id", $protolab_users)->get(); //User objects of anyone on the protolab distribution list
                 Mail::send('emails.prototypingLab.protolab_requires_order', array('items' => $items), function ($message) use ($protolab_users_obj) {
                     foreach ($protolab_users_obj as $protolab_user) {
@@ -74,7 +74,7 @@ class housekeeping extends Command {
             $printSubmissions = PrintSubmission::where("status","=",3)->whereIn("ProjectID",$project_ids)->get();
             if(!$printSubmissions->isEmpty()){
                 //We have print submissions waiting for print
-                $printAdmins = DistributionList::where("distributionList", "=", "printing_awaitingPrintQueue")->lists("UserID");
+                $printAdmins = DistributionList::where("distributionList", "=", "printing_awaitingPrintQueue")->pluck("UserID");
                 $printAdminsObj =  User::whereIn("id", $printAdmins)->get();
                 Mail::send('emails.printing.printingAwaitingPrintQueue', array('files' => $printSubmissions), function ($message) use ($printAdminsObj) {
                     foreach ($printAdminsObj as $printAdminObj) {

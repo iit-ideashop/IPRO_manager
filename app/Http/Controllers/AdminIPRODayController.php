@@ -55,7 +55,7 @@ class AdminIPRODayController extends BaseController{
         $votes = PeoplesChoice::where("Semester","=",$activeSemester->id)->latest()->limit(20)->get();
         View::share("votes",$votes);
         //Get all the projects and return them to the page as data for the autocomplete
-        $projectIDs = PeoplesChoiceTracks::where("Semester","=",$activeSemester->id)->lists("ProjectID");
+        $projectIDs = PeoplesChoiceTracks::where("Semester","=",$activeSemester->id)->pluck("ProjectID");
         $projects = Project::whereIn("id",$projectIDs)->get();
         //Return the projects to the page
         View::share("projects",$projects);
@@ -88,7 +88,7 @@ class AdminIPRODayController extends BaseController{
         $users = PeoplesChoice::where("id","=",$idnumber)->orWhere("FirstName","LIKE","%".$firstName."%")->orWhere("LastName","LIKE","%".$lastName."%")->get();
         View::share("userDuplicateCheck",$users);
         //Next let's also pull down the roster for the class
-        $rosterIDs = PeopleProject::where("ClassID","=",$projectid)->lists("UserID");
+        $rosterIDs = PeopleProject::where("ClassID","=",$projectid)->pluck("UserID");
         $enrolled = User::whereIn("id",$rosterIDs)->get();
         View::share("enrollment",$enrolled);
         View::share("firstName",$firstName);
@@ -170,7 +170,7 @@ class AdminIPRODayController extends BaseController{
         $blacklistedProjectIDs = array();
         if($person != null){
             //IPRO STUDENT!! Let's see if they are enrolled in anything this semester
-            $enrollment = PeopleProject::where("UserID","=",$person->id)->lists("ClassID");
+            $enrollment = PeopleProject::where("UserID","=",$person->id)->pluck("ClassID");
             $blacklistedProjectIDs = $enrollment;
         }
 
@@ -243,7 +243,7 @@ class AdminIPRODayController extends BaseController{
         $person = User::where("CWIDHash","=",md5($idnumber))->first();
         if($person != null){
             //IPRO STUDENT!! Let's see if they are enrolled in anything this semester
-            $enrollment = PeopleProject::where("UserID","=",$person->id)->lists("ClassID");
+            $enrollment = PeopleProject::where("UserID","=",$person->id)->pluck("ClassID");
             foreach($enrollment as $enrolledProject){
                 if($projectid == $enrolledProject){
                     return Response::json(array("app_error"=>"You are not allowed to vote for your own project. Please vote again."));

@@ -23,7 +23,7 @@ class KioskController extends BaseController{
         $pickup = $pickup[0];
         //Next we proceed to pull the items from the pickup
         //Lets take the pickup and find the pickup's items.
-        $pickupItems = $pickup->PickupItems()->lists("ItemID");
+        $pickupItems = $pickup->PickupItems()->pluck("ItemID");
         //Grab the items for each pickupItem
         $items = Item::WhereIn("id",$pickupItems)->get();
         $student = User::find($pickup->PersonID);

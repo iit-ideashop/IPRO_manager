@@ -362,8 +362,8 @@ class PrintingController extends BaseController{
         //Student object passed
         //Find the user's prints, for now
         $activeSemester = Semester::where("Active","=","1")->first();
-        $curTermProjects = Project::where("semester","=",$activeSemester->id)->lists("id");
-        $projectsEnrolled = PeopleProject::where("UserID","=",$student->id)->lists("ClassID");
+        $curTermProjects = Project::where("semester","=",$activeSemester->id)->pluck("id");
+        $projectsEnrolled = PeopleProject::where("UserID","=",$student->id)->pluck("ClassID");
         //Find the intersection of projects that the user is enrolled in and this semesters projects
         $pickupProjects = array_intersect($projectsEnrolled,$curTermProjects);
 
@@ -394,8 +394,8 @@ class PrintingController extends BaseController{
         }
         //Get the prints the student can pickup
         $activeSemester = Semester::where("Active","=","1")->first();
-        $curTermProjects = Project::where("semester","=",$activeSemester->id)->lists("id");
-        $projectsEnrolled = PeopleProject::where("UserID","=",$studentid)->lists("ClassID");
+        $curTermProjects = Project::where("semester","=",$activeSemester->id)->pluck("id");
+        $projectsEnrolled = PeopleProject::where("UserID","=",$studentid)->pluck("ClassID");
         //Find the intersection of projects that the user is enrolled in and this semesters projects
         $pickupProjects = array_intersect($projectsEnrolled,$curTermProjects);
 
@@ -408,7 +408,7 @@ class PrintingController extends BaseController{
             $query->whereIn('ProjectID',$pickupProjects)
                 ->where('status', '=', 5)
                 ->where("barcode","!=","Null");
-        })->lists("id");
+        })->pluck("id");
 
         //Loop through each of the files and mark them as picked up by student if the student has access.
         //Pull all of the prints

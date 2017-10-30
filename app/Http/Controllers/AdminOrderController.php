@@ -20,9 +20,9 @@ class AdminOrderController extends Controller {
         }
         $activeSemester = null;
         if(array_key_exists('semester',$filters)){
-            $activeSemester = Semester::where('id','=',$filters['semester'])->limit(1)->lists('id');
+            $activeSemester = Semester::where('id','=',$filters['semester'])->limit(1)->pluck('id');
         }else{
-            $activeSemester = Semester::where('Active','=',true)->limit(1)->lists('id');
+            $activeSemester = Semester::where('Active','=',true)->limit(1)->pluck('id');
         }
         if(count($activeSemester) == 0){
             return Redirect::route('admin.orders')->with('error',array('The filtered semester does not exist'));
@@ -32,13 +32,13 @@ class AdminOrderController extends Controller {
         //Get the projects in the semester
         $ipros = Project::where('Semester','=',$activeSemester[0])->get();
         View::share("ipros",$ipros);
-        $statuses = DB::table("orderStatus")->orderBy("id")->lists("id","status");
+        $statuses = DB::table("orderStatus")->orderBy("id")->pluck("id","status");
         View::share("orderstatuses", $statuses);
-        $itemstatuses = DB::table("itemStatus")->orderBy("id")->lists("id","status");
+        $itemstatuses = DB::table("itemStatus")->orderBy("id")->pluck("id","status");
         View::share("itemstatuses", $itemstatuses);
-        $semesters = DB::table("semesters")->orderBy("id","desc")->lists("id","name");
+        $semesters = DB::table("semesters")->orderBy("id","desc")->pluck("id","name");
         View::share("semesters",$semesters);
-        $projects = Project::where('Semester','=',$activeSemester[0])->lists('id');
+        $projects = Project::where('Semester','=',$activeSemester[0])->pluck('id');
 
         if(empty($projects)){
             $orders = array();
@@ -52,7 +52,7 @@ class AdminOrderController extends Controller {
                 //Apply our filters
                 //Apply the item status filter
                 if(array_key_exists('itemstatus',$filters)){
-                    $ordersWithStatus = Item::where('status','=',$filters['itemstatus'])->lists('OrderID');//Get items that have the speicfic status, returns an array of ordersIDs that have that order
+                    $ordersWithStatus = Item::where('status','=',$filters['itemstatus'])->pluck('OrderID');//Get items that have the speicfic status, returns an array of ordersIDs that have that order
                     if(count($ordersWithStatus) == 0){
                         $ordersWithStatus = array("-1");
                     }
