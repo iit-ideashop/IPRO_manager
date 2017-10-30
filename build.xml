@@ -181,23 +181,23 @@
             <fileset dir="${basedir}"></fileset>
             <dirset dir="${basedir}"></dirset>
         </chmod>
-        <echo>Setting app/storage to 777</echo>
+        <echo>Setting storage to 777</echo>
         <chmod  perm="777" verbose="true">
-            <fileset dir="${basedir}/app/storage"></fileset>
-            <dirset dir="${basedir}/app/storage"></dirset>
+            <fileset dir="${basedir}/storage"></fileset>
+            <dirset dir="${basedir}/storage"></dirset>
         </chmod>
     </target>
 
     <target name="storage-permissions.windows" depends="storage.windows.check" if="storage.windows.exist" description="Setting storage permissions on windows">
         <echo>Setting app/storage to writable</echo>
-        <attrib file="${basedir}/app/storage/**" perm="+R" failonerror="false" />
+        <attrib file="${basedir}/storage/**" perm="+R" failonerror="false" />
     </target>
 
     <!--// Check to see it the app/storage folder exist, if so, then can change permissions //-->
     <target name="storage.unix.check" description="Check for app/storage on unix">
         <condition property="storage.unix.exist">
             <and>
-                <available file="${basedir}/app/storage" type="dir" />
+                <available file="${basedir}/storage" type="dir" />
                 <os family="unix" />
             </and>
         </condition>
@@ -207,7 +207,7 @@
     <target name="storage.windows.check" description="Check for app/storage on windows">
         <condition property="storage.windows.exist">
             <and>
-                <available file="${basedir}/app/storage" type="dir" />
+                <available file="${basedir}/storage" type="dir" />
                 <os family="windows" />
             </and>
         </condition>
