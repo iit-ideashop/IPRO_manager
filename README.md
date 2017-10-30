@@ -7,5 +7,5 @@ IPRO manager app repository running laravel 5.5
 * Composer
 * All dependencies specivied in composer spec file.
 
-##Required packages
+##Required packages if using RHEL7
 rh-php70-php-pdo rh-php70-php-mysqlnd
