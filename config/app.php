@@ -210,7 +210,7 @@ return [
         'Form'      => Illuminate\Html\FormFacade::class,
         'Gate' => Illuminate\Support\Facades\Gate::class,
         'Hash' => Illuminate\Support\Facades\Hash::class,
-        'Html'      => Illuminate\Html\HtmlFacade::class,
+        'HTML'      => Illuminate\Html\HtmlFacade::class,
         'Input' => Illuminate\Support\Facades\Input::class,
         'Lang' => Illuminate\Support\Facades\Lang::class,
         'Log' => Illuminate\Support\Facades\Log::class,
