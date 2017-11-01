@@ -2,7 +2,7 @@
 @include('layouts.dataTables')
 @section('content')
 
-<h1 class="page-header">Semesters  <a class="btn btn-default" href="{{ URL::to('/admin/semesters/new'); }}">New</a></h1>
+<h1 class="page-header">Semesters  <a class="btn btn-default" href="{{ URL::to('/admin/semesters/new') }}">New</a></h1>
 <div class="table-responsive">
     <table class="table table-striped" id="semesterListing">
         <thead>
