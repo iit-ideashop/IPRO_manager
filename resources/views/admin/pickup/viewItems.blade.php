@@ -35,6 +35,7 @@
         </div>
     </div>
     <form action="{{ URL::route('admin.order.pickup.createPickup') }}" method="post" id="hiddenIDform">
+        {{ csrf_field() }}
         <input type="hidden" name="pickupuserid" value="{{$student->id}}">
         <input type="hidden" name="ItemIDs" id="HiddenIDs">
     </form>
