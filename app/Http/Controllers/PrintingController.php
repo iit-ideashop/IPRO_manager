@@ -362,10 +362,10 @@ class PrintingController extends BaseController{
         //Student object passed
         //Find the user's prints, for now
         $activeSemester = Semester::where("Active","=","1")->first();
-        $curTermProjects = Project::where("semester","=",$activeSemester->id)->pluck("id")->toArray();
-        $projectsEnrolled = PeopleProject::where("UserID","=",$student->id)->pluck("ClassID")->toArray();
+        $curTermProjects = Project::where("semester","=",$activeSemester->id)->pluck("id");
+        $projectsEnrolled = PeopleProject::where("UserID","=",$student->id)->pluck("ClassID");
         //Find the intersection of projects that the user is enrolled in and this semesters projects
-        $pickupProjects = array_intersect($projectsEnrolled,$curTermProjects);
+        $pickupProjects = $projectsEnrolled->intersect($curTermProjects)->toArray();
 
         //$printSubmissions = PrintSubmission::where("UserID","=",$student->id)->orWhereIn("ProjectID",$pickupProjects)->where("status","=","5")->where("barcode","!=","Null")->get();
         $printSubmissions = PrintSubmission::where(function ($query) use ($student) {
@@ -397,7 +397,7 @@ class PrintingController extends BaseController{
         $curTermProjects = Project::where("semester","=",$activeSemester->id)->pluck("id");
         $projectsEnrolled = PeopleProject::where("UserID","=",$studentid)->pluck("ClassID");
         //Find the intersection of projects that the user is enrolled in and this semesters projects
-        $pickupProjects = array_intersect($projectsEnrolled,$curTermProjects);
+        $pickupProjects = $projectsEnrolled->intersect($curTermProjects)->toArray();
 
         //$printSubmissions = PrintSubmission::where("UserID","=",$student->id)->orWhereIn("ProjectID",$pickupProjects)->where("status","=","5")->where("barcode","!=","Null")->get();
         $printSubmissions = PrintSubmission::where(function ($query) use ($studentid) {
