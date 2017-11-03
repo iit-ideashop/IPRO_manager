@@ -81,8 +81,11 @@ class ProjectController extends BaseController{
         $printSubmission->file_type = $fileType;
         $printSubmission->override = true;
         $printSubmission->status = 1;
+        //Added for strict mode compatibility
         $printSubmission->filename = NULL;
+        $printSubmission->dimensions = "0x0";
         $printSubmission->save();
+        //Now populate the filename based on the DB key
         $printSubmission->filename = $printSubmission->id."_".$printSubmission->file_type.".pdf";
         $printSubmission->save();
         //File is ok, lets save it so we can work with it
