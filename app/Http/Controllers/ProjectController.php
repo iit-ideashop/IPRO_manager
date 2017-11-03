@@ -83,6 +83,7 @@ class ProjectController extends BaseController{
         $printSubmission->status = 1;
         //Added for strict mode compatibility
         $printSubmission->filename = NULL;
+        $printSubmission->thumb_filename = NULL;
         $printSubmission->dimensions = "0x0";
         $printSubmission->save();
         //Now populate the filename based on the DB key
