@@ -362,8 +362,8 @@ class PrintingController extends BaseController{
         //Student object passed
         //Find the user's prints, for now
         $activeSemester = Semester::where("Active","=","1")->first();
-        $curTermProjects = Project::where("semester","=",$activeSemester->id)->pluck("id");
-        $projectsEnrolled = PeopleProject::where("UserID","=",$student->id)->pluck("ClassID");
+        $curTermProjects = Project::where("semester","=",$activeSemester->id)->pluck("id")->toArray();
+        $projectsEnrolled = PeopleProject::where("UserID","=",$student->id)->pluck("ClassID")->toArray();
         //Find the intersection of projects that the user is enrolled in and this semesters projects
         $pickupProjects = array_intersect($projectsEnrolled,$curTermProjects);
 
