@@ -82,8 +82,8 @@ class ProjectController extends BaseController{
         $printSubmission->override = true;
         $printSubmission->status = 1;
         //Added for strict mode compatibility
-        $printSubmission->filename = NULL;
-        $printSubmission->thumb_filename = NULL;
+        $printSubmission->filename = "";
+        $printSubmission->thumb_filename = "";
         $printSubmission->dimensions = "0x0";
         $printSubmission->reject_comments = "";
         $printSubmission->save();
