@@ -2,12 +2,18 @@
 <html lang="en-US">
     <head>
         <title>IPRO Manager</title>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="stylesheet" href="{{ URL::asset('packages/bootstrap/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ URL::asset('packages/bootstrap/css/dashboard.css') }}">
         @section('stylesheets') 
         @show
         <script src="{{ URL::asset('packages/bootstrap/js/jquery-1.11.1.js')}}"></script>
         <script src="{{ URL::asset('packages/bootstrap/js/bootstrap.min.js') }}"></script>
+        <script>
+        $.ajaxSetup({
+            headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'}
+        });
+        </script>
         @section('javascript')
         @show
     </head>

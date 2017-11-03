@@ -81,6 +81,7 @@ class ProjectController extends BaseController{
         $printSubmission->file_type = $fileType;
         $printSubmission->override = true;
         $printSubmission->status = 1;
+        $printSubmission->filename = NULL;
         $printSubmission->save();
         $printSubmission->filename = $printSubmission->id."_".$printSubmission->file_type.".pdf";
         $printSubmission->save();
@@ -88,7 +89,7 @@ class ProjectController extends BaseController{
         //Take the file and move it to our secured location (Allows only downloads by owners, admins and people in the same ipro and print admins)
         $fileSubmission->move(Config::get("app.StorageURLs.printSubmissions"),$printSubmission->filename);
         //Next we need to verify the pdf dimensions are the correct dimensions
-        $pdfinfo_output = shell_exec("pdfinfo ".Config::get("app.StorageURLs.printSubmissions").$printSubmission->filename);
+        $pdfinfo_output = shell_exec("pdfinfo " . escapeshellarg(Config::get("app.StorageURLs.printSubmissions").$printSubmission->filename));
         $pdfdata = explode("\n", $pdfinfo_output); //puts it into an array
         //Take pdfinfo output and figure out the dimensions in point
         $pdfdimensions_width = 0;
