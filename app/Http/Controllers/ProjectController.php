@@ -85,6 +85,7 @@ class ProjectController extends BaseController{
         $printSubmission->filename = NULL;
         $printSubmission->thumb_filename = NULL;
         $printSubmission->dimensions = "0x0";
+        $printSubmission->reject_comments = "";
         $printSubmission->save();
         //Now populate the filename based on the DB key
         $printSubmission->filename = $printSubmission->id."_".$printSubmission->file_type.".pdf";
