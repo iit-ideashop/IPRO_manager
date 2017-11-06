@@ -325,7 +325,7 @@ class PrintingController extends BaseController{
         $user = User::where("id","=",$printSubmission->UserID)->first();
         Mail::send('emails.printing.printed', array('person'=>$user,'fileSubmission'=>$printSubmission), function($message) use($user, $printSubmission){
             $message->to($user->Email,$user->FirstName.' '.$user->LastName);
-            $message->subject('Extra! Extra! '.$printSubmission->file_type.' : '.$printSubmission->original_filename.' has been printed!');
+            $message->subject('Your '.$printSubmission->file_type.' : '.$printSubmission->original_filename.' has been printed!');
         });
         return Response::json(array("success"=>"true"));
    }

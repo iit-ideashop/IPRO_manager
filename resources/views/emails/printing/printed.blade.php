@@ -5,8 +5,8 @@
 @section('content')
 
     <h3>Hey there {{$person->FirstName}}!</h3>
-    <p>Our printer has printed your file and it is ready for pickup at the IdeaShop.</p>
-    <p>Please be sure to bring an ID to pickup your poster.</p>
+    <p>Our printer has printed your file and it is ready for pickup at the Idea Shop. The Idea Shop is located in the basement of the IIT Tower - Suite BC4-1. Take the elevators to the basement and turn right, can't miss it.</p>
+    <p>Please be sure to bring an ID to pickup your poster. We will have stations in the Idea Shop with the supplies necessary to mount your poster to foam core.</p>
     <p>Please find a reference to the file below.</p>
     <table class="tableBlue" width="100%" cellpadding="3px" cellspacing="3px">
         <tr>
