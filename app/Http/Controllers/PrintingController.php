@@ -1,4 +1,5 @@
 <?php
+use Log;
 //Controller takes care of all controller functions for the printing route
 class PrintingController extends BaseController{
 
@@ -348,6 +349,7 @@ class PrintingController extends BaseController{
             return Redirect::action('PrintingController@studentPosterPickup', array('userid' => $student[0]->id));
         }else{
             View::share('students',$student);
+            Log::info('Search reurned: ' . $student);
             return View::make('printing.searchResults');
         }
     }
