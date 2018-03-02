@@ -332,10 +332,10 @@ class PrintingController extends BaseController{
 
     function userSearch(){
         //This function will take the submitted ID#, find the user and redirect to the view orders page
-        $studentID = strtoupper(Input::get('idnumber'));
-        $studentFName = Input::get('firstName');
-        $studentLName = Input::get('lastName');
-        $studentEmail = Input::get('email');
+        $studentID = strtoupper(Input::get('idnumber')) ?? '';
+        $studentFName = Input::get('firstName') ?? '';
+        $studentLName = Input::get('lastName') ?? '';
+        $studentEmail = Input::get('email') ?? '';
         //Now let's find the user in the database who's ID number that is
         $student = User::where('CWIDHash','LIKE',md5($studentID))->orWhere('FirstName','LIKE',$studentFName)->orWhere('LastName','LIKE',$studentLName)->orWhere('Email','LIKE',$studentEmail)->get();
         if($student->isEmpty()){
