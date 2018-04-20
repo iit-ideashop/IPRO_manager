@@ -1,10 +1,14 @@
 <?php
+namespace App\Console\Commands;
+
+use Semester, Order, Item, DistributionList, User;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Illuminate\Support\Facades\Mail;
 
-class housekeeping extends Command {
+class Housekeeping extends Command {
 
 	/**
 	 * The console command name.
@@ -35,7 +39,7 @@ class housekeeping extends Command {
 	 *
 	 * @return mixed
 	 */
-	public function fire()
+	public function handle()
 	{
         //This script will fire every hour on the hour and we have to control what gets emailed out.
         //Get the current time
