@@ -93,7 +93,26 @@ class AdminProjectController extends BaseController{
     
     public function editProcess($id){
         $project = Project::find($id);
-
+        $project->UID = Input::get("UID") ?? $project->UID;
+        $project->CRN = Input::get("CRN") ?? $project->CRN;
+        $project->Name = Input::get("Name") ?? $project->Name;
+        $project->Description = Input::get("Description") ?? $project->Description;
+        $project->Semester = Input::get("Semester") ?? $project->Semester;
+        $parent = Input::get("ParentClass");
+        if ($parent != null) {
+            if ($parent == 0) {
+                $project->ParentClass = null;
+            } else {
+                $project->ParentClass = $parent;
+            }
+        }
+        $project->modifiedBy = Auth::id();
+        if ($project->save()) {
+            return Redirect::to("/admin/projects")->with("message", "Project Edited Successfully");
+        }
+        else {
+            return Redirect::to("/admin/projects/edit/$id")->with("errors", $project->errors()->all());
+        }
     }
     
     
