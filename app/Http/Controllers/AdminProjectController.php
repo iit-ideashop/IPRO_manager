@@ -78,6 +78,7 @@ class AdminProjectController extends BaseController{
     
     public function edit($id){
         $project = Project::find($id);
+        abort_if($project == null,404,"The requested project could not be found");
         View::share('editProject',$project);
         $semesters = Semester::all();
         $projects = Project::all()->toArray();
@@ -90,8 +91,9 @@ class AdminProjectController extends BaseController{
         return View::make('admin.projects.edit');
     }
     
-    public function editProcess(){
-        
+    public function editProcess($id){
+        $project = Project::find($id);
+
     }
     
     
