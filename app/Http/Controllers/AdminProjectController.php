@@ -131,6 +131,47 @@ class AdminProjectController extends BaseController{
 
     }
 
+    function doSingleEnroll($id) {
+        // Enroll a single user in the project
+        $cwid = Input::get('cwid');
+        $email = Input::get('email');
+
+        $didUpdateCWID = false;
+
+        // Validations
+        // CWID
+        $cwid_arr = array();
+        preg_match('/A[0-9]{8}/', $cwid, $cwid_arr);
+        if (count($cwid_arr) != 1) {
+            return Redirect::route('admin.projects.enrollUsers')->with('error', array('The CWID entered was invalid!'));
+        }
+
+        // Project exists
+        $proj = Project::find($id);
+        if (!$proj) {
+            return Redirect::route('admin.semesters')->with('error', array('Invalid project ID!'));
+        }
+
+        // Get user
+        $user = User::where('Email', '=', $email);
+        if (!$user) {
+            return Redirect::route('admin.projects.enrollUsers')->with('error', array('The user specified was not found in the database!'));
+        }
+
+        if (!$user->CWIDHash) {
+            $user->CWIDHash = md5($cwid);
+            $didUpdateCWID = true;
+        }
+
+        $peopleProject = new PeopleProject();
+        $peopleProject->UserID = $user->id;
+        $peopleProject->ClassID = $id;
+        $peopleProject->AccessType = 1;
+        $peopleProject->save();
+
+        return Redirect::route('admin.projects.enrollUsers');
+    }
+
     function uploadCognos($semester_id){
         //Built the upload cognos report page
         //Grab the semester from the DB so we can use the semester data on the page
