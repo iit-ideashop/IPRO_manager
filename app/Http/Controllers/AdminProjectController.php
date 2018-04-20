@@ -56,7 +56,7 @@ class AdminProjectController extends BaseController{
         $project->TimeSlots = 'null';
         $project->Semester = Input::get('Semester');
         
-        if(Input::get('ParentClass') == 'null'){
+        if(Input::get('ParentClass') == 0){
             $project->ParentClass = null;
         }else{
             $project->ParentClass = Input::get('ParentClass');
