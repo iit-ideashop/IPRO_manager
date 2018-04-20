@@ -78,7 +78,9 @@ class AdminProjectController extends BaseController{
     
     public function edit($id){
         $project = Project::find($id);
-        abort_if($project == null,404,"The requested project could not be found");
+        if ($project == null) {
+            return Redirect::to("/admin/projects")->with('errors', "The requested project could not be found");
+        }
         View::share('editProject',$project);
         $semesters = Semester::all();
         $projects = Project::all()->toArray();
@@ -93,6 +95,9 @@ class AdminProjectController extends BaseController{
     
     public function editProcess($id){
         $project = Project::find($id);
+        if ($project == null) {
+            return Redirect::to("/admin/projects")->with('errors', "The requested project could not be found");
+        }
         $project->UID = Input::get("UID") ?? $project->UID;
         $project->CRN = Input::get("CRN") ?? $project->CRN;
         $project->Name = Input::get("Name") ?? $project->Name;
@@ -111,7 +116,7 @@ class AdminProjectController extends BaseController{
             return Redirect::to("/admin/projects")->with("message", "Project Edited Successfully");
         }
         else {
-            return Redirect::to("/admin/projects/edit/$id")->with("errors", $project->errors()->all());
+            return Redirect::to("/admin/projects/edit/$id")->withInput()->with("errors", $project->errors()->all());
         }
     }
     
