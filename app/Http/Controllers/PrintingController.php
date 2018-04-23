@@ -306,7 +306,7 @@ class PrintingController extends BaseController{
         return View::make("printing.print_label");
     }
 
-    public function receivePosterFromPrinter(){
+        public function receivePosterFromPrinter(){
         //This function allows an admin to approve or deny a file.
         $fileid = Input::get("fileid");
         //Pull the file from the DB
@@ -321,12 +321,15 @@ class PrintingController extends BaseController{
         //Take the poster and mark it the correct status
         $printSubmission->status = 5;
         $printSubmission->save();
-        //Send out an email that poster is ready for pickup
-        $user = User::where("id","=",$printSubmission->UserID)->first();
-        Mail::send('emails.printing.printed', array('person'=>$user,'fileSubmission'=>$printSubmission), function($message) use($user, $printSubmission){
-            $message->to($user->Email,$user->FirstName.' '.$user->LastName);
-            $message->subject('Your '.$printSubmission->file_type.' : '.$printSubmission->original_filename.' has been printed!');
-        });
+        //Send out an email that poster is ready for pickup if the poster is in an active semester
+        $semesterID = Project::getProjectUID($printSubmission->ProjectID)->Semester;
+        if (Semester::where('Active', '=', true)->where('id', '=', $semesterID)->count() > 0) {
+            $user = User::where("id", "=", $printSubmission->UserID)->first();
+            Mail::send('emails.printing.printed', array('person' => $user, 'fileSubmission' => $printSubmission), function ($message) use ($user, $printSubmission) {
+                $message->to($user->Email, $user->FirstName . ' ' . $user->LastName);
+                $message->subject('Your ' . $printSubmission->file_type . ' : ' . $printSubmission->original_filename . ' has been printed!');
+            });
+        }
         return Response::json(array("success"=>"true"));
    }
 

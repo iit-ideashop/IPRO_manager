@@ -136,8 +136,6 @@ class AdminProjectController extends BaseController{
         $cwid = Input::get('cwid');
         $email = Input::get('email');
 
-        $didUpdateCWID = false;
-
         // Validations
         // CWID
         $cwid_arr = array();
@@ -160,7 +158,6 @@ class AdminProjectController extends BaseController{
 
         if (!$user->CWIDHash) {
             $user->CWIDHash = md5($cwid);
-            $didUpdateCWID = true;
         }
 
         $peopleProject = new PeopleProject();
