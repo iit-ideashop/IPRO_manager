@@ -38,7 +38,7 @@ class AdminProjectReportController extends BaseController{
                 $project->moneyAllocated += $budget->Amount;
             }
             //Calculate money spent
-            $ledgerEntries = ledgerEntry::where("AccountNumber",'=',$accountid)->where("Debit",">",0.00)->get();
+            $ledgerEntries = LedgerEntry::where("AccountNumber",'=',$accountid)->where("Debit",">",0.00)->get();
             $project->moneySpent = 0;
             foreach($ledgerEntries as $ledgerEntry){
                 $project->moneySpent += $ledgerEntry->Debit;

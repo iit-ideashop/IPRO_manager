@@ -6,17 +6,19 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
-        "oriceon/oauth-5-laravel": "dev-master",
+        "barryvdh/laravel-ide-helper": "v2.4.3",
+        "doctrine/dbal": "v2.6.3",
         "fideloper/proxy": "~3.3",
         "guzzlehttp/guzzle": "~4.0",
-        "laravel/framework": "5.5.*",
         "illuminate/html": "5.*",
+        "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
         "laravelbook/ardent": "3.*",
+        "laravelcollective/html": "5.*",
         "lusitanian/oauth": "dev-master",
+        "oriceon/oauth-5-laravel": "dev-master",
         "phpoffice/phpexcel": "1.8.0",
-        "twitter/bootstrap": "dev-master",
-        "laravelcollective/html": "5.*"
+        "twitter/bootstrap": "dev-master"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

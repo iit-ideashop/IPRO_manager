@@ -1,5 +1,39 @@
 <?php
 use LaravelArdent\Ardent\Ardent;
+/**
+ * Order
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\ApprovedPickup[] $ApprovedPickups
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Item[] $Items
+ * @property-read \Illuminate\Database\Eloquent\Collection|\OrderNote[] $Notes
+ * @property-read \Project $Project
+ * @property-read \User $User
+ * @mixin \Eloquent
+ * @property int $id
+ * @property int $PeopleID
+ * @property int $ClassID
+ * @property string|null $Phone
+ * @property float $OrderTotal
+ * @property string $Description
+ * @property string $NotificationPreference
+ * @property int $Status
+ * @property int $ModifiedBy
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\Order whereClassID($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Order whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Order whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Order whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Order whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Order whereModifiedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Order whereNotificationPreference($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Order whereOrderTotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Order wherePeopleID($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Order wherePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Order whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Order whereUpdatedAt($value)
+ */
 class Order extends Ardent
 {
 

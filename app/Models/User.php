@@ -3,6 +3,39 @@
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * User
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\BudgetRequest[] $BudgetRequests
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Order[] $Orders
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Project[] $Projects
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @mixin \Eloquent
+ * @property int $id
+ * @property string $FirstName
+ * @property string $LastName
+ * @property int|null $iGroupsID
+ * @property string $Email
+ * @property string|null $CWIDHash
+ * @property int $isAdmin
+ * @property string $modifiedBy
+ * @property string|null $remember_token
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\User whereCWIDHash($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\User whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\User whereFirstName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\User whereIGroupsID($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\User whereIsAdmin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\User whereLastName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\User whereModifiedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\User whereUpdatedAt($value)
+ */
 class User extends Authenticatable{
 
     use Notifiable;

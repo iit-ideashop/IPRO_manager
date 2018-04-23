@@ -1,5 +1,24 @@
 <?php
 use LaravelArdent\Ardent\Ardent;
+
+/**
+ * Account
+ *
+ * @property int $id
+ * @property int $ClassID
+ * @property float $Balance
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\BudgetRequest[] $BudgetRequests
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Budget[] $Budgets
+ * @property-read \Illuminate\Database\Eloquent\Collection|\LedgerEntry[] $GL
+ * @method static \Illuminate\Database\Eloquent\Builder|\Account whereBalance($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Account whereClassID($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Account whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Account whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Account whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Account extends Ardent {
     public static $rules = array(
         'ClassID' => 'required'
@@ -17,7 +36,7 @@ class Account extends Ardent {
     public function Deposit($entryType,$amount,$entryRef = null){
         //Add moneies to this account
         //Create the GL entry
-        $gl = new ledgerEntry;
+        $gl = new LedgerEntry;
         $gl->AccountNumber = $this->id;
         $gl->EntryType = $entryType;
         $gl->EntryTypeID = $entryRef;
@@ -36,7 +55,7 @@ class Account extends Ardent {
         if($this->Balance < $amount){
             return 0;
         }
-        $gl = new ledgerEntry;
+        $gl = new LedgerEntry;
         $gl->AccountNumber = $this->id;
         $gl->EntryType = $entryType;
         $gl->EntryTypeID = $entryRef;

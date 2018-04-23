@@ -152,11 +152,11 @@ class ledgerTableSeeder extends Seeder {
     public function run()
     {
         DB::table('ledgerEntries')->delete();
-        ledgerEntry::create(array('AccountNumber'=>1,'EntryType'=>'ORDER','EntryTypeID'=>1,'Credit'=>500,'Debit'=>0,'NewAccountBalance'=>500.00,'EnteredBy'=>1));
-        ledgerEntry::create(array('AccountNumber'=>1,'EntryType'=>'REIMBURSEMENT','EntryTypeID'=>0,'Credit'=>500,'Debit'=>0,'NewAccountBalance'=>500.00,'EnteredBy'=>1));
-        ledgerEntry::create(array('AccountNumber'=>1,'EntryType'=>'REIMBURSEMENT','EntryTypeID'=>0,'Credit'=>500,'Debit'=>0,'NewAccountBalance'=>500.00,'EnteredBy'=>1));
-        ledgerEntry::create(array('AccountNumber'=>1,'EntryType'=>'BUDGET','EntryTypeID'=>0,'Credit'=>0,'Debit'=>0,'NewAccountBalance'=>500.00,'EnteredBy'=>1));
-        ledgerEntry::create(array('AccountNumber'=>1,'EntryType'=>'RECONCILE','EntryTypeID'=>2,'Credit'=>0,'Debit'=>500,'NewAccountBalance'=>500.00,'EnteredBy'=>1));
+        LedgerEntry::create(array('AccountNumber'=>1,'EntryType'=>'ORDER','EntryTypeID'=>1,'Credit'=>500,'Debit'=>0,'NewAccountBalance'=>500.00,'EnteredBy'=>1));
+        LedgerEntry::create(array('AccountNumber'=>1,'EntryType'=>'REIMBURSEMENT','EntryTypeID'=>0,'Credit'=>500,'Debit'=>0,'NewAccountBalance'=>500.00,'EnteredBy'=>1));
+        LedgerEntry::create(array('AccountNumber'=>1,'EntryType'=>'REIMBURSEMENT','EntryTypeID'=>0,'Credit'=>500,'Debit'=>0,'NewAccountBalance'=>500.00,'EnteredBy'=>1));
+        LedgerEntry::create(array('AccountNumber'=>1,'EntryType'=>'BUDGET','EntryTypeID'=>0,'Credit'=>0,'Debit'=>0,'NewAccountBalance'=>500.00,'EnteredBy'=>1));
+        LedgerEntry::create(array('AccountNumber'=>1,'EntryType'=>'RECONCILE','EntryTypeID'=>2,'Credit'=>0,'Debit'=>500,'NewAccountBalance'=>500.00,'EnteredBy'=>1));
     }
 }
 

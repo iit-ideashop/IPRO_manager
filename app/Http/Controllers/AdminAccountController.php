@@ -15,7 +15,7 @@ class AdminAccountController extends BaseController{
     
     function newGLEntry($projectid){
         //We need to create a new account GL entry for the speicified account
-        $gl = new ledgerEntry;
+        $gl = new LedgerEntry;
         //Grab the posted entry type
         $entryType = Input::get('entryType');
         $allowedTypes = array('RECONCILE','OTHER','REIMBURSEMENT');

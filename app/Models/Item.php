@@ -1,5 +1,44 @@
 <?php
 use LaravelArdent\Ardent\Ardent;
+/**
+ * Item
+ *
+ * @property int $id
+ * @property int $OrderID
+ * @property string $Name
+ * @property string $Link
+ * @property string|null $PartNumber
+ * @property float $Cost
+ * @property int $Quantity
+ * @property float $Shipping
+ * @property float $TotalCost
+ * @property string $Justification
+ * @property int $Returning
+ * @property int $Status
+ * @property int|null $barcode
+ * @property int $ModifiedBy
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \Order $Order
+ * @property-read \PickupItem $PickupItem
+ * @method static \Illuminate\Database\Eloquent\Builder|\Item whereBarcode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Item whereCost($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Item whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Item whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Item whereJustification($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Item whereLink($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Item whereModifiedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Item whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Item whereOrderID($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Item wherePartNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Item whereQuantity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Item whereReturning($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Item whereShipping($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Item whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Item whereTotalCost($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Item whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Item extends Ardent {
     public static $rules = array(
         'Name' => array('required'),
