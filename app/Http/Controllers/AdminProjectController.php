@@ -141,7 +141,7 @@ class AdminProjectController extends BaseController{
         $cwid_arr = array();
         preg_match('/A[0-9]{8}/', $cwid, $cwid_arr);
         if (count($cwid_arr) != 1) {
-            return Redirect::route('admin.projects.enrollUsers')->with('error', array('The CWID entered was invalid!'));
+            return Redirect::route('admin.projects.enrollUsers', ['id' => $id])->with('error', array('The CWID entered was invalid!'));
         }
 
         // Project exists
@@ -151,22 +151,21 @@ class AdminProjectController extends BaseController{
         }
 
         // Get user
-        $user = User::where('Email', '=', $email);
+        $user = User::where('Email', '=', $email)->first();
         if (!$user) {
-            return Redirect::route('admin.projects.enrollUsers')->with('error', array('The user specified was not found in the database!'));
+            return Redirect::route('admin.projects.enrollUsers', ['id' => $id])->with('error', array('The user specified was not found in the database!'));
         }
 
         if (!$user->CWIDHash) {
             $user->CWIDHash = md5($cwid);
         }
 
-        $peopleProject = new PeopleProject();
-        $peopleProject->UserID = $user->id;
-        $peopleProject->ClassID = $id;
+        $peopleProject = PeopleProject::firstOrNew(array('UserId' => $user->id, 'ClassId' => $id));
         $peopleProject->AccessType = 1;
+        $peopleProject->ModifiedBy = Auth::id();
         $peopleProject->save();
 
-        return Redirect::route('admin.projects.enrollUsers');
+        return Redirect::route('admin.projects.enrollUsers', ['id' => $id]);
     }
 
     function uploadCognos($semester_id){

@@ -18,7 +18,21 @@
         @endforeach
     </table>
 
-    <div id="example"></div>
+    <form action="{{ action('AdminProjectController@doSingleEnroll', ['id' => $project->id]) }}" method="post">
+        {{ csrf_field() }}
+
+        <div class="form-group">
+            {{ Form::label('cwid','CWID (A-Number)', array('class'=>'control-label')) }}
+            {{ Form::text('cwid',null,array('class'=>'form-control','placeholder'=>'A20312345')) }}
+        </div>
+
+        <div class="form-group">
+            {{ Form::label('email','Email', array('class'=>'control-label')) }}
+            {{ Form::text('email',null,array('class'=>'form-control','placeholder'=>'jsmith@hawk.iit.edu')) }}
+        </div>
+
+        <input type="submit" class="btn" value="Submit">
+    </form>
 @stop
 @section('javascript_bottom')
 <script>
@@ -35,9 +49,3 @@
     });
 </script>
 @stop
-
-
-
-
-//make a list of tasks
-//send emails to rima
