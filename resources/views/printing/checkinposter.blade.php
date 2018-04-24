@@ -54,6 +54,7 @@
                 }
                 else if(data.error){
                     console.log("Your request could not be processed at this time");
+                    console.error(data.error);
                 }
             },
             error: function(data, textStatus){
