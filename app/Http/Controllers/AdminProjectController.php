@@ -231,7 +231,9 @@ class AdminProjectController extends BaseController{
                 $currentCRN = $readerObject->getActiveSheet()->getCell('B' . $current_row)->getValue();
             }
             //Only run the code if the student is registered
-            if (($readerObject->getActiveSheet()->getCell('G' . $current_row)->getValue() == 'RW') || ($readerObject->getActiveSheet()->getCell('G' . $current_row)->getValue() == 'RE')) {
+            $cell = $readerObject->getActiveSheet()->getCell('G' . $current_row)->getValue();
+
+            if (in_array($cell, array('RW', 'RE', 'RL'))) {
                 //Start by checking $spreadsheet_data to see if the project exists by crn
                 if (array_key_exists($currentCRN, $spreadsheet_data)) {
                     //Key exists, check the data inside for a duplicate student
