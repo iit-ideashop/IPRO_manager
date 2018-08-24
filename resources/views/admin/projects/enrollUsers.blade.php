@@ -8,17 +8,25 @@
             <th>-</th>
             <th>Name</th>
             <th>Email Address</th>
+            <th></th>
         </tr>
         @foreach($students as $student)
             <tr>
                 <td><input type="checkbox"></td>
                 <td>{{$student->FirstName}} {{$student->LastName}}</td>
                 <td>{{$student->Email}}</td>
+                <td>
+                    {{Form::open(['action' => ['AdminProjectController@doRemoveUser', $project->id, $student->id], 'method' => 'delete' ])}}
+                    <button type="submit" class="btn btn-xs">Remove</button>
+                    {{Form::close()}}
+                </td>
             </tr>
         @endforeach
     </table>
 
-    <form action="{{ action('AdminProjectController@doSingleEnroll', ['id' => $project->id]) }}" method="post">
+    <div id="newStudentInput"></div>
+
+    <form id="enrollUsersForm" action="{{ action('AdminProjectController@doSingleEnroll', ['id' => $project->id]) }}" method="post">
         {{ csrf_field() }}
 
         <div class="form-group">
@@ -34,20 +42,44 @@
         <input type="submit" class="btn" value="Submit">
     </form>
 
-    <div id="example"></div>
+
 @stop
 @section('javascript_bottom')
 <script>
-    var data = [["First Name", "Last Name", "Email", "CWID"]];
+    var data = [["", ""]];
 
-    var container = $("#example");
-    container.handsontable({
+    var container = $("#newStudentInput");
+    var table = container.handsontable({
         data: data,
-        colHeaders: true,
-        stretchH: 'all',
-        width: 1000,
-        height: 500,
+        colHeaders: ["CWID", "Email"],
+        colWidths: [100, 250],
+        manualColumnResize: true,
+        manualRowResize: true,
+        preventOverflow: 'horizontal',
         minSpareRows: 1
     });
+
+    $("#enrollUsersForm").css("display", "none");
+    var submitButton = document.createElement("input");
+    submitButton.type = "submit";
+    submitButton.classList = "btn";
+    submitButton.value = "Submit";
+    submitButton.onclick = function() {
+        var data = table.data().handsontable.getData();
+        if (data.filter(function(a) { return a[0] && a[1] }).length == 0) { return; }
+        var form = document.createElement("form");
+        form.action = "{{ action('AdminProjectController@doMultiEnroll', ['id' => $project->id]) }}";
+        form.method = "POST";
+        var input = document.createElement("input");
+        input.name = "data";
+        input.value = JSON.stringify(data.map(function (a) { return { "cwid": a[0], "email": a[1] }; }));
+        form.appendChild(input);
+        var csrf = document.createElement("input");
+        csrf.name = "_token";
+        csrf.value = "{{ csrf_token() }}";
+        form.appendChild(csrf);
+        form.submit();
+    };
+    container.after(submitButton);
 </script>
 @stop
