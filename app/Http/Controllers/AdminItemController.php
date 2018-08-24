@@ -150,6 +150,10 @@ class AdminItemController extends BaseController{
         
         $orderID = $item->OrderID;
         if($item->delete()){
+            Order::recalculate($orderID);
+            $project = Order::find($orderID)->Project()->first();
+            $account = $project->Account()->first();
+            $account->Deposit('RECONCILE', (($item->Cost * $item->Quantity) + $item->Shipping), $orderID);
             return Redirect::to('/admin/orders/'.$orderID)->with('success',array('Successfully deleted item'));
         }else{
             return Redirect::to('/admin/orders/'.$orderID)->with('error',array('Unable to delete item'));
