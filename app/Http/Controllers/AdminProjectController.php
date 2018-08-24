@@ -56,7 +56,7 @@ class AdminProjectController extends BaseController{
         $project->TimeSlots = 'null';
         $project->Semester = Input::get('Semester');
         
-        if(Input::get('ParentClass') == 'null'){
+        if(Input::get('ParentClass') == 0){
             $project->ParentClass = null;
         }else{
             $project->ParentClass = Input::get('ParentClass');
@@ -78,6 +78,9 @@ class AdminProjectController extends BaseController{
     
     public function edit($id){
         $project = Project::find($id);
+        if ($project == null) {
+            return Redirect::to("/admin/projects")->with('errors', "The requested project could not be found");
+        }
         View::share('editProject',$project);
         $semesters = Semester::all();
         $projects = Project::all()->toArray();
@@ -90,8 +93,31 @@ class AdminProjectController extends BaseController{
         return View::make('admin.projects.edit');
     }
     
-    public function editProcess(){
-        
+    public function editProcess($id){
+        $project = Project::find($id);
+        if ($project == null) {
+            return Redirect::to("/admin/projects")->with('errors', "The requested project could not be found");
+        }
+        $project->UID = Input::get("UID") ?? $project->UID;
+        $project->CRN = Input::get("CRN") ?? $project->CRN;
+        $project->Name = Input::get("Name") ?? $project->Name;
+        $project->Description = Input::get("Description") ?? $project->Description;
+        $project->Semester = Input::get("Semester") ?? $project->Semester;
+        $parent = Input::get("ParentClass");
+        if ($parent != null) {
+            if ($parent == 0) {
+                $project->ParentClass = null;
+            } else {
+                $project->ParentClass = $parent;
+            }
+        }
+        $project->modifiedBy = Auth::id();
+        if ($project->save()) {
+            return Redirect::to("/admin/projects")->with("message", "Project Edited Successfully");
+        }
+        else {
+            return Redirect::to("/admin/projects/edit/$id")->withInput()->with("errors", $project->errors()->all());
+        }
     }
     
     
