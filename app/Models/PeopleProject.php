@@ -21,6 +21,7 @@ use LaravelArdent\Ardent\Ardent;
  */
 class PeopleProject extends Ardent {
     protected $table = "PeopleProjects";
+    protected $fillable = ["UserId", "ClassId"];
 
     public function beforeSave(){
         //Before we save we have to make sure the modified by is updated

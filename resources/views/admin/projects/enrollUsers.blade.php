@@ -33,6 +33,8 @@
 
         <input type="submit" class="btn" value="Submit">
     </form>
+
+    <div id="example"></div>
 @stop
 @section('javascript_bottom')
 <script>
