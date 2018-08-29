@@ -194,6 +194,71 @@ class AdminProjectController extends BaseController{
         return Redirect::route('admin.projects.enrollUsers', ['id' => $id]);
     }
 
+    function doMultiEnroll($id) {
+        $data = Input::get('data');
+        $users = json_decode($data, true);
+
+        if (!is_array($users)) {
+            return Redirect::route('admin.projects.enrollUsers', ['id' => $id])->with('error', array('Invalid JSON (Must be an array)'));
+        }
+
+        $proj = Project::find($id);
+        if (!$proj) {
+            return Redirect::route('admin.semesters')->with('error', array('Invalid project ID!'));
+        }
+
+        $failedUsers = array();
+
+        foreach ($users as $userInfo) {
+            $cwid = strtoupper($userInfo["cwid"]);
+            $email = $userInfo["email"];
+
+            $cwid_arr = array();
+            preg_match('/A[0-9]{8}/', $cwid, $cwid_arr);
+            if (count($cwid_arr) != 1) {
+                array_push($failedUsers, $userInfo);
+                continue;
+            }
+
+            $user = User::where('Email', '=', $email)->first();
+            if (!$user) {
+                array_push($failedUsers, $userInfo);
+                continue;
+            }
+
+            if (!$user->CWIDHash) {
+                $user->CWIDHash = md5($cwid);
+            }
+
+            $peopleProject = PeopleProject::firstOrNew(array('UserId' => $user->id, 'ClassId' => $id));
+            $peopleProject->AccessType = 1;
+            $peopleProject->ModifiedBy = Auth::id();
+            $peopleProject->save();
+        }
+
+        $failedUsers = array_filter($failedUsers, function($user) { return !empty($user["cwid"]) || !empty($user["email"]); });
+
+        if (sizeof($failedUsers) > 0) {
+            $strings = array_map(function($user) { return $user["cwid"] . " / " . $user["email"]; }, $failedUsers);
+            $failedUserString = "These users failed to be inputted: " . join(", ", $strings);
+            return Redirect::route('admin.projects.enrollUsers', ['id' => $id])->with('error', array($failedUserString));
+        }
+        else {
+            return Redirect::route('admin.projects.enrollUsers', ['id' => $id]);
+        }
+    }
+
+    function doRemoveUser($id, $userID) {
+        $peopleProject = PeopleProject::where('UserId', '=', $userID)->where('ClassId', '=', $id)->first();
+        if (empty($peopleProject)) {
+            return Redirect::route('admin.projects.enrollUsers', ['id' => $id])->with('error', array("That user doesn't exist!"));
+        }
+        else {
+            $peopleProject->delete();
+            return Redirect::route('admin.projects.enrollUsers', ['id' => $id]);
+        }
+    }
+
     function uploadCognos($semester_id){
         //Built the upload cognos report page
         //Grab the semester from the DB so we can use the semester data on the page

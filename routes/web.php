@@ -161,7 +161,9 @@ Route::group(array('prefix' => 'admin', 'middleware'=>['auth_admin']), function(
         Route::post('/edit/{id}',array('as'=>'admin.projects.editProcess','uses'=>'AdminProjectController@editProcess'));
         Route::get('/overview/{id}',array('as'=>'admin.projects.overview','uses'=>'AdminProjectController@overview'));
         Route::get('/enroll_users/{id}',array('as'=>'admin.projects.enrollUsers','uses'=>'AdminProjectController@enrollUsers'))->where(array('id' => '[0-9]+'));
-        Route::post('/enroll_users/{id}',array('as'=>'admin.projects.doEnrollUsers','uses'=>'AdminProjectController@doSingleEnroll'))->where(array('id' => '[0-9]+'));
+        Route::post('/enroll_user/{id}',array('as'=>'admin.projects.doEnrollUsers','uses'=>'AdminProjectController@doSingleEnroll'))->where(array('id' => '[0-9]+'));
+        Route::post('/enroll_users/{id}',array('as'=>'admin.projects.doEnrollUsers','uses'=>'AdminProjectController@doMultiEnroll'))->where(array('id' => '[0-9]+'));
+        Route::delete('/remove_user/{id}/{userID}',array('as'=>'admin.projects.doEnrollUsers','uses'=>'AdminProjectController@doRemoveUser'))->where(array('id' => '[0-9]+', 'userID' => '[0-9]+'));
         Route::get('/uploadCognos/{sem_id}', array('as'=>'admin.projects.uploadCognos', 'uses'=>'AdminProjectController@uploadCognos'))->where(array('sem_id' => '[0-9]+'));
         Route::post('/uploadCognos/{sem_id}',array('as'=>'admin.projects.uploadCognosProcess', 'uses'=>'AdminProjectController@uploadCognosProcess'))->where(array('sem_id' => '[0-9]+'));
         Route::group(array("prefix"=>"reports"),function(){
