@@ -322,7 +322,7 @@ class PrintingController extends BaseController{
         $printSubmission->status = 5;
         $printSubmission->save();
         //Send out an email that poster is ready for pickup if the poster is in an active semester
-        $semesterID = Project::getProjectUID($printSubmission->ProjectID)->Semester;
+        $semesterID = Project::where('id', '=', $printSubmission->ProjectID)->first()->Semester;
         if (Semester::where('Active', '=', true)->where('id', '=', $semesterID)->count() > 0) {
             $user = User::where("id", "=", $printSubmission->UserID)->first();
             Mail::send('emails.printing.printed', array('person' => $user, 'fileSubmission' => $printSubmission), function ($message) use ($user, $printSubmission) {
