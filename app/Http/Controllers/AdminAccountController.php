@@ -29,7 +29,7 @@ class AdminAccountController extends BaseController{
         }
         //Let's get the dollars
         $money = floatval(Input::get('amount'));
-        $money = number_format($money,2);
+        //$money = number_format($money,2);
         $account = Account::where('ClassID','=',$projectid)->first();
         //Let's make it happen
         if($cd == "CREDIT"){
