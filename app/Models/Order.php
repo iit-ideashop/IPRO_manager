@@ -59,7 +59,7 @@ class Order extends Ardent
 
     public function getStatus()
     {
-        return DB::table('orderStatus')->where('id', $this->Status)->pluck('status')[0];
+        return DB::table('orderStatus')->where('id', $this->Status)->value('status');
     }
 
     public function ApprovedPickups()
