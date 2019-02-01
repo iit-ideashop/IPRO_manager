@@ -54,7 +54,7 @@ class Item extends Ardent {
     }
     
     public function getStatus(){
-     return DB::table('itemStatus')->where('id',$this->Status)->pluck('status')[0];   
+     return DB::table('itemStatus')->where('id',$this->Status)->value('status');
     }
 
     public function PickupItem(){

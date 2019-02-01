@@ -40,7 +40,7 @@ class Project extends Ardent {
     }
     
     public static function getProjectUID($id){
-        $project = Project::where('id','=',$id)->pluck('UID');
+        $project = Project::where('id','=',$id)->value('UID');
         return $project;
     }
 

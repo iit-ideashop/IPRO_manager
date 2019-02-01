@@ -7,7 +7,7 @@ class OrderNote extends Ardent {
     }
     
     public function refersTo(){
-        return DB::table('items')->where('id',$this->ItemID)->pluck('Name'); 
+        return DB::table('items')->where('id',$this->ItemID)->value('Name');
     }
     
     public function beforeSave(){
