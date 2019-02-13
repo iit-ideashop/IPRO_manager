@@ -17,7 +17,8 @@
         "lusitanian/oauth": "dev-master",
         "oriceon/oauth-5-laravel": "dev-master",
         "phpoffice/phpspreadsheet": "1.6.*",
-        "twitter/bootstrap": "4.2.*"
+        "twitter/bootstrap": "4.2.*",
+        "ext-http": "*"
     },
     "require-dev": {
         "filp/whoops": "2.3.*",
