@@ -28,8 +28,7 @@ class AdminAccountController extends BaseController{
             return Redirect::to('/admin/accounts/editor/'.$projectid)->with('error',array('You can only credit or debit an account'));
         }
         //Let's get the dollars
-        $money = floatval(Input::get('amount'));
-        $money = number_format($money,2);
+        $money = round(floatval(Input::get('amount')), 2);
         $account = Account::where('ClassID','=',$projectid)->first();
         //Let's make it happen
         if($cd == "CREDIT"){

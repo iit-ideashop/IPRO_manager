@@ -12,7 +12,7 @@
         </tr>
         @foreach($students as $student)
             <tr>
-                <td><input type="checkbox"></td>
+                <td><input type="checkbox" name="remove-{{$student->id}}"></td>
                 <td>{{$student->FirstName}} {{$student->LastName}}</td>
                 <td>{{$student->Email}}</td>
                 <td>
@@ -46,6 +46,7 @@
 @stop
 @section('javascript_bottom')
 <script>
+    /*
     var data = [["", ""]];
 
     var container = $("#newStudentInput");
@@ -81,5 +82,6 @@
         form.submit();
     };
     container.after(submitButton);
+    */
 </script>
 @stop

@@ -69,6 +69,24 @@ class OrderController extends BaseController {
                     //Url is invalid
                     array_push($order_error, 'Link "'.$item->Link.'" for '.$item->Name.' is invalid. All links must be in form "http://website.tld".');
                     $order_has_error = true;
+                } else {
+                    // strip affiliate links, tracking, and other garbage from amazon urls
+                    // and utm analytics/tracking from everything else
+                    $components = parse_url($item->Link);
+                    if (strpos($components['host'], 'amazon.') !== false) {
+                        // amazon does not store useful information in the query string, we can ignore it completely
+                        $components['query'] = '';
+                    } else {
+                        // for non-amazon urls, strip utm tracking information
+                        parse_str($components['query'], $query_vars);
+                        foreach ($query_vars as $key => &$value) {
+                            if (starts_with($key, array("utm_", ""))) {
+                                $value = '';
+                            }
+                        }
+                        $components['query'] = http_build_query($query_vars);
+                    }
+                    $item->Link = http_build_url($components);
                 }
                 $item->PartNumber = $itemPNs[$i];
                 $item->Cost = floatval(str_replace('$','',$itemCosts[$i]));
@@ -78,7 +96,7 @@ class OrderController extends BaseController {
                 $item->Justification = $itemJustifications[$i];
                 $item->Status = 1;
                 if(!$item->validate()){
-                    //Need to make sure this model is validated1
+                    //Need to make sure this model is validated
                     array_push($order_error, 'Item '.$item->Name.' has errors, please correct them.');
                     $order_has_error = true;
                 }
@@ -94,14 +112,14 @@ class OrderController extends BaseController {
         //Next we need to check the account to make sure the account can cover this purchase
         $project = Project::find($id);
         if(!$project->isEnrolled()){
-            return Redirect::route('dashboard')->with('error',array('You must be enrolled in the class to place an order'));
+            return Redirect::route('dashboard')->with('error',array('You must be enrolled in the class to place an order.'));
         }
         $account = $project->Account()->first();
         if($grandTotal > $account->Balance){
             //Whoops, a bit over budget
             //Return to page with errors
             $order_has_error = true;
-            array_push($order_error, 'Your order is over budget and cannot be created. Please remove some items to remain in budget.');
+            array_push($order_error, 'Your order is over budget and cannot be created. Please remove some items to remain in budget or request additional funding.');
         }
         $students = $project->Users()->get();
         $enrolledStudents = array();
@@ -169,7 +187,7 @@ class OrderController extends BaseController {
             $headers = $message->getHeaders();
             $headers->addTextHeader('X-MC-PreserveRecipients', 'false');
         });
-        return Redirect::to('/project/'.$id)->with('success',array('Order Successfully created!'));
+        return Redirect::to('/project/'.$id)->with('success',array('Order successfully created!'));
             
     }
 
@@ -180,7 +198,7 @@ class OrderController extends BaseController {
         $order = Order::find(intval($orderid));
         //Make sure the order belongs to this project
         if($order->ClassID != $project->id){
-            return Redirect::route("dashboard")->with("error",array("You do not have access to view that order"));
+            return Redirect::route("dashboard")->with("error",array("You do not have access to that order."));
         }
         //Since we know the user can view the order let's generate the order page
         $orderUser = $order->User()->first();
