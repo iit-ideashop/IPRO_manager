@@ -1,24 +1,27 @@
 {
     "name": "laravel/laravel",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
-    "license": "MIT",
     "type": "project",
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
+    "license": "MIT",
     "require": {
         "php": ">=7.3.0",
-        "barryvdh/laravel-ide-helper": "v2.5.*",
+        "ext-http": "*",
+        "barryvdh/laravel-ide-helper": "2.6.*",
         "doctrine/dbal": "v2.9.*",
         "fideloper/proxy": "4.1.*",
         "guzzlehttp/guzzle": "6.3.*",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "1.0.*",
         "laravelbook/ardent": "3.*",
-        "laravelcollective/html": "5.*",
+        "laravelcollective/html": "5.7.*",
         "lusitanian/oauth": "dev-master",
         "oriceon/oauth-5-laravel": "dev-master",
         "phpoffice/phpspreadsheet": "1.6.*",
-        "twitter/bootstrap": "4.2.*",
-        "ext-http": "*"
+        "twitter/bootstrap": "4.2.*"
     },
     "require-dev": {
         "filp/whoops": "2.3.*",
@@ -30,44 +33,41 @@
         "phpunit/phpunit": "8.0.*",
         "sebastian/phpcpd": "4.1.*",
         "squizlabs/php_codesniffer": "3.*",
-        "theseer/phpdox": "0.11.*",
-        "phpmd/phpmd" : "2.6.*"
+        "phpmd/phpmd": "2.6.*"
     },
     "autoload": {
-	"classmap": [
-		"app/Http/Controllers",
-		"app/Console/Commands",
-		"app/Models",
-		"database/migrations",
-		"database/seeds"
-	],
-
         "psr-4": {
             "App\\": "app/"
-        }
+        },
+        "classmap": [
+            "app/Console/Commands",
+            "app/Http/Controllers",
+            "app/Models",
+            "database/migrations",
+            "database/seeds"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
         }
     },
-    "extra": {
-        "laravel": {
-            "dont-discover": [
-            ]
-        }
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
     },
     "scripts": {
-	"post-install-cmd": [
-	  "php artisan clear-compiled",
-	  "php artisan ide-helper:generate",
-	  "php artisan optimize"
-	],
-	"post-update-cmd": [
-		"php artisan clear-compiled",
-		"php artisan optimize"
-	],
-	"post-root-package-install": [
+        "post-install-cmd": [
+            "php artisan clear-compiled",
+            "php artisan ide-helper:generate",
+            "php artisan optimize"
+        ],
+        "post-update-cmd": [
+            "php artisan clear-compiled",
+            "php artisan optimize"
+        ],
+        "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
@@ -78,10 +78,9 @@
             "@php artisan package:discover"
         ]
     },
-    "config": {
-        "preferred-install": "dist",
-        "sort-packages": true,
-        "optimize-autoloader": true
-    },
-    "minimum-stability": "stable"
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    }
 }

@@ -117,10 +117,7 @@ Route::group(array('middleware'=>['iit_user']),function(){
 
 //**** Admin Routes *****//
 Route::group(array('prefix' => 'admin', 'middleware'=>['auth_admin']), function(){
-    Route::get("phpinfo", function(){
-        phpinfo();
-        exit;
-    });
+    Route::get('phpinfo', array('as'=>'admin.phpinfo', 'uses'=>'AdminController@phpinfo'));
 
     Route::group(array('prefix'=>'orders'), function(){
         //admin/orders group
