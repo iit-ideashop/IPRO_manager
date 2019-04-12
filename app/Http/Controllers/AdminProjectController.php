@@ -452,10 +452,13 @@ class AdminProjectController extends BaseController{
                     $peopleProject->ClassID = $course->id;
                     $peopleProject->AccessType = 1;
                     $peopleProject->save();
-                    array_push($log_array, "Added ".$user->FirsrName." ".$user->LastName."(".$user->Email.") to ".$course->UID);
-                    Mail::send('emails.project.registered', array('person'=>$user,'project'=>$course), function($message) use($user){
-                        $message->to($user->Email,$user->FirstName.' '.$user->LastName)->subject('Welcome to IPRO Manager!');
-                    });
+                    array_push($log_array, "Added ".$user->FirstName." ".$user->LastName."(".$user->Email.") to ".$course->UID);
+
+                    if (Input::get('notifyStudents')) {
+                        Mail::send('emails.project.registered', array('person' => $user, 'project' => $course), function ($message) use ($user) {
+                            $message->to($user->Email, $user->FirstName . ' ' . $user->LastName)->subject('Welcome to IPRO Manager!');
+                        });
+                    }
                 }
             }
         }
@@ -496,10 +499,12 @@ class AdminProjectController extends BaseController{
                         $user = User::where("Email", '=', $databaseLine[1][$i][3])->first();
                         $registration = PeopleProject::where('ClassID', '=', $course->id)->where("UserID", '=', $user->id)->first();
                         $registration->delete();
-                        array_push($log_array, "Dropped ".$user->FirsrName." ".$user->LastName."(".$user->Email.") from ".$course->UID);
-                        Mail::send('emails.project.dropped', array('person'=>$user,'project'=>$course), function($message) use($user){
-                            $message->to($user->Email,$user->FirstName.' '.$user->LastName)->subject('IPRO Manager update!');
-                        });
+                        array_push($log_array, "Dropped ".$user->FirstName." ".$user->LastName."(".$user->Email.") from ".$course->UID);
+                        if (Input::get('notifyStudents')) {
+                            Mail::send('emails.project.dropped', array('person' => $user, 'project' => $course), function ($message) use ($user) {
+                                $message->to($user->Email, $user->FirstName . ' ' . $user->LastName)->subject('IPRO Manager update!');
+                            });
+                        }
                     }
                 }
             }

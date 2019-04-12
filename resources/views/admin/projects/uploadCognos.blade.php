@@ -64,6 +64,11 @@ In this section we can apply team budgets to newly created teams. If you would l
         <label for="initialBudget">Initial Budget:</label>
         <input type="text" class="form-control" name="initialBudget" id="initialBudget">
     </div>
+
+<h2 class="sub-header">Step 3: Send emails</h2>
+<div class="checkbox">
+    <label><input type="checkbox" checked name="notifyStudents" /> Send an email to students who were enrolled or dropped in this update</label>
+</div>
 <h2 class="sub-header">Step 4: Run</h2>
 {{ Form::submit("Update IPRO Manager", array('class'=>'btn btn-primary')) }}
 
