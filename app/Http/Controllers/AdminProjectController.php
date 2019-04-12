@@ -287,7 +287,7 @@ class AdminProjectController extends BaseController{
             return Redirect::route('admin.projects.uploadCognos',$semester->id)->with('error',array('Please make sure you are uploading the correct cognos report in .xlsx format'));
         }
         //Let's take that uploaded file and run it through php excel.
-        $excelReader = PHPExcel_IOFactory::createReader('Excel2007');
+        $excelReader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
         $readerObject = $excelReader->load($cognosFile->getRealPath());
         //Quick check to make sure we have the right file
         if($readerObject->getActiveSheet()->getCell('A1')->getValue() != 'Class List by Campus'){
