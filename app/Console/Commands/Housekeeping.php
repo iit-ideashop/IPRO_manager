@@ -41,7 +41,8 @@ class Housekeeping extends Command {
 	{
         //This script will fire every hour on the hour and we have to control what gets emailed out.
         //Get the current time
-        $hour = date("G",time());
+        //$hour = date("G",time());
+        $hour = localtime(time(), true)['tm_hour'];
         //Based on the hour we will run certain code
         //$this->info('the current hour is: '.$hour);
         //Start by pulling semester
