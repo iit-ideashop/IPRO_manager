@@ -1,7 +1,7 @@
 <?php
 namespace App\Console\Commands;
 
-use Semester, Order, Item, DistributionList, User;
+use Semester, Order, Item, DistributionList, User, PrintSubmission;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
