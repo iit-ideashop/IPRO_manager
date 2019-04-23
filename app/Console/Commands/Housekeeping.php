@@ -4,8 +4,6 @@ namespace App\Console\Commands;
 use Semester, Order, Item, DistributionList, User, PrintSubmission;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 use Illuminate\Support\Facades\Mail;
 
 class Housekeeping extends Command {
@@ -45,7 +43,7 @@ class Housekeeping extends Command {
         //Get the current time
         $hour = date("G",time());
         //Based on the hour we will run certain code
-        $this->info('the current hour is: '.$hour);
+        //$this->info('the current hour is: '.$hour);
         //Start by pulling semester
 		$semester = Semester::where('active','=',true)->first();//Pull the last active semester
 		//Pull the projects so we are only looking at orders for those projects
@@ -54,7 +52,7 @@ class Housekeeping extends Command {
 
         //This will only run at hour 8,16
         if (($hour == 8)||($hour == 16)){
-            $this->info('Processing Prototyping lab orders');
+            //$this->info('Processing Prototyping lab orders');
             //Check for items that belong to Proto lab tag
             $order_ids = Order::whereIn('ClassID', $project_ids)->pluck('id');
             $items = Item::whereIn('OrderID', $order_ids)->where('status', '=', '7')->get();
@@ -73,7 +71,7 @@ class Housekeeping extends Command {
         }
 
         if(($hour == 9)||($hour == 13)||($hour == 16)){
-            $this->info('Processing Print shop queue');
+            //$this->info('Processing Print shop queue');
             //Send the email to print admins that there are prints in the queue awaiting print and are from this semester
             $printSubmissions = PrintSubmission::where("status","=",3)->whereIn("ProjectID",$project_ids)->get();
             if(!$printSubmissions->isEmpty()){
@@ -89,7 +87,7 @@ class Housekeeping extends Command {
             }
         }
 
-		$this->info('successfully completed housekeeping script');
+		//$this->info('successfully completed housekeeping script');
 		return true;
 	}
 	/**
