@@ -870,7 +870,7 @@ body.outlook p {
                               </tr>
                             </table>
 
-                            <br>
+                            <br />
 
                             <table class="tiny-button twitter">
                               <tr>
@@ -880,7 +880,7 @@ body.outlook p {
                               </tr>
                             </table>
 
-                            <br>
+                            <br />
 
                             <table class="tiny-button google-plus">
                               <tr>

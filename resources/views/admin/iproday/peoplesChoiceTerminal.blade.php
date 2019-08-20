@@ -33,10 +33,10 @@
         <div class="col-lg-12">
             <div class="row jumbotron" id="indexPage">
                 <div class="col-xs-10 col-xs-offset-1 " style="text-align: center">
-                    <h2>Welcome to IPRO Day Spring 2015</h2><br><br><h2>Peoples Choice Voting</h2><br><br>
-                    <img src="{{ URL::asset("packages/images/hawkcard.jpg") }}"><br>
-                    <i class="fa fa-caret-down fa-4x"></i><br>
-                    <h2>Please scan your ID to continue</h2><br>
+                    <h2>Welcome to IPRO Day Spring 2015</h2><br /><br /><h2>Peoples Choice Voting</h2><br /><br />
+                    <img src="{{ URL::asset("packages/images/hawkcard.jpg") }}"><br />
+                    <i class="fa fa-caret-down fa-4x"></i><br />
+                    <h2>Please scan your ID to continue</h2><br />
                         {{ Form::open() }}
                         {{ Form::text("firstName",null,array("id"=>"firstName","autocomplete"=>"off","style"=>"opacity:0","tabindex"=>"1")) }}
                         {{ Form::text("lastName",null,array("id"=>"lastName","autocomplete"=>"off","style"=>"opacity:0","tabindex"=>"2")) }}
@@ -46,7 +46,7 @@
             </div>
             <div class="row jumbotron" id="loadingPage" style="display: none;">
                 <div class="col-xs-10 col-xs-offset-1 " style="text-align: center">
-                    <h2>One moment as we validate your ID...</h2><br><br>
+                    <h2>One moment as we validate your ID...</h2><br /><br />
                     <i class="fa fa-cog fa-4x fa-spin"></i></div>
             </div>
             <div class="row jumbotron" id="errorPage" style="display: none;">
@@ -55,26 +55,26 @@
             </div>
             <div class="row jumbotron" id="trackListingPage" style="display: none;">
                 <div class="col-xs-12" style="text-align: center">
-                    <h2>Please select your vote for Peoples Choice, <span id="trackListingFirstName"></span></h2><br><br>
+                    <h2>Please select your vote for Peoples Choice, <span id="trackListingFirstName"></span></h2><br /><br />
                     <div class="row" id="trackListingDiv"></div>
                 </div>
             </div>
             <div class="row jumbotron" id="projectListing" style="display: none;">
                 <div class="col-xs-12" style="text-align: center">
-                    <h2>Please select your vote for Peoples Choice</h2><br><br>
+                    <h2>Please select your vote for Peoples Choice</h2><br /><br />
                         <div id="projectListingDiv"></div>
                     </div>
             </div>
             <div class="row jumbotron" id="confirmVotePage" style="display: none;">
                 <div class="col-xs-12" style="text-align: center">
-                    <h2>Please confirm your selection</h2><br><br>
-                    <h2>You are voting for:</h2><br>
+                    <h2>Please confirm your selection</h2><br /><br />
+                    <h2>You are voting for:</h2><br />
                     <div id="confirmVoteProject"></div>
                 </div>
             </div>
             <div class="row jumbotron" id="voteSubmittingPage" style="display: none;">
                 <div class="col-xs-12" style="text-align: center">
-                    <h2>Submitting your vote...</h2><br><br>
+                    <h2>Submitting your vote...</h2><br /><br />
                     <i class="fa fa-cog fa-4x fa-spin"></i>
                 </div>
             </div>
@@ -170,18 +170,18 @@
     }
 
     function showProjectListing(trackid){
-        //<a href="#" class="btn btn-default btn-lg"><h2>IPRO 397-200-A Rock-Your-Baby</h2></a><br><br>
+        //<a href="#" class="btn btn-default btn-lg"><h2>IPRO 397-200-A Rock-Your-Baby</h2></a><br /><br />
         $("#projectListingDiv").html("");
         $.each(tracks, function(key,value){
             if(key == trackid){
                 var classes = value["classes"];
                 console.log(classes);
                 $.each(classes, function(arrayindex,projectdata){
-                    $("#projectListingDiv").append('<button class="btn btn-default btn-lg" onClick="selectProject('+projectdata.id+')"><h2>'+projectdata.UID+' '+projectdata.Name+'</h2></button><br><br>');
+                    $("#projectListingDiv").append('<button class="btn btn-default btn-lg" onClick="selectProject('+projectdata.id+')"><h2>'+projectdata.UID+' '+projectdata.Name+'</h2></button><br /><br />');
                 });
             }
         });
-        $("#projectListingDiv").append('<button class="btn btn-default btn-lg" onclick="showTrackListing()"><h2><i class="fa fa-chevron-left"></i> Back to Track Listing</h2></button><br><br>');
+        $("#projectListingDiv").append('<button class="btn btn-default btn-lg" onclick="showTrackListing()"><h2><i class="fa fa-chevron-left"></i> Back to Track Listing</h2></button><br /><br />');
         $("#trackListingPage").slideUp(400);
         $("#projectListing").slideDown(400);
     }
@@ -191,8 +191,8 @@
                 var classes = value["classes"];
                 $.each(classes, function(arrayindex,projectdata){
                     if(projectdata.id == projectid){
-                        $("#confirmVoteProject").html('<h2>'+projectdata.UID+' '+projectdata.Name+'</h2><br>' +
-                        '<button class="btn btn-primary btn-lg btn-block" onClick="submitVote('+projectid+')">Confirm</button><br><br>' +
+                        $("#confirmVoteProject").html('<h2>'+projectdata.UID+' '+projectdata.Name+'</h2><br />' +
+                        '<button class="btn btn-primary btn-lg btn-block" onClick="submitVote('+projectid+')">Confirm</button><br /><br />' +
                         '<button class="btn btn-danger btn-lg btn-block" onClick="showTrackListing()">Back to Track Listing</button>');
                     }
                 });

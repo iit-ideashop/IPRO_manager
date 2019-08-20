@@ -6,8 +6,8 @@
         <h3 class="panel-title">User information</h3>
     </div>
     <div class="panel-body">
-        Name: {{$student->FirstName}} {{$student->LastName}}<br>
-        Email: {{$student->Email}}<br>
+        Name: {{$student->FirstName}} {{$student->LastName}}<br />
+        Email: {{$student->Email}}<br />
     </div>
 </div>
 <ul class="list-group">
@@ -43,7 +43,7 @@
     </div>
 </div>
 @endif
-<br>
+<br />
 <div class="row">
     <div class="col-xs-5">
         {{ Form::open(array("route"=>array("admin.order.pickup.redo",$pickup->id))) }}

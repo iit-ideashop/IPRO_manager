@@ -41,13 +41,12 @@
 @stop
 @section('content')
 <h2 class="sub-header">Uploading Cognos report for {{ $semester->Name }}</h2>
-Hi there!<br>
 This tool is used to upload a cognos report to IPRO Manager and have it automatically populate IPRO Manager with students and projects. You can also configure initial budgets and teambuilding dollars via this page
 so that teams are automatically assigned teambuilding money and budget money.
 {{ Form::open(array('files'=>true)) }}
 <h2 class="sub-header">Step 1: Upload cognos report</h2>
-Please upload the most recent cognos report. The registrar file this script uses can be found under SharedReports -> ODS -> Active Registration -> Registrar's Office -> "Class List with Student Program" -> Make sure you run a 2007 Excel Report.<br>
-<br>
+Please upload the most recent cognos report. The file that this script uses can be found under SharedReports -> ODS -> Active Registration -> Registrar's Office -> "Class List with Student Program". Make sure you run a 2007 Excel Report.<br />
+<br />
 <div class="input-group">
                 <span class="input-group-btn">
                     <span class="btn btn-primary btn-file">

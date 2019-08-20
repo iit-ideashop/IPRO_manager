@@ -32,7 +32,7 @@
                 </div>
                 <div class="col-xs-6">
                     <div class="form-group">
-                        {{ HTML::decode(Form::label('idnumber','Identification Number <br> Format: (Last 4 ID - Address Digits - ZipCode)')) }}
+                        {{ HTML::decode(Form::label('idnumber','Identification Number <br /> Format: (Last 4 ID - Address Digits - ZipCode)')) }}
                         {{ Form::text('idnumber',null,array('class'=>'form-control','placeholder'=>'1234-4567-60616',"tabindex"=>"5")) }}
                     </div>
                 </div>
@@ -45,7 +45,7 @@
             <div class="form-group">
                 {{ Form::label('lastName','Last Name') }}
                 {{ Form::text('lastName',null,array('class'=>'form-control','placeholder'=>'Smith',"tabindex"=>"2")) }}
-            </div><br>
+            </div><br />
             <div class="form-group">
                 {{ Form::label('projectid','Project') }}
                 <input type="text" id="project-listing" class="form-control" tabindex="6">

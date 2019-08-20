@@ -31,34 +31,33 @@
         </style>
         <script src="{{ URL::asset('packages/bootstrap/js/jquery-1.11.1.js')}}"></script>
         <script src="{{ URL::asset('packages/bootstrap/js/JsBarcode.all.min.js')}}"></script>
+        <script>
+            $(function() {
+                @foreach($items as $item)
+                    $("#bc{{ $item->barcode }}").JsBarcode("{{$item->barcode}}",{format:"CODE39",displayValue:true,fontSize:20,quite:5, width:1,height:35});
+                @endforeach
+            });
+        </script>
     </head>
     <body onload="window.print()">
-        <?php $first = true;?>
         @foreach($items as $item)
-            <?php 
-            $order = $item->Order()->first();
-            $project = $order->Project()->first(); 
-            ?>
-        @if($first)
-        <div class="label-first">
-        <?php $first = false; ?>
-        @else
-        <div class="label">
-        @endif
-        <br>
+            @php
+                $order = $item->Order()->first();
+                $project = $order->Project()->first();
+            @endphp
+            @if($loop->first)
+                <div class="label-first">
+            @else
+                <div class="label">
+            @endif
+            <br />
             <h1 class="nomarginheadings">{{ $project->UID }}</h1>
             <h3 class="nomarginheadings">{{ User::getFullNameWithId($order->PeopleID)}}</h3>
             <h3 class="nomarginheadings">{{$item->Name}}</h3>
             <div class="barcode">
-                <img id="bc{{ $item->barcode }}"><br>
-                
+                <img id="bc{{ $item->barcode }}"><br />
             </div> 
        </div>
         @endforeach
     </body>
-    <script>
-        @foreach($items as $item)
-        $("#bc{{ $item->barcode }}").JsBarcode("{{$item->barcode}}",{format:"CODE39",displayValue:true,fontSize:20,quite:5, width:1,height:35});
-        @endforeach
-    </script>
 </html>

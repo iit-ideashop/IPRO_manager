@@ -212,12 +212,12 @@
                             $("#group-collapse-"+internalData[0][0]+"-body").append('<div class="panel panel-default">'+
                             '<div class="panel-body" id="group-'+internalData[0][0]+'-controlPanel">'+
                             '</div>'+
-                            '</div><br>');
+                            '</div><br />');
                             //Build the control panel
                             $("#group-"+internalData[0][0]+"-controlPanel").append('<div class="row"><div class="col-xs-10"><div class="form-group">'+
                             '<label for="enrollStudent">Enroll Student</label>'+
                             '<input type="text" class="form-control" id="enrollStudent-'+internalData[0][0]+'" placeholder="Start typing students name...">'+
-                            '</div></div><div class="col-xs-2"><br><button id="transfer-funds-'+internalData[0][0]+'" class="btn btn-success">Transfer Funds</button></div></div>');
+                            '</div></div><div class="col-xs-2"><br /><button id="transfer-funds-'+internalData[0][0]+'" class="btn btn-success">Transfer Funds</button></div></div>');
                             $("#enrollStudent-"+internalData[0][0]).autocomplete({
                                 lookup: enrolledStudentArray,
                                 onSelect: function (suggestion) {

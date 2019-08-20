@@ -14,7 +14,7 @@
             <h5>Override the pickup contract</h5>
             <p>Reason for override: </p>
             {{ Form::open(array("route"=>array("admin.order.pickup.override", $pickup->id))) }}
-            {{ Form::textarea("overrideText",null,array("class"=>"form-control","rows"=>"3")) }}<br>
+            {{ Form::textarea("overrideText",null,array("class"=>"form-control","rows"=>"3")) }}<br />
             {{ Form::submit("Override User Approval",array("class"=>"btn btn-primary")) }}
             {{ Form::close() }}
         </div>

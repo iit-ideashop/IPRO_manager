@@ -27,13 +27,13 @@
     </head>
     <body onload="window.print();">
         <div class="label">
-        <br>
-            <h1 class="nomarginheadings">{{ $printSubmission->file_type }}</h1><br><br>
-            <h5 class="nomarginheadings">{{ $printSubmission->original_filename }}</h5><br>
-            <h5 class="nomarginheadings">Job_{{ $printSubmission->id }}.pdf</h5><br>
+        <br />
+            <h1 class="nomarginheadings">{{ $printSubmission->file_type }}</h1><br /><br />
+            <h5 class="nomarginheadings">{{ $printSubmission->original_filename }}</h5><br />
+            <h5 class="nomarginheadings">Job_{{ $printSubmission->id }}.pdf</h5><br />
             <h5 class="nomarginheadings">{{ date('D F jS Y, g:i a', strtotime($printSubmission->created_at)) }}</h5>
             <div class="barcode">
-                <img id="bc{{ $printSubmission->barcode }}"><br>
+                <img id="bc{{ $printSubmission->barcode }}"><br />
                 
             </div> 
        </div>

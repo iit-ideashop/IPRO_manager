@@ -2,16 +2,16 @@
 
 
 @section('content')
-<b>Join us for IPRO Day!</b><br>
-<br>
-{{ date('l, F j, Y',strtotime($iproday->eventDate)) }}<br>
-{{ date('g:i a',strtotime($iproday->guestsStart)) }} - {{ date('g:i a',strtotime($iproday->guestsEnd)) }}<br>
-Judge's Breakfast: {{ date('g:i a',strtotime($iproday->judgesStart)) }}<br>
-<br>
-<a href="{{ $iproday->locationLink }}">{{ $iproday->location }}</a><br>
+<b>Join us for IPRO Day!</b><br />
+<br />
+{{ date('l, F j, Y',strtotime($iproday->eventDate)) }}<br />
+{{ date('g:i a',strtotime($iproday->guestsStart)) }} - {{ date('g:i a',strtotime($iproday->guestsEnd)) }}<br />
+Judge's Breakfast: {{ date('g:i a',strtotime($iproday->judgesStart)) }}<br />
+<br />
+<a href="{{ $iproday->locationLink }}">{{ $iproday->location }}</a><br />
 <p>
     Professionals from the Chicago area are invited to attend as Guests or serve as Judges. Volunteer Guests and Judges at IPRO Day are able to network with other professionals who are passionate about education, engineering, and design while interacting with some of the most talented students in the U.S. and learning about cutting-edge research at IIT. The IPRO Day event is the culmination of IPRO team work via exhibits. See IPRO Team descriptions here.
-    <br><br>
+    <br /><br />
     Your support of the IPRO Progam is greatly appreciated!
 </p>
 {{ Form::open(array('class'=>'form-horizontal')) }}
@@ -70,7 +70,7 @@ Judge's Breakfast: {{ date('g:i a',strtotime($iproday->judgesStart)) }}<br>
 <div class="form-group">
     {{ Form::label('attendeetype','I would like to attend as a',array('class'=>'col-xs-2 control-label')) }}
     <div class="col-xs-4">
-        {{ Form::radio('attendeetype','Guest')}} Guest <br>
+        {{ Form::radio('attendeetype','Guest')}} Guest <br />
         {{ Form::radio('attendeetype','Judge')}} Judge
     </div> 
 </div>
@@ -79,7 +79,7 @@ Judge's Breakfast: {{ date('g:i a',strtotime($iproday->judgesStart)) }}<br>
     {{ Form::label('judgedBefore','FOR JUDGES: Have you judged IPRO before?',array('class'=>'col-xs-2 control-label')) }}
     <div class="col-xs-4">
 
-        {{ Form::radio('judgedBefore','1') }} Yes <br>
+        {{ Form::radio('judgedBefore','1') }} Yes <br />
         {{ Form::radio('judgedBefore','0') }} No
         </div>
 </div>
@@ -88,7 +88,7 @@ Judge's Breakfast: {{ date('g:i a',strtotime($iproday->judgesStart)) }}<br>
         <div class="col-xs-offset-2 col-xs-10">
         <b>Judges, please note:</b> Teams are still being sorted into Tracks.
     We will email you when Track Selection is available.
-    </div></div><br>
+    </div></div><br />
 @else
 <div class="form-group">
     <div class="col-xs-offset-2 col-xs-4">

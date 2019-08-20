@@ -7,8 +7,8 @@
             <h3 class="panel-title">User information</h3>
         </div>
         <div class="panel-body">
-            Name: {{$student->FirstName}} {{$student->LastName}}<br>
-            Email: {{$student->Email}}<br>
+            Name: {{$student->FirstName}} {{$student->LastName}}<br />
+            Email: {{$student->Email}}<br />
         </div>
     </div>
     <ul class="list-group">

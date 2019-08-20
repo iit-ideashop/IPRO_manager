@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-xs-5 col-xs-offset-1 verticalDivider">
             <div style="text-align: center">
-                <i class="fa fa-photo fa-5x"></i><br>
+                <i class="fa fa-photo fa-5x"></i><br />
                 <h3 style="text-decoration: underline">Submit a Poster</h3>
                 <p>Approved sizes</p>
                 <p>36 x 24</p>
@@ -20,7 +20,7 @@
         </div>
         <div class="col-xs-5">
             <div style="text-align: center">
-                <i class="fa fa-file-o fa-5x"></i><br>
+                <i class="fa fa-file-o fa-5x"></i><br />
                 <h3 style="text-decoration: underline">Submit a Brochure</h3>
                 <p>Approved sizes</p>
                 <p>8.5 x 11</p>
@@ -246,7 +246,7 @@
                 $("#file"+file_id+"status").html('<div style="text-align: center">The file you uploaded does not meet our dimension specifications. '+
                         'If you are certain the file you uploaded has correct dimensions you can override this message and submit the file. '+
                         'If we find that the file dimensions are not correct we will reject your submission and you will have to resubmit the file. '+
-                        '<br>Override? <br><button class="btn btn-danger" onclick="deleteSubmission('+file_id+')">No, Delete this submission</button> ' +
+                        '<br />Override? <br /><button class="btn btn-danger" onclick="deleteSubmission('+file_id+')">No, Delete this submission</button> ' +
                         '<button class="btn btn-success" onclick="approveSubmission('+file_id+')">Yes, override my file</button></div>');
             }else{
                 $("#file"+file_id+"status").html(textstatus);

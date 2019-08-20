@@ -25,7 +25,7 @@
           <div class="col-sm-6">Order Name: {{ Form::text('Description',null,array('class'=>'form-control','tabindex'=>'1','required'))}}</div>
           <div class="col-sm-6">Phone number: {{ Form::text('Phone',null,array('class'=>'form-control','tabindex'=>'2')) }}</div>
       </div>
-      <br>
+      <br />
           <div class="panel-group" id="approvedPickup">
   <div class="panel panel-default">
     <div class="panel-heading">

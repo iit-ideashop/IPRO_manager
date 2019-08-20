@@ -61,7 +61,7 @@
                 <div class="col-sm-6">Name: {{ $project->Name }}</div>
                 <div class="col-sm-6">Remaining Balance: ${{ number_format($account->Balance,2)}}</div>
             </div>
-            <br>
+            <br />
             <h3 class="page-header">Budget Information</h3>
             <div class="table-responsive">
     <table class="table table-striped" id="BudgetListing">
@@ -375,7 +375,7 @@
       <div class="modal-body">
 
           {{ Form::model($item,array('route'=> array('admin.item.delete',$item->id),'class'=>'form-horizontal'))}}
-          Are you sure you want to delete  the item <b>{{ $item->Name}}</b>?<br>
+          Are you sure you want to delete the item <b>{{ $item->Name}}</b>?<br />
           <h6>Items should usually be marked as Cancelled and not deleted</h6>
       </div>
       <div class="modal-footer">

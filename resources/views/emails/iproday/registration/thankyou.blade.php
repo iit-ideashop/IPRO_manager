@@ -305,22 +305,22 @@
                                                                     	<h1><span style="color:#000080"><strong><span style="font-family:tahoma,verdana,segoe,sans-serif">Thank you for Registering!</span></strong></span><span style="font-size:14px"><span style="font-family:verdana,geneva,sans-serif">
                                                                                 </span></span></h1>
                                                                             <span style="font-size:14px">
-        Dear {{ $registrant->firstName}} {{ $registrant->lastName}},<br>
-    Thank you for registering to be a {{$registration->type}} at our IPRO Day event.<br>
-        </span><br>
-<span style="color:#000080"><span style="font-family:verdana,geneva,sans-serif"><span style="font-size:14px"><strong>Event Details</strong></span></span></span><br>
+        Dear {{ $registrant->firstName }} {{ $registrant->lastName }},<br />
+    Thank you for registering to be a {{ $registration->type }} at our IPRO Day event.<br />
+        </span><br />
+<span style="color:#000080"><span style="font-family:verdana,geneva,sans-serif"><span style="font-size:14px"><strong>Event Details</strong></span></span></span><br />
     
     <span style="font-size:14px">
-        IPRO Day<br>
-        {{ date('l, F j, Y',strtotime($iproday->eventDate)) }}<br>
-{{ date('g:i a',strtotime($iproday->guestsStart)) }} - {{ date('g:i a',strtotime($iproday->guestsEnd)) }}<br>
-    Judge's Breakfast: {{ date('g:i a',strtotime($iproday->judgesStart)) }}<br><br>
-    Location:<br> {{ $iproday->location }}
+        IPRO Day<br />
+        {{ date('l, F j, Y',strtotime($iproday->eventDate)) }}<br />
+{{ date('g:i a',strtotime($iproday->guestsStart)) }} - {{ date('g:i a',strtotime($iproday->guestsEnd)) }}<br />
+    Judge's Breakfast: {{ date('g:i a',strtotime($iproday->judgesStart)) }}<br /><br />
+    Location:<br /> {{ $iproday->location }}
         </br>
-    We will send you more detailed information including a schedule and a parking pass as our event draws closer.<br><br>
-            If you have any questions, please contact the IPRO office, by email at <a href='mailto:ipro@iit.edu'>ipro@iit.edu</a> or by phone at <a href="tel:3125673162">(312) 567-3162</a><br><br>Thank you again for registering and we look forward to seeing you at IPRO Day!</br></br>
-    </span><br>
-<br>
+    We will send you more detailed information including a schedule and a parking pass as our event draws closer.<br /><br />
+            If you have any questions, please contact the IPRO office by email at <a href='mailto:ipro@iit.edu'>ipro@iit.edu</a> or by phone at <a href="tel:3125673162">(312) 567-3162</a><br /><br />Thank you again for registering and we look forward to seeing you at IPRO Day!</br></br>
+    </span><br />
+<br />
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -349,18 +349,18 @@
                                                 	<tr>
                                                     	<td valign="top" width="170" class="footerContent" mc:edit="footer_left"><h4>
 	CONTACT US</h4>
-<a href="mailto:ipro@iit.edu?subject=Inquiry%20about%20IPRO%20Day" target="_self">ipro@iit.edu</a><br>
-312.567.3448<br>
+<a href="mailto:ipro@iit.edu?subject=Inquiry%20about%20IPRO%20Day" target="_self">ipro@iit.edu</a><br />
+312.567.3448<br />
 </td>
                                                         <td width="25">
-                                                        	<br>
+                                                        	<br />
                                                         </td>
                                                     	<td valign="top" width="170" class="footerContent" mc:edit="footer_center"><h4>
 	IPRO OFFICE HOURS</h4>
-Mon-Fri&nbsp;&nbsp;&nbsp; 9am-5pm<br>
+Mon-Fri&nbsp;&nbsp;&nbsp; 9am-5pm<br />
 </td>
                                                         <td width="25">
-                                                        	<br>
+                                                        	<br />
                                                         </td>
                                                     	<td valign="top" width="170" class="footerContent" mc:edit="footer_right"><h4>
 	VISIT US ONLINE</h4>
@@ -370,12 +370,12 @@ Mon-Fri&nbsp;&nbsp;&nbsp; 9am-5pm<br>
                                             </td>
                                         </tr>
                                     	<tr>
-                                            <td valign="top" class="footerContent" style="padding-right:20px;" mc:edit="footer"><em>Copyright &copy; {{ date('Y',time()) }} Illinois Instititute of Technology - IPRO, All rights reserved.</em><br>
-<br>
-<strong>Our mailing address is:</strong><br>
-    3440 S. Dearborn St.<br>
-        Suite 050<br>
-            Chicago, IL 60616<br>
+                                            <td valign="top" class="footerContent" style="padding-right:20px;" mc:edit="footer"><em>Copyright &copy; {{ date('Y',time()) }} Illinois Instititute of Technology - IPRO, All rights reserved.</em><br />
+<br />
+<strong>Our mailing address is:</strong><br />
+    3440 S. Dearborn St.<br />
+        Suite 050<br />
+            Chicago, IL 60616<br />
             <a href="tel:3125673162">312-567-3162</a></td>
                                         </tr>
                                         <tr>

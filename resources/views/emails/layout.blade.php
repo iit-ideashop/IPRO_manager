@@ -645,7 +645,7 @@
                         @show
                         <table class="tableGray" cellpadding="3px" cellspacing="3px" width="100%">
 <tr><td><h3>Questions?</h3></td></tr>
-<tr><td class="redLink coloredLinks"><a class="whiteLink" href="mailto:ipro@iit.edu">Email us &middot; ideashop@iit.edu</a></td></tr>
+<tr><td class="redLink coloredLinks"><a class="whiteLink" href="mailto:ipro@iit.edu">Email us &middot; ipro@iit.edu</a></td></tr>
 <tr><td></td></tr>
 <tr><td class="blueLink coloredLinks"><a class="whiteLink" href="tel:3125673162">Call us &middot; 312-567-3162</a></td></tr>
 <tr><td></td></tr>

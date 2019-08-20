@@ -36,7 +36,7 @@
                 : {{ User::getFullNameWithId($printSubmission->pickup_UserID) }}
             @endif
             @if(($printSubmission->status == 7) &&($printSubmission->reject_comments != NULL))
-                <br>{{ nl2br($printSubmission->reject_comments) }}
+                <br />{{ nl2br($printSubmission->reject_comments) }}
             @endif</td>
             <td></td>
         </tr>

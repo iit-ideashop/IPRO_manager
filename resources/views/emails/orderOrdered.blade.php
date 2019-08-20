@@ -14,7 +14,7 @@
 </td>
 </tr>
 </table>
-<br>
+<br />
 <table class="tableGray" width="100%" cellpadding="3px" cellspacing="3px">
  <tr>
   <td><b>Item Name</b></td>
