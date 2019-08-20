@@ -1,5 +1,6 @@
 <?php
-
+use Http\Url;
+use Http\QueryString;
 
 class OrderController extends BaseController {
 
@@ -72,21 +73,23 @@ class OrderController extends BaseController {
                 } else {
                     // strip affiliate links, tracking, and other garbage from amazon urls
                     // and utm analytics/tracking from everything else
-                    $components = parse_url($item->Link);
-                    if (strpos($components['host'], 'amazon.') !== false) {
+                    $url = new Url($item->Link);
+                    if (strpos($url->host, 'amazon.') !== false) {
                         // amazon does not store useful information in the query string, we can ignore it completely
-                        $components['query'] = '';
+                        $url->query = NULL;
                     } else {
                         // for non-amazon urls, strip utm tracking information
-                        parse_str($components['query'], $query_vars);
-                        foreach ($query_vars as $key => &$value) {
+                        $query_vars = new QueryString();
+                        $query_vars->unserialize($url->query);
+
+                        foreach ($query_vars->toArray() as $key => &$value) {
                             if (starts_with($key, array("utm_", ""))) {
                                 $value = '';
                             }
                         }
-                        $components['query'] = http_build_query($query_vars);
+                        $url->query = $query_vars->toString();
                     }
-                    $item->Link = http_build_url($components);
+                    $item->Link = $url->toString();
                 }
                 $item->PartNumber = $itemPNs[$i];
                 $item->Cost = floatval(str_replace('$','',$itemCosts[$i]));
