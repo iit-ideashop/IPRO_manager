@@ -18,9 +18,9 @@ class AdminAccountController extends BaseController{
         $gl = new LedgerEntry;
         //Grab the posted entry type
         $entryType = Input::get('entryType');
-        $allowedTypes = array('RECONCILE','OTHER','REIMBURSEMENT');
+        $allowedTypes = array('RECONCILE', 'BUDGET', 'OTHER', 'REIMBURSEMENT');
         $cd = Input::get('creditdebit');
-        $allowedCD = array('CREDIT','DEBIT');
+        $allowedCD = array('CREDIT', 'DEBIT');
         if(!in_array($entryType, $allowedTypes)){
             return Redirect::to('/admin/accounts/editor/'.$projectid)->with('error',array('That Entry type is not allowed'));
         }

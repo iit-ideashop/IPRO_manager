@@ -20,7 +20,7 @@
                     {{ Form::open() }}
                     <div class="form-group">
                         <label for="entryType">Entry Type</label>
-                        {{Form::select('entryType', array('RECONCILE' => 'Reconcile', 'OTHER' => 'Other','REIMBURSEMENT'=>'Reimbursement'),null,array('class'=>'form-control'))}}
+                        {{Form::select('entryType', array('RECONCILE' => 'Reconcile', 'BUDGET' => 'Budget', 'OTHER' => 'Other', 'REIMBURSEMENT' => 'Reimbursement'),null,array('class'=>'form-control'))}}
                     </div>
                     <div class="form-group">
                         <label for="creditdebit">Debit/Credit</label>
