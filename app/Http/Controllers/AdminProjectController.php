@@ -292,7 +292,7 @@ class AdminProjectController extends BaseController{
         $pool = new \Cache\Adapter\Redis\RedisCachePool($redis);
         $simpleCache = new \Cache\Bridge\SimpleCache\SimpleCacheBridge($pool);
 
-        \Phpoffice\PhpSpreadsheet\Settings::setCache($simpleCache);
+        \PhpOffice\PhpSpreadsheet\Settings::setCache($simpleCache);
 
         //Let's take that uploaded file and run it through php excel.
         $excelReader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
