@@ -283,8 +283,8 @@ class AdminProjectController extends BaseController{
             return Redirect::route('admin.projects.uploadCognos',$semester->id)->with('error',array('Please select a cognos report to upload'));
         }
         $initialBudget = floatval(str_replace('$','',Input::get('initialBudget')));;
-        if($cognosFile->getClientOriginalExtension() != 'xlsx'){
-            return Redirect::route('admin.projects.uploadCognos',$semester->id)->with('error',array('Please make sure you are uploading the correct cognos report in .xlsx format'));
+        if($cognosFile->getClientOriginalExtension() != 'ods'){
+            return Redirect::route('admin.projects.uploadCognos',$semester->id)->with('error',array('Please make sure you are uploading the correct cognos report in .ods format'));
         }
         // set up redis cache because for some god-forsaken reason PhpSpreadsheet wants 1k per cell and loads empty cells
         $redis = new \Redis();
@@ -295,7 +295,7 @@ class AdminProjectController extends BaseController{
         \PhpOffice\PhpSpreadsheet\Settings::setCache($simpleCache);
 
         //Let's take that uploaded file and run it through php excel.
-        $excelReader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
+        $excelReader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Ods');
         $readerObject = $excelReader->load($cognosFile->getRealPath());
         //Quick check to make sure we have the right file
         if($readerObject->getActiveSheet()->getCell('A1')->getValue() != 'Class List by Campus'){
