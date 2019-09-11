@@ -286,6 +286,14 @@ class AdminProjectController extends BaseController{
         if($cognosFile->getClientOriginalExtension() != 'xlsx'){
             return Redirect::route('admin.projects.uploadCognos',$semester->id)->with('error',array('Please make sure you are uploading the correct cognos report in .xlsx format'));
         }
+        // set up redis cache because for some god-forsaken reason PhpSpreadsheet wants 1k per cell and loads empty cells
+        $redis = new \Redis();
+        $redis->connect('127.0.0.1', 6379);
+        $pool = new \Cache\Adapter\Redis\RedisCachePool($redis);
+        $simpleCache = new \Cache\Bridge\SimpleCache\SimpleCacheBridge($pool);
+
+        \Phpoffice\PhpSpreadsheet\Settings::setCache($simpleCache);
+
         //Let's take that uploaded file and run it through php excel.
         $excelReader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
         $readerObject = $excelReader->load($cognosFile->getRealPath());

@@ -10,7 +10,10 @@
     "require": {
         "php": ">=7.3.0",
         "ext-http": "*",
+        "ext-redis": "*",
         "barryvdh/laravel-ide-helper": "2.6.*",
+        "cache/redis-adapter": "^1.0",
+        "cache/simple-cache-bridge": "^1.0",
         "doctrine/dbal": "v2.9.*",
         "fideloper/proxy": "4.1.*",
         "guzzlehttp/guzzle": "6.3.*",
