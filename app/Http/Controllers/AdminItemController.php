@@ -103,24 +103,48 @@ class AdminItemController extends BaseController{
         $user = $order->User()->first();
         //Prepare the email, different emails based on the status we are updating to. 
         switch($newStatus){
-            case 3://Ordered
+            case 3: // ordered
                 Mail::send('emails.orderOrdered', array('person'=>$user,'order'=>$order,'items'=>$itemCollection), function($message) use($user){
                     $message->to($user->Email,$user->FirstName.' '.$user->LastName);
                     $message->subject('IPRO order purchased!');
                 });
                 break;
-            case 4://Received
+            case 4: // received
                 Mail::send('emails.orderPickup', array('person'=>$user,'order'=>$order,'items'=>$itemCollection), function($message) use($user){
                     $message->to($user->Email,$user->FirstName.' '.$user->LastName)->subject('IPRO order ready for pickup!');
                 });
 
                 break;
-            case 5://picked up
+            case 5: // picked up
                 //Pickup script sends an email, see AdminPickupController
                 break;
-            case 6://cancelled
-                
+            case 6: // cancelled
+                Mail::send('emails.orderCancelled',
+                    array('person'=>$user, 'order'=>$order, 'items'=>$itemCollection),
+                    function ($message) use ($user) {
+                        $message->to($user->Email, $user->FirstName . ' ' . $user->LastName);
+                        $message->subject('IPRO order cancelled');
+                    });
                 break;
+            case 7: // check idea shop stock
+                Mail::send('emails.orderCheckStock',
+                    array('person'=>$user, 'order'=>$order, 'items'=>$itemCollection),
+                    function ($message) use ($user) {
+                        $message->to($user->Email, $user->FirstName . ' ' . $user->LastName);
+                        $message->subject('IPRO order status');
+                    });
+                break;
+            case 8: // order on hold
+                break;
+            case 9: // approved for reimbursement
+                Mail::send('emails.orderSelfPurchase',
+                    array('person'=>$user, 'order'=>$order, 'items'=>$itemCollection),
+                    function ($message) use ($user) {
+                        $message->to($user->Email, $user->FirstName . ' ' . $user->LastName);
+                        $message->subject('IPRO order approved for reimbursement!');
+                    });
+                break;
+
         }
         
         return Redirect::to('/admin/orders/'.$orderID)->with('success',array('Successfully changed item statuses'));

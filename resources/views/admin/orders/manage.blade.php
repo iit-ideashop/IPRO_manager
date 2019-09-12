@@ -8,7 +8,7 @@
   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
     Actions <span class="caret"></span>
   </button>
-  <ul class="dropdown-menu" role="menu">
+  <ul class="dropdown-menu dropdown-menu-left" role="menu">
     <li><a href="#">Add Approved Pickups</a></li>
   </ul>
 </div>
