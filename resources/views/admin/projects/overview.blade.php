@@ -70,7 +70,12 @@
     
 </table>
 <div class="page-header">
-    <h3>Students</h3>
+    <h3>
+        Students
+        @if(count($students) > 0)
+            ({{count($students)}})
+        @endif
+    </h3>
 </div>        
 <table class="table table-bordered table-condensed">
     <tr>
