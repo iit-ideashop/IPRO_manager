@@ -14,7 +14,7 @@ $(document).ready( function () {
 @section('content')
 
 <div class="form-inline">
-    <div class="form-group">`
+    <div class="form-group">
 <select class="form-control" id="semester_selection">
     @foreach ($semesters as $semester)
     <option
