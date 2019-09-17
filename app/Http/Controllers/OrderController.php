@@ -183,12 +183,14 @@ class OrderController extends BaseController {
         }
         //all items saved, order created, redirect to project page with success message
         $account->Withdrawl('ORDER',$order->OrderTotal,$order->id);
-        Mail::send('emails.orderCreate', array('person'=>$order->User()->first(),'order'=>$order,'items'=>$order->Items()->get(), 'project'=>$project), function($message){
-            $message->to(Auth::user()->Email,Auth::user()->FirstName.' '.Auth::user()->LastName);
+
+        $purchasing = User::where("isPurchasing", "=", true)->get();
+        Mail::send('emails.orderCreate', array('person'=>$order->User()->first(),'order'=>$order,'items'=>$order->Items()->get(), 'project'=>$project), function($message) use ($purchasing){
+            $message->to(Auth::user()->Email,Auth::user()->getFullName());
             $message->to("ipro@iit.edu", "IPRO");
-            $message->bcc("krobles@hawk.iit.edu", "Jamie Robles");
-            $message->bcc("pkulyavtsev@hawk.iit.edu", "Paulina Kulyavtsev");
-            $message->bcc("kbhagat1@hawk.iit.edu", "Kislay Bhagat");
+            foreach ($purchasing as $user) {
+                $message->bcc($user->Email, $user->getFullName());
+            }
             $message->subject('IPRO Order Received!');
             $headers = $message->getHeaders();
             $headers->addTextHeader('X-MC-PreserveRecipients', 'false');

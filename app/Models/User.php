@@ -23,6 +23,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property string|null $deleted_at
+ * @property int $isPurchasing
  * @method static \Illuminate\Database\Eloquent\Builder|\User whereCWIDHash($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\User whereDeletedAt($value)
