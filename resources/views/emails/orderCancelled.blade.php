@@ -13,11 +13,11 @@
                 <td>
                   <p class="lead RobotText">Hey {{ $person->FirstName }},</p>
                    <p>
-                     It seems that certain items from your order have been canceled. These items are
-                     listed below. If you weren't the one who requested this, please review the IPRO purchasing policy
-                     <a href="https://ipro.iit.edu/wp-content/uploads/2019/05/SPRING-2019-Reference-Guide-3.pdf">here</a>
-                     and resubmit your order.  If you have any questions or need help, please contact us at
-                     <a href="mailto:ipro@iit.edu">ipro@iit.edu</a>.
+                     It seems that certain items from your order have been denied. These items are
+                     listed below. If you weren't the one who requested this and would still like to purchase these
+                     items, please <a href="mailto:ipro@iit.edu">contact us</a> and include your order
+                     number #{{ $order->id }}.
+                   </p>.
                    </p>
                  </td>
                 <td class="expander"></td>

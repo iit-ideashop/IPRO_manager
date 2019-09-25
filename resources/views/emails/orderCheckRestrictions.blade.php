@@ -4,10 +4,9 @@
     <h3>Hey {{ $person->FirstName }},</h3>
 
     <p>
-        We believe that the Idea Shop may have the below item or a comparable substitute. Please
-        check with Idea Shop staff. If they have this item, you can cancel this order. If they do
-        not, please email us at <a href="mailto:ipro@iit.edu">ipro@iit.edu</a> and we can
-        proceed with the order.
+        We've received your order and need additional information to determine whether or not it can be purchased using
+        IPRO funds. Please send us an email at <a href="mailt:ipro@iit.edu">ipro@iit.edu</a> and include your order
+        number #{{ $order->id }}.
     </p>
 
     <table class="tableGray" width="100%" cellpadding="3px" cellspacing="3px">

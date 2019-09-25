@@ -103,6 +103,14 @@ class AdminItemController extends BaseController{
         $user = $order->User()->first();
         //Prepare the email, different emails based on the status we are updating to. 
         switch($newStatus){
+            case 2: // approved for reimbursement
+                Mail::send('emails.orderSelfPurchase',
+                    array('person'=>$user, 'order'=>$order, 'items'=>$itemCollection),
+                    function ($message) use ($user) {
+                        $message->to($user->Email, $user->FirstName . ' ' . $user->LastName);
+                        $message->subject('IPRO order approved for reimbursement!');
+                    });
+                break;
             case 3: // ordered
                 Mail::send('emails.orderOrdered', array('person'=>$user,'order'=>$order,'items'=>$itemCollection), function($message) use($user){
                     $message->to($user->Email,$user->FirstName.' '.$user->LastName);
@@ -118,7 +126,7 @@ class AdminItemController extends BaseController{
             case 5: // picked up
                 //Pickup script sends an email, see AdminPickupController
                 break;
-            case 6: // cancelled
+            case 6: // denied
                 Mail::send('emails.orderCancelled',
                     array('person'=>$user, 'order'=>$order, 'items'=>$itemCollection),
                     function ($message) use ($user) {
@@ -131,19 +139,18 @@ class AdminItemController extends BaseController{
                     array('person'=>$user, 'order'=>$order, 'items'=>$itemCollection),
                     function ($message) use ($user) {
                         $message->to($user->Email, $user->FirstName . ' ' . $user->LastName);
-                        $message->subject('IPRO order status');
+                        $message->subject('IPRO order update');
                     });
                 break;
-            case 8: // order on hold
-                break;
-            case 9: // approved for reimbursement
-                Mail::send('emails.orderSelfPurchase',
+            case 8: // check buying restrictions
+                Mail::send('emails.orderCheckRestrictions',
                     array('person'=>$user, 'order'=>$order, 'items'=>$itemCollection),
                     function ($message) use ($user) {
                         $message->to($user->Email, $user->FirstName . ' ' . $user->LastName);
-                        $message->subject('IPRO order approved for reimbursement!');
+                        $message->subject('IPRO order update');
                     });
                 break;
+
 
         }
         
