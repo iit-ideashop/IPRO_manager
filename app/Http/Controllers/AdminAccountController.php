@@ -18,7 +18,7 @@ class AdminAccountController extends BaseController{
         $gl = new LedgerEntry;
         //Grab the posted entry type
         $entryType = Input::get('entryType');
-        $allowedTypes = array('RECONCILE', 'BUDGET', 'OTHER', 'REIMBURSEMENT', 'IDEASHOP');
+        $allowedTypes = array('ORDER', 'TRANSFER', 'RECONCILE', 'BUDGET', 'OTHER', 'REIMBURSEMENT', 'IDEASHOP');
         $cd = Input::get('creditdebit');
         $allowedCD = array('CREDIT', 'DEBIT');
         if(!in_array($entryType, $allowedTypes)){
