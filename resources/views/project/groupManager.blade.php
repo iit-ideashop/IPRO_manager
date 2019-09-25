@@ -229,12 +229,12 @@
                                 showTransferFunds(internalData[0][0], internalData[0][1]);
                             });
 
-                            $("#group-collapse-"+internalData[0][0]+"-body").append('<table class="table-condensed table-striped table" id="students-'+internalData[0][0]+'"><tr><th>First Name, Last Name</th><th>Email</th><th>-</td></tr></table>');
+                            $("#group-collapse-"+internalData[0][0]+"-body").append('<table class="table-condensed table-striped table" id="students-'+internalData[0][0]+'"><tr><th>Name</th><th>Email</th><th>-</td></tr></table>');
                             //Next loop the internalData[1] array for all the students
                             $.each(internalData[1], function(index,student){
                                 //Add data to the table
                                 var studentUsername = student[3].substr(0,student[3].lastIndexOf("@"));
-                                $("#students-"+internalData[0][0]).append('<tr id="student-table-row-'+internalData[0][0]+'-'+studentUsername+'"><td>'+student[1]+', '+student[2]+'</td><td><a href="mailto:'+student[3]+'">'+student[3]+'</a></td><td><button class="btn btn-danger" type="button" onclick="dropStudent(\''+internalData[0][0]+'\',\''+student[3]+'\')">'+
+                                $("#students-"+internalData[0][0]).append('<tr id="student-table-row-'+internalData[0][0]+'-'+studentUsername+'"><td>'+student[1]+' '+student[2]+'</td><td><a href="mailto:'+student[3]+'">'+student[3]+'</a></td><td><button class="btn btn-danger" type="button" onclick="dropStudent(\''+internalData[0][0]+'\',\''+student[3]+'\')">'+
                                 'Remove <span class="badge">X</span>'+
                                 '</button></td></tr>');
                             });
