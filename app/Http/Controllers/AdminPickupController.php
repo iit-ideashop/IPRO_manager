@@ -15,9 +15,26 @@ class AdminPickupController extends BaseController{
         $studentLName = Input::get('lastName');
         $studentEmail = Input::get('email');
         //Now let's find the user in the database who's ID number that is
-        $student = User::where('CWIDHash','LIKE',md5($studentID))->orWhere('FirstName','LIKE',$studentFName)->orWhere('LastName','LIKE',$studentLName)->orWhere('Email','LIKE',$studentEmail)->get();
+        $student = User::query();
+        if (!empty($studentID))
+            $student = $student->orWhere('CWIDHash', '=', md5($studentID));
+        if (!empty($studentFName))
+            $student = $student->orWhere('firstName', 'LIKE', '%'.$studentFName.'%');
+        if (!empty($studentLName))
+            $student = $student->orWhere('lastName', 'LIKE', '%'.$studentLName.'%');
+        if (!empty($studentEmail))
+            $student = $student->orWhere('email', 'LIKE', '%'.$studentEmail.'%');
+
+        $student = $student->get();
+
         if($student->isEmpty()){
-            return Redirect::route('admin.order.pickup')->with('error',array('Could not find a user that matches your query'));
+            $errormsg = 'Could not find a user that matches your query.';
+            if (!empty($studentID))
+                $errormsg .= " If you're searching by A-number, the user may not have one in the system." .
+                " Please try searching by email address, first name, or last name.";
+            return Redirect::route('admin.order.pickup')->with('error',
+                array($errormsg)
+            );
         }
         //Ok so we have atleast one user in our collection. If there is 1 user we can move onto the view pickup page
         //If the query gave us mutliple users we have to find out which user we want to perform a pickup for
@@ -43,7 +60,7 @@ class AdminPickupController extends BaseController{
         $ownedorders = Order::where('PeopleID','=',$student->id)->pluck('id');
         //Next we have to pull the orders which the user is a 3rd party pickup for
         $allowedPickup = ApprovedPickup::where('PersonID','=',$student->id)->pluck('OrderID');
-        $allpickupIDs = array_unique(array_merge($ownedorders,$allowedPickup), SORT_REGULAR);
+        $allpickupIDs = array_unique(array_merge($ownedorders->all(),$allowedPickup->all()), SORT_REGULAR);
         //Pull only orders that are in status 3 "Ready for pickup", get their id's so we can find items
         $orderIDs = Order::whereIn('id',$allpickupIDs)->where('Status','=','3')->pluck('id');
         //Pull items avaliable for pickup
@@ -66,14 +83,14 @@ class AdminPickupController extends BaseController{
         $ownedorders = Order::where('PeopleID', '=', $student->id)->pluck('id');
         //Next we have to pull the orders which the user is a 3rd party pickup for
         $allowedPickup = ApprovedPickup::where('PersonID', '=', $student->id)->pluck('OrderID');
-        $allpickupIDs = array_unique(array_merge($ownedorders, $allowedPickup), SORT_REGULAR);
+        $allpickupIDs = array_unique(array_merge($ownedorders->all(), $allowedPickup->all()), SORT_REGULAR);
         //Pull only orders that are in status 3 "Ready for pickup", get their id's so we can find items
         $orderIDs = Order::whereIn('id', $allpickupIDs)->where('Status', '=', '3')->pluck('id');
         //Pull items avaliable for pickup
         $items = Item::whereIn('OrderID', $orderIDs)->where('Status', '=', '4')->where('barcode', '!=', 'null')->pluck('id');
         foreach ($itemIDs as $itemid) {
             //Check for an intersection
-            if (!in_array($itemid, $items)) {
+            if (!in_array($itemid, $items->all())) {
                 return Redirect::route('admin.order.pickup.viewItems', array('userid' => $studentid))->with('error', array('Some submitted items could not be picked up by this user. Try again'));
             }
             //Also check that each item attempting to be picked up does not already have a pickupItem record
