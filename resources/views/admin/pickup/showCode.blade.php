@@ -3,9 +3,12 @@
 <h1 class="page-header">User Approval Required</h1>
     <div class="row">
         <div class="col-xs-offset-1 col-xs-5">
-            <h5>Use the iPad to have the user sign the pickup contract.</h5>
+            <p>
+                Use the iPad to have the user sign the pickup contract. The kiosk page is available at
+                <a href="https://ipromanager.ideashop.iit.edu/kiosk">https://ipromanager.ideashop.iit.edu/kiosk</a>.
+            </p>
             <h3>Code: {{ $pickup->RetreiveCode }}</h3>
-            <h5>Click the button below once the contract has been signed</h5>
+            <p>Click the button below once the contract has been signed.</p>
             {{Form::open(array("route"=>array("admin.order.pickup.confirm", $pickup->id)))}}
             {{Form::submit("Completed",array("class"=>"btn btn-primary"))}}
             {{Form::close()}}
