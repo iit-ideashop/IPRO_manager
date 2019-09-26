@@ -80,14 +80,16 @@ class OrderController extends BaseController {
                     } else {
                         // for non-amazon urls, strip utm tracking information
                         $query_vars = new QueryString();
-                        $query_vars->unserialize($url->query);
+                        if (!empty($url->query)) {
+                            $query_vars->unserialize($url->query);
 
-                        foreach ($query_vars->toArray() as $key => &$value) {
-                            if (starts_with($key, array("utm_", ""))) {
-                                $value = '';
+                            foreach ($query_vars->toArray() as $key => &$value) {
+                                if (starts_with($key, array("utm_", ""))) {
+                                    $value = '';
+                                }
                             }
+                            $url->query = $query_vars->toString();
                         }
-                        $url->query = $query_vars->toString();
                     }
                     $item->Link = $url->toString();
                 }
