@@ -70,10 +70,11 @@
             var img = document.createElement("img");
             var imgData = "data:image/png;base64,{{$sigpad}}";
             img.src = imgData;
-            var c=document.getElementById("sigpad");
-            var ctx=c.getContext("2d");
-            ctx.drawImage(img,0,0,550,200);
-
+            img.onload = function() {
+                var c=document.getElementById("sigpad");
+                var ctx=c.getContext("2d");
+                ctx.drawImage(img,0,0,550,200);
+            };
         });
     </script>
 @stop
