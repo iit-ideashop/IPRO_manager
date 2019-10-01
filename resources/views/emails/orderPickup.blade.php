@@ -3,7 +3,11 @@
 
                             <h3>Good News {{ $person->FirstName }},</h3>
 
-<p>My systems have been updated! Some items from your order have arrived and are ready for pickup at the IdeaShop. Please be sure to bring a valid ID to pickup these items. I have listed the items below.</p>
+<p>
+    My systems have been updated! Some items from your order have arrived and are ready for pickup at the IPRO concierge
+    desk on the south side of the Kaplan Institute.
+    Please be sure to bring a valid ID to pickup these items. I have listed the items below.
+</p>
 
 <table class="tableBlue" width="100%" cellpadding="3px" cellspacing="3px">
 <tr>
