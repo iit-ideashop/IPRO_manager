@@ -9,6 +9,12 @@
         number #{{ $order->id }}.
     </p>
 
+    @if (!empty($comment))
+    <p>
+        <b>Comment from IPRO: </b> {{ $comment }}
+    </p>
+    @endif
+
     <table class="tableGray" width="100%" cellpadding="3px" cellspacing="3px">
         <tr>
             <td><b>Item Name</b></td>

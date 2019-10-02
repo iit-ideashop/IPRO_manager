@@ -11,17 +11,22 @@
             <table class="twelve columns">
               <tr>
                 <td>
-                  <p class="lead RobotText">Hey {{ $person->FirstName }},</p>
-                   <p>
-                     It seems that certain items from your order have been denied. These items are
-                     listed below. If you weren't the one who requested this and would still like to purchase these
-                     items, please <a href="mailto:ipro@iit.edu">contact us</a> and include your order
-                     number #{{ $order->id }}.
-                   </p>.
-                   </p>
+                  <p class="lead RobotText">Hey {{ $person->FirstName }}>
+                    It seems that certain items from your order have been denied. These items are
+                    listed below. If you weren't the one who requested this and would still like to purchase these
+                    items, please <a href="mailto:ipro@iit.edu">contact us</a> and include your order
+                    number #{{ $order->id }}.
+                  </p>
                  </td>
                 <td class="expander"></td>
               </tr>
+              @if (!empty($comment))
+                <tr>
+                  <td>
+                    <b>Comment from IPRO: </b>{{ $comment }}
+                  </td>
+                </tr>
+              @endif
             </table>
 
           </td>

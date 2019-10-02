@@ -9,6 +9,12 @@
         <a href="https://ipro.iit.edu/wp-content/uploads/2019/05/SPRING-2019-Reference-Guide-3.pdf">here</a>.
     </p>
 
+    @if (!empty($comment))
+        <p>
+            <b>Comment from IPRO: </b> {{ $comment }}
+        </p>
+    @endif
+
     <table class="tableGray" width="100%" cellpadding="3px" cellspacing="3px">
         <tr>
             <td><b>Item Name</b></td>

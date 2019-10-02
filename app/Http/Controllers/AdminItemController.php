@@ -82,6 +82,7 @@ class AdminItemController extends BaseController{
         $newStatus = Input::get('Status');
         $orderID = null;
         $itemCollection = array();
+        $comment = Input::get('Comment');
         foreach($itemArray as $itemID){
             $item = Item::find($itemID);
             array_push($itemCollection,$item);
@@ -105,30 +106,33 @@ class AdminItemController extends BaseController{
         switch($newStatus){
             case 2: // approved for reimbursement
                 Mail::send('emails.orderSelfPurchase',
-                    array('person'=>$user, 'order'=>$order, 'items'=>$itemCollection),
+                    array('person'=>$user, 'order'=>$order, 'items'=>$itemCollection, 'comment'=>$comment),
                     function ($message) use ($user) {
                         $message->to($user->Email, $user->FirstName . ' ' . $user->LastName);
                         $message->subject('IPRO order approved for reimbursement!');
                     });
                 break;
             case 3: // ordered
-                Mail::send('emails.orderOrdered', array('person'=>$user,'order'=>$order,'items'=>$itemCollection), function($message) use($user){
-                    $message->to($user->Email,$user->FirstName.' '.$user->LastName);
-                    $message->subject('IPRO order purchased!');
-                });
+                Mail::send('emails.orderOrdered',
+                    array('person'=>$user,'order'=>$order,'items'=>$itemCollection, 'comment'=>$comment),
+                    function($message) use($user){
+                        $message->to($user->Email,$user->FirstName.' '.$user->LastName);
+                        $message->subject('IPRO order purchased!');
+                    });
                 break;
             case 4: // received
-                Mail::send('emails.orderPickup', array('person'=>$user,'order'=>$order,'items'=>$itemCollection), function($message) use($user){
-                    $message->to($user->Email,$user->FirstName.' '.$user->LastName)->subject('IPRO order ready for pickup!');
-                });
-
+                Mail::send('emails.orderPickup',
+                    array('person'=>$user,'order'=>$order,'items'=>$itemCollection, 'comment'=>$comment),
+                    function($message) use($user){
+                        $message->to($user->Email,$user->FirstName.' '.$user->LastName)->subject('IPRO order ready for pickup!');
+                    });
                 break;
             case 5: // picked up
                 //Pickup script sends an email, see AdminPickupController
                 break;
             case 6: // denied
                 Mail::send('emails.orderCancelled',
-                    array('person'=>$user, 'order'=>$order, 'items'=>$itemCollection),
+                    array('person'=>$user, 'order'=>$order, 'items'=>$itemCollection, 'comment'=>$comment),
                     function ($message) use ($user) {
                         $message->to($user->Email, $user->FirstName . ' ' . $user->LastName);
                         $message->subject('IPRO order cancelled');
@@ -136,7 +140,7 @@ class AdminItemController extends BaseController{
                 break;
             case 7: // check idea shop stock
                 Mail::send('emails.orderCheckStock',
-                    array('person'=>$user, 'order'=>$order, 'items'=>$itemCollection),
+                    array('person'=>$user, 'order'=>$order, 'items'=>$itemCollection, 'comment'=>$comment),
                     function ($message) use ($user) {
                         $message->to($user->Email, $user->FirstName . ' ' . $user->LastName);
                         $message->subject('IPRO order update');
@@ -144,7 +148,7 @@ class AdminItemController extends BaseController{
                 break;
             case 8: // check buying restrictions
                 Mail::send('emails.orderCheckRestrictions',
-                    array('person'=>$user, 'order'=>$order, 'items'=>$itemCollection),
+                    array('person'=>$user, 'order'=>$order, 'items'=>$itemCollection, 'comment'=>$comment),
                     function ($message) use ($user) {
                         $message->to($user->Email, $user->FirstName . ' ' . $user->LastName);
                         $message->subject('IPRO order update');
