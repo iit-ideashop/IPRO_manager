@@ -86,12 +86,13 @@ class Order extends Ardent
      */
     public static function updateStatus($orderid)
     {
-        //This function will be used to advance the status of the order automatically
-        //We essentially need to go out to the database, find all items in the order and look at the item status
-        //If atleast 1 item has been ordered  change the order status to ordered
-        //If atleast 1 item has been delivered, change to Ready for pickup
-        //If all items have been picked up change to completed
-        //If all the items in the order are cancelled then mark the order complete
+        // This function will be used to advance the status of the order automatically
+        // We essentially need to go out to the database, find all items in the order and look at the item status
+        // If all items are either denied or picked up, order is complete
+        // If any items are Check Idea Shop Stock or Check Buying Restrictions, order is awaiting followup
+        // If all items are either denied or received, the order is ready for pickup
+        // If any items are ordered or received (but not all received), the order is ordered
+        // Otherwise, the order is requested (Should only be the case if all items are requested)
 
         //Pull all of the items in the order
         $order = Order::find(intval($orderid));
@@ -100,31 +101,52 @@ class Order extends Ardent
         $ordered = 0;
         $delivered = 0;
         $complete = 0;
+        $denied = 0;
+        $needsAttention = 0;
         $totalitems = 0;
         foreach ($items as $item) {
-            //If ordered
+            // If ordered
             if ($item->Status == 3) {
                 $ordered++;
             }
-            //If delivered
-            if ($item->Status == 4) {
+            // If delivered
+            elseif ($item->Status == 4) {
                 $delivered++;
             }
-            //If picked up or cancelled
-            if (($item->Status == 5) || ($item->Status == 6)) {
+            // If picked up or approved for reimbursement
+            elseif (($item->Status == 5) || ($item->Status == 2)) {
                 $complete++;
+            }
+            // Denied
+            elseif ($item->Status == 6) {
+                $denied++;
+            }
+            // Check Idea Shop Stock, Check Buying Restrictions
+            elseif (($item->Status == 7) || ($item->Status == 8)) {
+                $needsAttention++;
             }
             $totalitems++;
         }
+        $nondenied = $totalitems - $denied;
+
         //We counted all of the items, now to update the status
-        if ($ordered > 0) {
-            $order->Status = 2;
+
+        // Also matches the case where all orders were denied, which we want to be considered "Completed" as well
+        if ($complete == $nondenied) {
+            $order->Status = 4; // Completed
         }
-        if ($delivered > 0) {
-            $order->Status = 3;////
+        elseif ($needsAttention > 0) {
+            $order->Status = 5; // Awaiting Followup
         }
-        if ($complete == $totalitems) {
-            $order->Status = 4;
+        elseif ($delivered == $nondenied) {
+            $order->Status = 3; // Ready for pickup
+        }
+        // Don't go back to requested if all orders are either delivered or requested
+        elseif ($ordered > 0 || $delivered > 0) {
+            $order->Status = 2; // Ordered
+        }
+        else {
+            $order->Status = 1; // Requested
         }
         $order->save();
     }
