@@ -73,8 +73,7 @@ class Item extends Ardent {
         //6 - Denied, we have to make the item worth $0 and update the order
         //7 - Check Idea Shop Stock - Send an email to the user that they should check with Idea Shop staff before
         //                            continuing since we might have that or a similar item
-        //8 - On hold - Order is on hold, nothing here
-        //9 - Approved for Reimbursement - Send an email to the user saying they can purchase the item and be reimbursed
+        //8 - Check Buying Restrictions - Send an email to the user saying that they should contact ipro for more information
         $orderNote = new OrderNote;
         $orderNote->OrderID = $this->OrderID;
         $orderNote->ItemID = $this->id;
