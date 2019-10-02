@@ -124,7 +124,7 @@ class Item extends Ardent {
     }
     
     public function deleteItem(){
-        $itemNotes = OrderNote::where('ItemID','=',$item->id)->get();
+        $itemNotes = OrderNote::where('ItemID','=',$this->id)->get();
         foreach($itemNotes as $itemNote){
             $itemNote->delete();
         }
