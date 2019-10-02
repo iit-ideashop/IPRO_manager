@@ -186,11 +186,12 @@ class OrderController extends BaseController {
         //all items saved, order created, redirect to project page with success message
         $account->Withdrawl('ORDER',$order->OrderTotal,$order->id);
 
-        $purchasing = User::where("isPurchasing", "=", true)->get();
-        Mail::send('emails.orderCreate', array('person'=>$order->User()->first(),'order'=>$order,'items'=>$order->Items()->get(), 'project'=>$project), function($message) use ($purchasing){
+        $purchasing = DistributionList::where('distributionList', '=', 'protolab_order_create')->pluck('UserID');
+        $purchasing_users = User::whereIn('id', $purchasing)->get();
+        Mail::send('emails.orderCreate', array('person'=>$order->User()->first(),'order'=>$order,'items'=>$order->Items()->get(), 'project'=>$project), function($message) use ($purchasing_users){
             $message->to(Auth::user()->Email,Auth::user()->getFullName());
             $message->to("ipro@iit.edu", "IPRO");
-            foreach ($purchasing as $user) {
+            foreach ($purchasing_users as $user) {
                 $message->bcc($user->Email, $user->getFullName());
             }
             $message->subject('IPRO Order Received!');

@@ -7,7 +7,7 @@
     <h3>Hey there Prototyping Lab!!</h3>
     <p>While you were setting things on fire and building potato launchers some items have changed status and now require your attention!!
         (For three low low payments of 19.87)</p>
-    <p>Below is a listing of the items found within the app that require your attention.</p>
+    <p>Below is a listing of the items that require your attention.</p>
     <table class="tableGray" width="100%" cellpadding="3px" cellspacing="3px">
         <tr>
             <td><b>Order</b></td>
