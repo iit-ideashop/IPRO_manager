@@ -40,9 +40,6 @@ class OrderController extends BaseController {
         $itemQuantities = Input::get('Quantitys');
         $itemShippings = Input::get("shippingCosts");
         $itemJustifications = Input::get('Justifications');
-        $firstApproved = Input::get("firstApproved");
-        $secondApproved = Input::get("secondApproved");
-        $approvedPickups = array();
         $itemArray = array();
         $grandTotal = 0;
         $order_has_error = false;
@@ -131,17 +128,6 @@ class OrderController extends BaseController {
         foreach($students as $student){
             array_push($enrolledStudents, $student->id);
         }
-        //
-
-        if(($firstApproved != Auth::id()) && ($firstApproved != 0) && (!in_array($firstApproved, $enrolledStudents))){
-            array_push($approvedPickups, $firstApproved);
-        }
-
-        if(($secondApproved != Auth::id())&&($secondApproved != 0)&& (!in_array($secondApproved, $enrolledStudents))){
-            array_push($approvedPickups,$secondApproved);
-        }
-        //Make the array unique
-        array_unique($approvedPickups);
 
         //Ok all passed, we have enough funding, and all items are validated, let's create this order
         $order = new Order;
@@ -170,17 +156,6 @@ class OrderController extends BaseController {
             foreach($itemArray as $item){
                 $item->OrderID = $order->id;
                 $item->save();
-            }
-        }
-
-        //Order created and items saved. Let's do the approved pickups.
-        if(sizeof($approvedPickups) != 0){
-            foreach($approvedPickups as $approvedPickup){
-                $ap = new ApprovedPickup();
-                $ap->PersonID = $approvedPickup;
-                $ap->OrderID = $order->id;
-                $ap->ApproverID = Auth::id();
-                $ap->save();
             }
         }
         //all items saved, order created, redirect to project page with success message

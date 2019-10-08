@@ -46,6 +46,18 @@ class AdminPickupController extends BaseController{
             return View::make('admin.pickup.searchResults');
         }
     }
+
+    // Gets the items the user with the given ID can pick up
+    static function getPickupableItemsFor(int $userID) {
+        // First, get the orders where the user is in the class that the order is for, that are in the state "Ready for Pickup" (Status 3)
+        $pickupIDs = PeopleProject::where("UserID", "=", $userID)
+            ->join("orders", "orders.ClassID", "=", "PeopleProjects.ClassID")
+            ->where("orders.Status", "=", "3")
+            ->pluck("orders.id");
+        // Return the items in that order where the status is "Available for pickup" (Status 4)
+        return Item::whereIn("OrderID", $pickupIDs)->where("Status", "=", "4")->whereNotNull("barcode")->get();
+    }
+
     //Show a listing of items the user is allowed to pickup
     function viewItems(){
         $userid = Input::get('userid');
@@ -55,16 +67,7 @@ class AdminPickupController extends BaseController{
             return Redirect::route('admin.order.pickup')->with('error',array('The specified user does not exist, please try again'));
         }
         View::share('student',$student);
-        //Ok we have a user object, now to find the user's orders
-        //Start by pulling the ID's of the orders the user owns
-        $ownedorders = Order::where('PeopleID','=',$student->id)->pluck('id');
-        //Next we have to pull the orders which the user is a 3rd party pickup for
-        $allowedPickup = ApprovedPickup::where('PersonID','=',$student->id)->pluck('OrderID');
-        $allpickupIDs = array_unique(array_merge($ownedorders->all(),$allowedPickup->all()), SORT_REGULAR);
-        //Pull only orders that are in status 3 "Ready for pickup", get their id's so we can find items
-        $orderIDs = Order::whereIn('id',$allpickupIDs)->where('Status','=','3')->pluck('id');
-        //Pull items avaliable for pickup
-        $items = Item::whereIn('OrderID',$orderIDs)->where('Status','=','4')->where('barcode','!=','null')->get();
+        $items = self::getPickupableItemsFor($student->id);
         View::share('items',$items);
         return View::make('admin.pickup.viewItems');
     }
@@ -80,14 +83,7 @@ class AdminPickupController extends BaseController{
         }
         $student = User::find($studentid);
         //take the items we just received and pull the items the user can get from the database and verify the intersections.
-        $ownedorders = Order::where('PeopleID', '=', $student->id)->pluck('id');
-        //Next we have to pull the orders which the user is a 3rd party pickup for
-        $allowedPickup = ApprovedPickup::where('PersonID', '=', $student->id)->pluck('OrderID');
-        $allpickupIDs = array_unique(array_merge($ownedorders->all(), $allowedPickup->all()), SORT_REGULAR);
-        //Pull only orders that are in status 3 "Ready for pickup", get their id's so we can find items
-        $orderIDs = Order::whereIn('id', $allpickupIDs)->where('Status', '=', '3')->pluck('id');
-        //Pull items avaliable for pickup
-        $items = Item::whereIn('OrderID', $orderIDs)->where('Status', '=', '4')->where('barcode', '!=', 'null')->pluck('id');
+        $items = self::getPickupableItemsFor($student->id);
         foreach ($itemIDs as $itemid) {
             //Check for an intersection
             if (!in_array($itemid, $items->all())) {

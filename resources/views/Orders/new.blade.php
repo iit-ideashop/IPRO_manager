@@ -25,42 +25,6 @@
           <div class="col-sm-6">Order Name: {{ Form::text('Description',null,array('class'=>'form-control','tabindex'=>'1','required'))}}</div>
           <div class="col-sm-6">Phone number: {{ Form::text('Phone',null,array('class'=>'form-control','tabindex'=>'2')) }}</div>
       </div>
-      <br />
-          <div class="panel-group" id="approvedPickup">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#approvedPickup" href="#approvedPickups" class="collapsed">
-          Approved Order Pickups
-        </a>
-      </h4>
-    </div>
-    <div id="approvedPickups" class="panel-collapse collapse" style="height: 0px;">
-      <div class="panel-body">
-      The following people are approved to pickup items from this order
-      <ul>
-          <li>{{ Auth::user()->FirstName }} {{ Auth::user()->LastName }}</li>
-          <li>
-              <select name="firstApproved">
-                  <option value="0">Select a team member</option>
-                  @foreach($enrolledStudents as $enrolledStudent)
-                    <option value="{{$enrolledStudent->id}}">{{$enrolledStudent->FirstName}} {{$enrolledStudent->LastName}}</option>
-                  @endforeach
-              </select>
-          </li>
-          <li>
-              <select name="secondApproved">
-                  <option value="0">Select a team member</option>
-                  @foreach($enrolledStudents as $enrolledStudent)
-                      <option value="{{$enrolledStudent->id}}">{{$enrolledStudent->FirstName}} {{$enrolledStudent->LastName}}</option>
-                  @endforeach
-              </select>
-          </li>
-      </ul>
-      </div>
-    </div>
-  </div>
-      </div>
   </div>
 </div>
 
