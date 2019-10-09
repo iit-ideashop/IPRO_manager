@@ -48,14 +48,14 @@ class AdminPickupController extends BaseController{
     }
 
     // Gets the items the user with the given ID can pick up
-    static function getPickupableItemsFor(int $userID) {
+    static function getPickupableItemsQueryFor(int $userID) {
         // First, get the orders where the user is in the class that the order is for, that are in the state "Ready for Pickup" (Status 3)
         $pickupIDs = PeopleProject::where("UserID", "=", $userID)
             ->join("orders", "orders.ClassID", "=", "PeopleProjects.ClassID")
             ->where("orders.Status", "=", "3")
             ->pluck("orders.id");
         // Return the items in that order where the status is "Available for pickup" (Status 4)
-        return Item::whereIn("OrderID", $pickupIDs)->where("Status", "=", "4")->whereNotNull("barcode")->get();
+        return Item::whereIn("OrderID", $pickupIDs)->where("Status", "=", "4")->whereNotNull("barcode");
     }
 
     //Show a listing of items the user is allowed to pickup
@@ -67,7 +67,7 @@ class AdminPickupController extends BaseController{
             return Redirect::route('admin.order.pickup')->with('error',array('The specified user does not exist, please try again'));
         }
         View::share('student',$student);
-        $items = self::getPickupableItemsFor($student->id);
+        $items = self::getPickupableItemsQueryFor($student->id)->get();
         View::share('items',$items);
         return View::make('admin.pickup.viewItems');
     }
@@ -83,10 +83,10 @@ class AdminPickupController extends BaseController{
         }
         $student = User::find($studentid);
         //take the items we just received and pull the items the user can get from the database and verify the intersections.
-        $items = self::getPickupableItemsFor($student->id);
+        $items = self::getPickupableItemsQueryFor($student->id)->pluck("id")->all();
         foreach ($itemIDs as $itemid) {
             //Check for an intersection
-            if (!in_array($itemid, $items->all())) {
+            if (!in_array($itemid, $items)) {
                 return Redirect::route('admin.order.pickup.viewItems', array('userid' => $studentid))->with('error', array('Some submitted items could not be picked up by this user. Try again'));
             }
             //Also check that each item attempting to be picked up does not already have a pickupItem record
