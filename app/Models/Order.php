@@ -90,7 +90,7 @@ class Order extends Ardent
         // We essentially need to go out to the database, find all items in the order and look at the item status
         // If all items are either denied or picked up, order is complete
         // If any items are Check Idea Shop Stock or Check Buying Restrictions, order is awaiting followup
-        // If all items are either denied or received, the order is ready for pickup
+        // If all items are either denied, ordered, or received, the order is ready for pickup
         // If any items are ordered or received (but not all received), the order is ordered
         // Otherwise, the order is requested (Should only be the case if all items are requested)
 
@@ -138,7 +138,7 @@ class Order extends Ardent
         elseif ($needsAttention > 0) {
             $order->Status = 5; // Awaiting Followup
         }
-        elseif ($delivered == $nondenied) {
+        elseif ($delivered > 0 && $ordered == 0) {
             $order->Status = 3; // Ready for pickup
         }
         // Don't go back to requested if all orders are either delivered or requested
