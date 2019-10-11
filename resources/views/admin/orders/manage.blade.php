@@ -189,12 +189,13 @@
         <div class="panel-heading">Order Items</div>
         <div class="panel-body">
             <div class="table-responsive">
-                <table class="table table-striped" id="itemListing">
+                <table class="table table-striped" id="itemListing" width="100%">
                     <thead>
                     <tr>
 
                         <th>id</th>
                         <th></th>
+                        <th></th>
                         <th>Name</th>
                         <th>Link</th>
                         <th>Part Number</th>
@@ -206,25 +207,12 @@
                         <th>Returning</th>
                         <th>Status</th>
                         <th>Updated</th>
-                        <th></th>
                     </tr>
                     </thead>
                     <tfoot>
                     <tr>
                         <th>id</th>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Link</th>
-                        <th>Part Number</th>
-                        <th>Justification</th>
-                        <th>Cost</th>
-                        <th>Quantity</th>
-                        <th>Shipping</th>
-                        <th>Total Cost</th>
-                        <th>Returning</th>
-                        <th>Status</th>
-                        <th>Updated</th>
-                        <th>With Selected:
+                        <th colspan="2">With Selected:
 
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -239,6 +227,17 @@
 
 
                         </th>
+                        <th>Name</th>
+                        <th>Link</th>
+                        <th>Part Number</th>
+                        <th>Justification</th>
+                        <th>Cost</th>
+                        <th>Quantity</th>
+                        <th>Shipping</th>
+                        <th>Total Cost</th>
+                        <th>Returning</th>
+                        <th>Status</th>
+                        <th>Updated</th>
                     </tr>
                     </tfoot>
                     <tbody>
@@ -247,25 +246,7 @@
                             <td>{{ $item->id }}</td>
                             <td><input type="checkbox" name="{{ $item->Name}}" id="item-{{ $item->id }}"
                                        value="{{ $item->id}}">
-                            </th>
-                            <td><a href="{{$item->Link}}" target="_blank">{{ $item->Name}}</a></td>
-                            <td>{{ $item->Link }}</td>
-                            <td>{{ $item->PartNumber }}</td>
-                            <td>{{ $item->Justification }}</td>
-                            <td>${{ number_format($item->Cost,2) }}</td>
-                            <td>{{ $item->Quantity}}</td>
-                            <td>${{ number_format($item->Shipping,2) }}</td>
-                            <td>${{ number_format($item->TotalCost,2) }}</td>
-                            @if($item->Returning)
-                                <td>Yes</td>
-                            @else
-                                <td>No</td>
-                            @endif
-                            <td>{{ $item->getStatus() }}
-                                @if($item->barcode != null)
-                                    <h6><span class="glyphicon glyphicon-barcode"></span>Barcode ok<h6>
-                                @endif</td>
-                            <td>{{ date('D F jS Y, g:i a',strtotime($item->updated_at))}}</td>
+                            </td>
                             <td>
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default dropdown-toggle"
@@ -288,8 +269,26 @@
                                         <li><a href="#" onClick="printLabel({{$item->id}})">Print Labels</a></li>
                                     </ul>
                                 </div>
-
-                            </th>
+                            </td>
+                            <td><a href="{{$item->Link}}" target="_blank">{{ $item->Name}}</a></td>
+                            <td>{{ $item->Link }}</td>
+                            <td>{{ $item->PartNumber }}</td>
+                            <td>{{ $item->Justification }}</td>
+                            <td>${{ number_format($item->Cost,2) }}</td>
+                            <td>{{ $item->Quantity}}</td>
+                            <td>${{ number_format($item->Shipping,2) }}</td>
+                            <td>${{ number_format($item->TotalCost,2) }}</td>
+                            @if($item->Returning)
+                                <td>Yes</td>
+                            @else
+                                <td>No</td>
+                            @endif
+                            <td>{{ $item->getStatus() }}
+                                @if($item->barcode != null)
+                                    <h6><span class="glyphicon glyphicon-barcode"></span>Barcode ok</h6>
+                                @endif
+                            </td>
+                            <td>{{ date('D F jS Y, g:i a',strtotime($item->updated_at))}}</td>
                         </tr>
                     @endforeach
                     </tbody>
