@@ -196,8 +196,8 @@
                         <th>id</th>
                         <th></th>
                         <th></th>
-                        <th>Name</th>
-                        <th>Link</th>
+                        <th></th>
+                        <th>Name/Link</th>
                         <th>Part Number</th>
                         <th>Justification</th>
                         <th>Cost</th>
@@ -224,11 +224,9 @@
                                     <li><a href="#" id="massLabelPrint">Print Labels</a></li>
                                 </ul>
                             </div>
-
-
                         </th>
-                        <th>Name</th>
-                        <th>Link</th>
+                        <th></th>
+                        <th>Name/Link</th>
                         <th>Part Number</th>
                         <th>Justification</th>
                         <th>Cost</th>
@@ -270,8 +268,8 @@
                                     </ul>
                                 </div>
                             </td>
-                            <td><a href="{{$item->Link}}" target="_blank">{{ $item->Name}}</a></td>
-                            <td>{{ $item->Link }}</td>
+                            <td></td>
+                            <td><a href="{{ $item->Link }}" target="_blank">{{ $item->Name }}</a></td>
                             <td>{{ $item->PartNumber }}</td>
                             <td>{{ $item->Justification }}</td>
                             <td>${{ number_format($item->Cost,2) }}</td>
