@@ -286,7 +286,7 @@
                                     <h6><span class="glyphicon glyphicon-barcode"></span>Barcode ok</h6>
                                 @endif
                             </td>
-                            <td>{{ date('D F jS Y, g:i a',strtotime($item->updated_at))}}</td>
+                            <td>{{ date('n/j/Y G:i',strtotime($item->updated_at))}}</td>
                         </tr>
                     @endforeach
                     </tbody>
