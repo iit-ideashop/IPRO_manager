@@ -17,7 +17,7 @@ use LaravelArdent\Ardent\Ardent;
  * @property int $override
  * @property int $status
  * @property int|null $barcode
- * @property string $reject_comments
+ * @property string|null $reject_comments
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|\PrintSubmission whereBarcode($value)

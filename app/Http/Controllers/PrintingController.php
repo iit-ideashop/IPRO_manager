@@ -238,7 +238,7 @@ class PrintingController extends BaseController{
             return Response::json(array("success"=>"true","action"=>"Approve"));
         }elseif($action == "Deny"){
             $rejectComments = Input::get("rejectComment");
-            unlink(Config::get("app.StorageURLs.printSubmissions").$printSubmission->filename);
+            @unlink(Config::get("app.StorageURLs.printSubmissions").$printSubmission->filename);
             $printSubmission->reject_comments = $rejectComments;
             $printSubmission->status = 7;
             $printSubmission->save();
