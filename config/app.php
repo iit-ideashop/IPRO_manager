@@ -254,7 +254,8 @@ return [
         'stuart.iit.edu',
         'vandercook.edu',
         'shimer.edu',
-        'ideashop.iit.edu'
+        'ideashop.iit.edu',
+        'kaplan.iit.edu'
     ),
 
     'StorageURLs' => array(
